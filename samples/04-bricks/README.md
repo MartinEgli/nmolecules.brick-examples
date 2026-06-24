@@ -28,6 +28,7 @@ Bricks lets you define those roles and constraints without creating a custom ana
 - `BricksSample.cs` is now only the small entry/index file for the sample block
 - `Samples.Block04.Bricks.Violations.csproj` contains the intentionally broken custom-role rule declarations
 - `domain-language-kits/billing/` contains the reusable billing role/rule vocabulary plus the domain, application, and infrastructure walkthrough
+- `function-coverage/` contains buildable examples that cover the Bricks API surface with motivation, user benefit, and a function-to-file coverage matrix
 - `rule-filters/` contains concrete class and member names for `Message`, `Excluded*`, and `Required*` filter scenarios
 - `member-contracts/use-cases/` groups the member-contract samples by use case: only one, exactly two, two to four, XOR, A + B, and not
 - `docs/consumer-sample-roadmap.md` defines the recommended future sample layout for Bricks consumers
@@ -49,3 +50,4 @@ Concept samples that document future Bricks contract patterns, but are not analy
 2. Extend the use-case sample set with another range or exclusion pattern, for example "at least one of three markers".
 3. Add a new custom alias attribute for a reporting role and annotate one type.
 4. Build `Samples.Block04.Bricks.Violations.csproj` and inspect the invalid rule configuration plus the forbidden domain-to-infrastructure dependency.
+5. Read `function-coverage/README.md` and compare each function family with the matching buildable example file.

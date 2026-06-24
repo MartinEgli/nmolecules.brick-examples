@@ -12,6 +12,12 @@ The initial content was split out from the existing superrepo sample block:
 
 The copied sample block demonstrates custom role and rule modeling with `NMolecules.Bricks`.
 
+The later `function-coverage` examples are new material in this repository. They are derived from:
+
+- the public API in `nmolecules/src/nMolecules.Bricks`
+- behavioral expectations from `nmolecules/tests/nMolecules.Bricks.Test`
+- the existing billing examples copied from `nmolecules.examples/samples/04-bricks`
+
 ## Repository Layout
 
 | Path | Purpose |
@@ -19,9 +25,30 @@ The copied sample block demonstrates custom role and rule modeling with `NMolecu
 | `samples/04-bricks/Samples.Block04.Bricks.csproj` | Green Bricks sample project |
 | `samples/04-bricks/Samples.Block04.Bricks.Violations.csproj` | Intentional violation project for analyzer diagnostics |
 | `samples/04-bricks/domain-language-kits/billing` | Billing role/rule vocabulary plus domain walkthrough |
+| `samples/04-bricks/function-coverage` | Full Bricks function coverage examples with motivation, user benefit and API mapping |
 | `samples/04-bricks/member-contracts` | Member contract modeling examples |
 | `samples/04-bricks/rule-filters` | Rule filter and custom diagnostic message examples |
 | `samples/04-bricks/docs` | Consumer sample roadmap copied with the source block |
+
+## Bricks Function Coverage
+
+The focused coverage entry point is:
+
+- `samples/04-bricks/function-coverage/README.md`
+
+That section maps Bricks function families to concrete, buildable examples:
+
+- deterministic role and policy enforcement
+- role conflict resolution and policy composition
+- member cardinality contracts
+- rule messages and rule filters
+- policy, adoption, report and export JSON
+- SARIF report output
+- runtime wiring, runtime activation, reflection and friend assembly visibility
+- governance, conformance, roadmap and dependency coverage reports
+- benchmark and benchmark comparison reports
+- AI-assisted explanations and rule proposals with explicit trust boundaries
+- configuration precedence and DDD attribute-to-role bridge examples
 
 ## Build
 
