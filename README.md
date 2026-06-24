@@ -24,6 +24,7 @@ The later `function-coverage` examples are new material in this repository. They
 |---|---|
 | `samples/04-bricks/Samples.Block04.Bricks.csproj` | Green Bricks sample project |
 | `samples/04-bricks/Samples.Block04.Bricks.Violations.csproj` | Intentional violation project for analyzer diagnostics |
+| `samples/04-bricks/ddd-building` | Focused example for building a DDD slice with Bricks roles and rules |
 | `samples/04-bricks/domain-language-kits/billing` | Billing role/rule vocabulary plus domain walkthrough |
 | `samples/04-bricks/function-coverage` | Full Bricks function coverage examples with motivation, user benefit and API mapping |
 | `samples/04-bricks/member-contracts` | Member contract modeling examples |
@@ -39,6 +40,7 @@ The focused coverage entry point is:
 That section maps Bricks function families to concrete, buildable examples:
 
 - deterministic role and policy enforcement
+- DDD slice construction with aggregate, entity, value object, repository, factory and service roles
 - role conflict resolution and policy composition
 - member cardinality contracts
 - rule messages and rule filters
