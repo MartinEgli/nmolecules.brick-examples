@@ -7,6 +7,17 @@ using Samples.Block04.Bricks.DddBuilding;
     defaultDecision: BrickPermissionDefault.Allow,
     enforcement: BrickEnforcementMode.Analyze)]
 
+[assembly: PolicyImport(
+    id: DddBrickRules.PlatformDefaultsPolicy,
+    mode: BrickPolicyImportMode.Extend)]
+
+[assembly: RoleCombination(
+    name: DddBrickRules.DomainModelCannotBeInfrastructureCombination,
+    leftRoles: DddBrickRules.DddDomainRolePattern,
+    rightRoles: DddBrickRoles.Infrastructure,
+    kind: BrickCombinationKind.Incompatible,
+    reason: DddBrickRules.DomainModelCannotBeInfrastructureReason)]
+
 [assembly: Rule(
     id: DddBrickRules.DomainMustNotDependOnInfrastructure,
     sourceRole: DddBrickRoles.AggregateRoot,
@@ -54,12 +65,16 @@ internal static class DddBrickRules
 {
     public const string DddPolicy = "DDD-BRICKS-POLICY";
     public const string DddPolicyName = "DDD Bricks attribute policy";
+    public const string PlatformDefaultsPolicy = "DDD-BRICKS-PLATFORM-DEFAULTS";
+    public const string DomainModelCannotBeInfrastructureCombination = "Domain model cannot be infrastructure";
+    public const string DddDomainRolePattern = "DDD.*";
     public const string DomainMustNotDependOnInfrastructure = "DDD-BRICKS-001";
     public const string ValueObjectMustNotDependOnRepository = "DDD-BRICKS-002";
     public const string ApplicationServiceRequiresRepositoryContract = "DDD-BRICKS-003";
     public const string ContractDependsOnInfrastructureDependency = "DDD-BRICKS-DEP-001";
     public const string ApplicationServiceDependsOnRepositoryDependency = "DDD-BRICKS-DEP-002";
     public const string TypeReferenceDependencyKind = "TypeReference";
+    public const string DomainModelCannotBeInfrastructureReason = "A DDD building block should not also own infrastructure responsibilities.";
     public const string DomainMustNotDependOnInfrastructureMessage = "Rule {rule}: aggregate {source} must not depend on infrastructure {target} through {member}.";
     public const string ValueObjectMustNotDependOnRepositoryMessage = "Rule {rule}: value object {source} must stay persistence-free and must not depend on {target}.";
     public const string ApplicationServiceRequiresRepositoryContractMessage = "Rule {rule}: application service {source} should coordinate persistence through a repository contract {target}.";

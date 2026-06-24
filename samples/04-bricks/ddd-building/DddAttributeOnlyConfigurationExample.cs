@@ -10,11 +10,13 @@ namespace Samples.Block04.Bricks.DddBuilding;
 /// Shows the same DDD slice configured only through attributes.
 /// </summary>
 /// <remarks>
-/// The policy header comes from <see cref="PolicyAttribute"/>, dependency rules
-/// come from assembly-level <see cref="RuleAttribute"/> declarations, and sample
-/// dependency evidence comes from <see cref="DependencyAttribute"/>. Roles come
-/// from custom role marker attributes such as <see cref="DddAggregateRootAttribute"/>
-/// and <see cref="DddRepositoryAttribute"/>.
+/// The policy header comes from <see cref="PolicyAttribute"/>, policy imports
+/// come from <see cref="PolicyImportAttribute"/>, dependency rules come from
+/// assembly-level <see cref="RuleAttribute"/> declarations, role combinations
+/// come from <see cref="RoleCombinationAttribute"/>, and sample dependency
+/// evidence comes from <see cref="DependencyAttribute"/>. Roles come from custom
+/// role marker attributes such as <see cref="DddAggregateRootAttribute"/> and
+/// <see cref="DddRepositoryAttribute"/>.
 /// </remarks>
 internal static class DddAttributeOnlyConfigurationExample
 {
@@ -40,10 +42,20 @@ internal static class DddAttributeOnlyConfigurationExample
             .Where(policy => policy.Id.StartsWith("DDD-BRICKS-", StringComparison.Ordinal))
             .OrderBy(policy => policy.Id, StringComparer.Ordinal)
             .ToArray();
+        var assemblyImports = assembly
+            .GetCustomAttributes<PolicyImportAttribute>()
+            .Where(import => import.Id.StartsWith("DDD-BRICKS-", StringComparison.Ordinal))
+            .OrderBy(import => import.Id, StringComparer.Ordinal)
+            .ToArray();
         var assemblyRules = assembly
             .GetCustomAttributes<RuleAttribute>()
             .Where(rule => rule.Id.StartsWith("DDD-BRICKS-", StringComparison.Ordinal))
             .OrderBy(rule => rule.Id, StringComparer.Ordinal)
+            .ToArray();
+        var assemblyRoleCombinations = assembly
+            .GetCustomAttributes<RoleCombinationAttribute>()
+            .Where(combination => !string.IsNullOrWhiteSpace(combination.Name))
+            .OrderBy(combination => combination.Name, StringComparer.Ordinal)
             .ToArray();
         var assemblyDependencies = assembly
             .GetCustomAttributes<DependencyAttribute>()
@@ -61,22 +73,37 @@ internal static class DddAttributeOnlyConfigurationExample
             .OrderBy(assignment => assignment.TypeName, StringComparer.Ordinal)
             .ToArray();
 
-        return new DddAttributeOnlyConfiguration(assemblyPolicies, assemblyRules, assemblyDependencies, roleAssignments);
+        return new DddAttributeOnlyConfiguration(
+            assemblyPolicies,
+            assemblyImports,
+            assemblyRules,
+            assemblyRoleCombinations,
+            assemblyDependencies,
+            roleAssignments);
     }
 
     public static BrickPolicy BuildPolicyFromAssemblyAttributes()
     {
         var configuration = ReadConfigurationFromAttributes();
         var policy = configuration.Policies.FirstOrDefault();
+        var imports = configuration.PolicyImports
+            .Select(ToPolicyImport)
+            .ToArray();
         var rules = configuration.Rules
             .Select(ToBrickRule)
+            .ToArray();
+        var combinations = configuration.RoleCombinations
+            .Select(ToRoleCombinationRule)
             .ToArray();
 
         return new BrickPolicy(
             policy?.PolicyId ?? BrickPolicyId.From("sample-ddd-attribute-policy"),
             string.IsNullOrWhiteSpace(policy?.Name) ? "Sample DDD policy from assembly attributes" : policy.Name,
-            imports: null,
+            imports,
             rules: rules,
+            combinationRules: combinations,
+            externalAssignments: null,
+            aliases: null,
             defaultDecision: policy?.DefaultDecision ?? BrickPermissionDefault.Allow,
             enforcement: policy?.Enforcement ?? BrickEnforcementMode.Analyze);
     }
@@ -117,10 +144,22 @@ internal static class DddAttributeOnlyConfigurationExample
             lines.Add($"- {policy.Id}: {policy.Name} ({policy.DefaultDecision}, {policy.Enforcement})");
         }
 
+        lines.Add("Assembly policy imports:");
+        foreach (var import in configuration.PolicyImports)
+        {
+            lines.Add($"- {import.Id}: {import.Mode}");
+        }
+
         lines.Add("Assembly rules:");
         foreach (var rule in configuration.Rules)
         {
             lines.Add($"- {rule.Id}: {rule.SourceRole} -> {rule.TargetRole} ({rule.Mode})");
+        }
+
+        lines.Add("Assembly role combinations:");
+        foreach (var combination in configuration.RoleCombinations)
+        {
+            lines.Add($"- {combination.Name}: {combination.LeftRoles} + {combination.RightRoles} ({combination.Kind})");
         }
 
         lines.Add("Assembly dependencies:");
@@ -141,6 +180,9 @@ internal static class DddAttributeOnlyConfigurationExample
         return lines;
     }
 
+    private static BrickPolicyImport ToPolicyImport(PolicyImportAttribute attribute) =>
+        new(attribute.PolicyId, attribute.Mode);
+
     private static BrickRule ToBrickRule(RuleAttribute attribute) =>
         new(
             attribute.RuleId,
@@ -150,6 +192,14 @@ internal static class DddAttributeOnlyConfigurationExample
             attribute.Mode == RuleMode.RequireDependency ? BrickDecision.Require : BrickDecision.Deny,
             BrickScope.Type,
             attribute.Mode == RuleMode.RequireDependency ? BrickSeverity.Warning : BrickSeverity.Error);
+
+    private static BrickRoleCombinationRule ToRoleCombinationRule(RoleCombinationAttribute attribute) =>
+        new(
+            attribute.Name,
+            attribute.LeftRoleSelector,
+            attribute.RightRoleSelector,
+            attribute.Kind,
+            attribute.Reason);
 
     private static BrickDependency ToBrickDependency(DependencyAttribute attribute) =>
         new(
@@ -189,18 +239,24 @@ internal sealed class DddAttributeOnlyConfiguration
 {
     public DddAttributeOnlyConfiguration(
         IEnumerable<PolicyAttribute> policies,
+        IEnumerable<PolicyImportAttribute> policyImports,
         IEnumerable<RuleAttribute> rules,
+        IEnumerable<RoleCombinationAttribute> roleCombinations,
         IEnumerable<DependencyAttribute> dependencies,
         IEnumerable<DddTypeRoleAssignment> roleAssignments)
     {
         Policies = (policies ?? Enumerable.Empty<PolicyAttribute>()).ToArray();
+        PolicyImports = (policyImports ?? Enumerable.Empty<PolicyImportAttribute>()).ToArray();
         Rules = (rules ?? Enumerable.Empty<RuleAttribute>()).ToArray();
+        RoleCombinations = (roleCombinations ?? Enumerable.Empty<RoleCombinationAttribute>()).ToArray();
         Dependencies = (dependencies ?? Enumerable.Empty<DependencyAttribute>()).ToArray();
         RoleAssignments = (roleAssignments ?? Enumerable.Empty<DddTypeRoleAssignment>()).ToArray();
     }
 
     public IReadOnlyList<PolicyAttribute> Policies { get; }
+    public IReadOnlyList<PolicyImportAttribute> PolicyImports { get; }
     public IReadOnlyList<RuleAttribute> Rules { get; }
+    public IReadOnlyList<RoleCombinationAttribute> RoleCombinations { get; }
     public IReadOnlyList<DependencyAttribute> Dependencies { get; }
     public IReadOnlyList<DddTypeRoleAssignment> RoleAssignments { get; }
 }
