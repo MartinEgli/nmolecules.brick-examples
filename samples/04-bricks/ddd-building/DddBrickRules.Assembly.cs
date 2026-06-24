@@ -3,7 +3,7 @@ using Samples.Block04.Bricks.DddBuilding;
 
 [assembly: Policy(
     id: DddBrickRules.DddPolicy,
-    name: "DDD Bricks attribute policy",
+    name: DddBrickRules.DddPolicyName,
     defaultDecision: BrickPermissionDefault.Allow,
     enforcement: BrickEnforcementMode.Analyze)]
 
@@ -12,27 +12,27 @@ using Samples.Block04.Bricks.DddBuilding;
     sourceRole: DddBrickRoles.AggregateRoot,
     targetRole: DddBrickRoles.Infrastructure,
     mode: RuleMode.ForbidDependency,
-    message: "Rule {rule}: aggregate {source} must not depend on infrastructure {target} through {member}.")]
+    message: DddBrickRules.DomainMustNotDependOnInfrastructureMessage)]
 
 [assembly: Rule(
     id: DddBrickRules.ValueObjectMustNotDependOnRepository,
     sourceRole: DddBrickRoles.ValueObject,
     targetRole: DddBrickRoles.Repository,
     mode: RuleMode.ForbidDependency,
-    message: "Rule {rule}: value object {source} must stay persistence-free and must not depend on {target}.")]
+    message: DddBrickRules.ValueObjectMustNotDependOnRepositoryMessage)]
 
 [assembly: Rule(
     id: DddBrickRules.ApplicationServiceRequiresRepositoryContract,
     sourceRole: DddBrickRoles.ApplicationService,
     targetRole: DddBrickRoles.Repository,
     mode: RuleMode.RequireDependency,
-    message: "Rule {rule}: application service {source} should coordinate persistence through a repository contract {target}.")]
+    message: DddBrickRules.ApplicationServiceRequiresRepositoryContractMessage)]
 
 [assembly: Dependency(
     id: DddBrickRules.ContractDependsOnInfrastructureDependency,
-    source: "Contract",
-    target: "SqlContractRepository",
-    kind: "TypeReference",
+    source: nameof(Contract),
+    target: nameof(InMemoryContractRepository),
+    kind: DddBrickRules.TypeReferenceDependencyKind,
     scope: BrickScope.Type,
     layer: BrickDependencyLayer.Static,
     strength: BrickDependencyStrength.Direct,
@@ -40,9 +40,9 @@ using Samples.Block04.Bricks.DddBuilding;
 
 [assembly: Dependency(
     id: DddBrickRules.ApplicationServiceDependsOnRepositoryDependency,
-    source: "ContractApplicationService",
-    target: "IContractRepository",
-    kind: "TypeReference",
+    source: nameof(ContractApplicationService),
+    target: nameof(IContractRepository),
+    kind: DddBrickRules.TypeReferenceDependencyKind,
     scope: BrickScope.Type,
     layer: BrickDependencyLayer.Static,
     strength: BrickDependencyStrength.Direct,
@@ -53,9 +53,14 @@ namespace Samples.Block04.Bricks.DddBuilding;
 internal static class DddBrickRules
 {
     public const string DddPolicy = "DDD-BRICKS-POLICY";
+    public const string DddPolicyName = "DDD Bricks attribute policy";
     public const string DomainMustNotDependOnInfrastructure = "DDD-BRICKS-001";
     public const string ValueObjectMustNotDependOnRepository = "DDD-BRICKS-002";
     public const string ApplicationServiceRequiresRepositoryContract = "DDD-BRICKS-003";
     public const string ContractDependsOnInfrastructureDependency = "DDD-BRICKS-DEP-001";
     public const string ApplicationServiceDependsOnRepositoryDependency = "DDD-BRICKS-DEP-002";
+    public const string TypeReferenceDependencyKind = "TypeReference";
+    public const string DomainMustNotDependOnInfrastructureMessage = "Rule {rule}: aggregate {source} must not depend on infrastructure {target} through {member}.";
+    public const string ValueObjectMustNotDependOnRepositoryMessage = "Rule {rule}: value object {source} must stay persistence-free and must not depend on {target}.";
+    public const string ApplicationServiceRequiresRepositoryContractMessage = "Rule {rule}: application service {source} should coordinate persistence through a repository contract {target}.";
 }

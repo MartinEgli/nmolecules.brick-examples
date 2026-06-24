@@ -29,12 +29,12 @@ internal static class DddCodePolicyExample
     public static BrickRoleAssignment[] CreateAssignmentsFromDddAttributeNames()
     {
         var element = new BrickElement(
-            BrickElementId.From("type:Samples.Contract"),
+            BrickElementId.From("type:Samples." + nameof(Contract)),
             BrickElementKind.Type,
-            "Contract",
+            nameof(Contract),
             "Samples.Block04.Bricks",
             "Samples.Block04.Bricks.DddBuilding",
-            "Samples.Block04.Bricks.DddBuilding.Contract");
+            "Samples.Block04.Bricks.DddBuilding." + nameof(Contract));
 
         return BrickBuiltInAttributeRoleBridges.Ddd
             .CreateAssignments(element, new[] { "AggregateRootAttribute", "EntityAttribute" })

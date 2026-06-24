@@ -84,16 +84,16 @@ internal static class DddAttributeOnlyConfigurationExample
     public static IReadOnlyList<BrickViolation> EvaluateExampleDependency()
     {
         var configuration = ReadConfigurationFromAttributes();
-        var aggregate = Type("Contract");
-        var repository = Type("IContractRepository");
-        var sqlRepository = Type("SqlContractRepository");
-        var applicationService = Type("ContractApplicationService");
+        var aggregate = Type(nameof(Contract));
+        var repository = Type(nameof(IContractRepository));
+        var infrastructureRepository = Type(nameof(InMemoryContractRepository));
+        var applicationService = Type(nameof(ContractApplicationService));
 
         var roles = new[]
         {
             Resolved(aggregate, DddBrickRoles.AggregateRoot),
             Resolved(repository, DddBrickRoles.Repository),
-            Resolved(sqlRepository, DddBrickRoles.Infrastructure),
+            Resolved(infrastructureRepository, DddBrickRoles.Infrastructure),
             Resolved(applicationService, DddBrickRoles.ApplicationService)
         };
         var dependencies = configuration.Dependencies
