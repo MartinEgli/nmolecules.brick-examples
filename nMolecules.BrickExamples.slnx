@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/samples/" />
+  <Folder Name="/samples/04-bricks/">
+    <Project Path="samples/04-bricks/Samples.Block04.Bricks.csproj" />
+  </Folder>
+  <Project Path="../nmolecules/src/nMolecules.Bricks/nMolecules.Bricks.csproj" />
+</Solution>
