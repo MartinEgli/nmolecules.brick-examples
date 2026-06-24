@@ -10,7 +10,6 @@ Bricks lets a team turn those words into explicit architectural roles and rules:
 
 - role aliases make domain vocabulary readable in code
 - assembly rules describe allowed and forbidden dependencies
-- C# policy objects describe the same kind of policy when composition in code is useful
 - tools can derive policy objects from the same attribute metadata for reports and CI
 
 ## User Benefit
@@ -31,7 +30,7 @@ The benefit is practical:
 | `DddBuildingSample.cs` | Builds a small billing DDD model with aggregate, entity, value object, repository, factory and services. |
 | `DddBrickPolicyExample.cs` | Keeps the historical policy entry point and evaluates the attribute-derived DDD policy. |
 | `DddAttributeOnlyConfigurationExample.cs` | Builds and evaluates the DDD policy from attributes only: role markers on types plus `[assembly: Policy(...)]`, `[assembly: Rule(...)]` and `[assembly: Dependency(...)]`. |
-| `DddCodePolicyExample.cs` | Builds and evaluates the same policy style directly as C# `BrickPolicy`, `BrickRule` and `BrickRoleCombinationRule` objects. |
+| `DddCodePolicyExample.cs` | Keeps the former code-policy entry point but delegates to the assembly-attribute policy. |
 
 ## Suggested Learning Path
 
@@ -39,12 +38,12 @@ The benefit is practical:
 2. Read `DddBuildingSample.cs` and map each DDD building block to a role.
 3. Inspect `DddBrickRules.Assembly.cs` to see which dependencies the sample wants to forbid or require.
 4. Read `DddAttributeOnlyConfigurationExample.cs` to see how the policy is derived from `[assembly: Policy(...)]`, `[assembly: Rule(...)]` and `[assembly: Dependency(...)]` attributes only.
-5. Read `DddCodePolicyExample.cs` to see the same kind of policy defined explicitly in C#.
+5. Read `DddCodePolicyExample.cs` to see how the former code-policy entry point now reuses the attribute policy.
 6. Read `DddBrickPolicyExample.cs` when existing callers need the historical policy entry point.
 
 ## Policy Definition Styles
 
-The sample intentionally shows two policy definition styles.
+The DDD sample intentionally keeps the effective policy definition attribute-only.
 
 ### Attribute Policy
 
@@ -57,17 +56,6 @@ Use this when policy should live directly beside the source declarations:
 - analyzers and tools derive policy metadata from compiled attributes
 
 This is the best fit for small teams, source-first governance and samples where the visible `[...]` declarations should be the policy.
-
-### Code Policy
-
-Use this when policy should be composed by a tool, generator, test harness or package:
-
-- rules are declared in C# code blocks with `{ ... }`, not with `[...]` attributes
-- roles and rules are created as `BrickPolicy`, `BrickRule` and selector objects
-- policy can be composed, imported, tested or generated before it is evaluated
-- combination rules and default enforcement can be assembled in one place
-
-This is the best fit for reusable policy packs, generated policy, CI experiments and tests that need full control over the in-memory policy model.
 
 ## Attribute-Only Configuration
 
