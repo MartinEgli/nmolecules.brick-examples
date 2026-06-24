@@ -3,5 +3,8 @@
   <Folder Name="/samples/04-bricks/">
     <Project Path="samples/04-bricks/Samples.Block04.Bricks.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Samples.Block04.Bricks.Tests/Samples.Block04.Bricks.Tests.csproj" />
+  </Folder>
   <Project Path="../nmolecules/src/nMolecules.Bricks/nMolecules.Bricks.csproj" />
 </Solution>
