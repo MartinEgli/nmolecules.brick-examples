@@ -4,7 +4,7 @@ Coverage means every public Bricks function family has at least one buildable ex
 
 | API family | Covered by | User-facing scenario |
 |---|---|---|
-| Attribute markers: `RoleAttribute`, `RoleAliasAttribute`, `RuleAttribute`, `RuleFilterAttribute`, member-cardinality attributes | `domain-language-kits/`, `member-contracts/`, `rule-filters/`, `violations/` | Consumers mark roles, aliases, rules, filters and member contracts directly in code. |
+| Attribute markers: `RoleAttribute`, `RoleAliasAttribute`, `PolicyAttribute`, `RuleAttribute`, `DependencyAttribute`, `RuleFilterAttribute`, member-cardinality attributes | `domain-language-kits/`, `ddd-building/`, `member-contracts/`, `rule-filters/`, `violations/` | Consumers mark roles, aliases, policies, rules, dependencies, filters and member contracts directly in code. |
 | DDD role modeling with Bricks | `ddd-building/` | Consumers can build aggregate, entity, value object, repository, factory, domain service and application service roles as a focused DDD slice, either through attributes only or through explicit C# policy objects. |
 | Typed IDs and messages: `RoleId`, `RuleId`, `RuleMessage`, `RuleMessageBuilder`, `RuleFilter` variants | `PolicyAndResolutionExamples.cs`, `rule-filters/` | Teams use stable identifiers and readable diagnostics instead of raw strings spread through code. |
 | Core model: roles, dimensions, elements, dependencies, source locations, rules, policies, violations | `SampleBrickModel.cs`, `PolicyAndResolutionExamples.cs` | Architecture facts become explicit and machine-readable. |

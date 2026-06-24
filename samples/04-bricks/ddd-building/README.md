@@ -27,10 +27,10 @@ The benefit is practical:
 | File | Purpose |
 |---|---|
 | `DddBrickRoles.cs` | Defines DDD role constants and custom role-marker attributes. |
-| `DddBrickRules.Assembly.cs` | Defines assembly-level Bricks rules for the DDD slice. |
+| `DddBrickRules.Assembly.cs` | Defines assembly-level `[assembly: Policy]`, `[assembly: Rule]` and `[assembly: Dependency]` declarations for the DDD slice. |
 | `DddBuildingSample.cs` | Builds a small billing DDD model with aggregate, entity, value object, repository, factory and services. |
 | `DddBrickPolicyExample.cs` | Keeps the historical policy entry point and evaluates the attribute-derived DDD policy. |
-| `DddAttributeOnlyConfigurationExample.cs` | Builds and evaluates the DDD policy from attributes only: role markers on types and `[assembly: Rule(...)]` declarations on the assembly. |
+| `DddAttributeOnlyConfigurationExample.cs` | Builds and evaluates the DDD policy from attributes only: role markers on types plus `[assembly: Policy(...)]`, `[assembly: Rule(...)]` and `[assembly: Dependency(...)]`. |
 | `DddCodePolicyExample.cs` | Builds and evaluates the same policy style directly as C# `BrickPolicy`, `BrickRule` and `BrickRoleCombinationRule` objects. |
 
 ## Suggested Learning Path
@@ -38,7 +38,7 @@ The benefit is practical:
 1. Start with `DddBrickRoles.cs` and inspect the custom role markers.
 2. Read `DddBuildingSample.cs` and map each DDD building block to a role.
 3. Inspect `DddBrickRules.Assembly.cs` to see which dependencies the sample wants to forbid or require.
-4. Read `DddAttributeOnlyConfigurationExample.cs` to see how the policy is derived from `[assembly: Rule(...)]` attributes only.
+4. Read `DddAttributeOnlyConfigurationExample.cs` to see how the policy is derived from `[assembly: Policy(...)]`, `[assembly: Rule(...)]` and `[assembly: Dependency(...)]` attributes only.
 5. Read `DddCodePolicyExample.cs` to see the same kind of policy defined explicitly in C#.
 6. Read `DddBrickPolicyExample.cs` when existing callers need the historical policy entry point.
 
@@ -51,7 +51,9 @@ The sample intentionally shows two policy definition styles.
 Use this when policy should live directly beside the source declarations:
 
 - type roles are declared with attributes such as `[DddAggregateRoot]`, `[DddValueObject]` and `[DddRepository]`
+- the policy header is declared with `[assembly: Policy(...)]`
 - rules are declared with `[assembly: Rule(...)]`
+- dependency evidence is declared with `[assembly: Dependency(...)]`
 - analyzers and tools derive policy metadata from compiled attributes
 
 This is the best fit for small teams, source-first governance and samples where the visible `[...]` declarations should be the policy.
@@ -72,10 +74,10 @@ This is the best fit for reusable policy packs, generated policy, CI experiments
 The attribute-only path is the lightest way to start:
 
 - put role-marker attributes such as `[DddAggregateRoot]`, `[DddValueObject]` and `[DddRepository]` on the relevant types
-- put `[assembly: Rule(...)]` declarations in one assembly-level file
+- put `[assembly: Policy(...)]`, `[assembly: Rule(...)]` and `[assembly: Dependency(...)]` declarations in one assembly-level file
 - let analyzers or supporting tools derive a policy from the compiled attribute metadata
 
-This is useful when a team wants the DDD model and policy to stay close to the code and does not yet need external policy files. The attribute-only sample still creates a `BrickPolicy` object internally because `BrickRuleEvaluator` consumes policy objects, but every configured rule in that policy comes from `[assembly: Rule(...)]`; no additional rule is defined with `new BrickRule(...)` in that path.
+This is useful when a team wants the DDD model and policy to stay close to the code and does not yet need external policy files. The attribute-only sample still creates a `BrickPolicy` object internally because `BrickRuleEvaluator` consumes policy objects, but policy header, configured rules and dependency evidence come from `[assembly: Policy(...)]`, `[assembly: Rule(...)]` and `[assembly: Dependency(...)]`; no additional rule is defined with `new BrickRule(...)` in that path.
 
 ## Design Rule
 
