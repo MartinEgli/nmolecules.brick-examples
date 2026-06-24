@@ -60,6 +60,7 @@ This is the best fit for small teams, source-first governance and samples where 
 
 Use this when policy should be composed by a tool, generator, test harness or package:
 
+- rules are declared in C# code blocks with `{ ... }`, not with `[...]` attributes
 - roles and rules are created as `BrickPolicy`, `BrickRule` and selector objects
 - policy can be composed, imported, tested or generated before it is evaluated
 - combination rules and default enforcement can be assembled in one place

@@ -9,52 +9,57 @@ namespace Samples.Block04.Bricks.DddBuilding;
 /// </summary>
 /// <remarks>
 /// Use this style when a tool, generator or test wants to compose policies in
-/// code instead of reading them from source attributes.
+/// code instead of reading them from source attributes. The policy definition
+/// in this sample is intentionally made of C# object blocks using <c>{ ... }</c>
+/// and does not use policy attributes such as <c>[assembly: Rule(...)]</c>.
 /// </remarks>
 internal static class DddCodePolicyExample
 {
     public static BrickPolicy BuildPolicy()
     {
+        var rules = new[]
+        {
+            new BrickRule(
+                RuleId.From(DddBrickRules.DomainMustNotDependOnInfrastructure),
+                "Aggregate root must not depend on infrastructure",
+                RoleId.From(DddBrickRoles.AggregateRoot),
+                RoleId.From(DddBrickRoles.Infrastructure),
+                BrickDecision.Deny,
+                BrickScope.Type,
+                BrickSeverity.Error),
+            new BrickRule(
+                RuleId.From(DddBrickRules.ValueObjectMustNotDependOnRepository),
+                "Value object must not depend on repository",
+                RoleId.From(DddBrickRoles.ValueObject),
+                RoleId.From(DddBrickRoles.Repository),
+                BrickDecision.Deny,
+                BrickScope.Type,
+                BrickSeverity.Error),
+            new BrickRule(
+                RuleId.From(DddBrickRules.ApplicationServiceRequiresRepositoryContract),
+                "Application service requires repository contract",
+                RoleId.From(DddBrickRoles.ApplicationService),
+                RoleId.From(DddBrickRoles.Repository),
+                BrickDecision.Require,
+                BrickScope.Type,
+                BrickSeverity.Warning)
+        };
+        var combinationRules = new[]
+        {
+            new BrickRoleCombinationRule(
+                "Domain model cannot be infrastructure",
+                BrickRoleSelector.From("DDD.*"),
+                BrickRoleSelector.From(DddBrickRoles.Infrastructure),
+                BrickCombinationKind.Incompatible,
+                "A DDD building block should not also own infrastructure responsibilities.")
+        };
+
         return new BrickPolicy(
             BrickPolicyId.From("sample-ddd-code-policy"),
             "Sample DDD policy defined in code",
             imports: null,
-            rules: new[]
-            {
-                new BrickRule(
-                    RuleId.From(DddBrickRules.DomainMustNotDependOnInfrastructure),
-                    "Aggregate root must not depend on infrastructure",
-                    RoleId.From(DddBrickRoles.AggregateRoot),
-                    RoleId.From(DddBrickRoles.Infrastructure),
-                    BrickDecision.Deny,
-                    BrickScope.Type,
-                    BrickSeverity.Error),
-                new BrickRule(
-                    RuleId.From(DddBrickRules.ValueObjectMustNotDependOnRepository),
-                    "Value object must not depend on repository",
-                    RoleId.From(DddBrickRoles.ValueObject),
-                    RoleId.From(DddBrickRoles.Repository),
-                    BrickDecision.Deny,
-                    BrickScope.Type,
-                    BrickSeverity.Error),
-                new BrickRule(
-                    RuleId.From(DddBrickRules.ApplicationServiceRequiresRepositoryContract),
-                    "Application service requires repository contract",
-                    RoleId.From(DddBrickRoles.ApplicationService),
-                    RoleId.From(DddBrickRoles.Repository),
-                    BrickDecision.Require,
-                    BrickScope.Type,
-                    BrickSeverity.Warning)
-            },
-            combinationRules: new[]
-            {
-                new BrickRoleCombinationRule(
-                    "Domain model cannot be infrastructure",
-                    BrickRoleSelector.From("DDD.*"),
-                    BrickRoleSelector.From(DddBrickRoles.Infrastructure),
-                    BrickCombinationKind.Incompatible,
-                    "A DDD building block should not also own infrastructure responsibilities.")
-            },
+            rules: rules,
+            combinationRules: combinationRules,
             externalAssignments: null,
             aliases: null,
             defaultDecision: BrickPermissionDefault.Allow,
