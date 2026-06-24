@@ -27,7 +27,7 @@ Bricks lets you define those roles and constraints without creating a custom ana
 
 - `BricksSample.cs` is now only the small entry/index file for the sample block
 - `Samples.Block04.Bricks.Violations.csproj` contains the intentionally broken custom-role rule declarations
-- `ddd-building/` shows how to build a DDD slice with Bricks roles, aliases, assembly rules, and policy evaluation
+- `ddd-building/` shows how to build a DDD slice with Bricks roles, aliases, assembly rules, attribute-only configuration, and policy evaluation
 - `domain-language-kits/billing/` contains the reusable billing role/rule vocabulary plus the domain, application, and infrastructure walkthrough
 - `function-coverage/` contains buildable examples that cover the Bricks API surface with motivation, user benefit, and a function-to-file coverage matrix
 - `rule-filters/` contains concrete class and member names for `Message`, `Excluded*`, and `Required*` filter scenarios
