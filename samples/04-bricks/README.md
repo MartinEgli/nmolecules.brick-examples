@@ -22,10 +22,12 @@ Bricks lets you define those roles and constraints without creating a custom ana
 - sample rule declarations for every optional `Rule` field
 - analyzer-enforced member-cardinality patterns for custom brick ecosystems:
   exactly one marker, required X+Y markers, fixed-count markers, and XOR markers
+- AI-assisted governance for analyzer extension proposals with deterministic trust boundaries
 
 ## Code Walkthrough
 
 - `BricksSample.cs` is now only the small entry/index file for the sample block
+- `ai-governance/` shows how AI can explain deterministic findings, propose analyzer extensions and stay inside governance guardrails
 - `Samples.Block04.Bricks.Violations.csproj` contains the intentionally broken custom-role rule declarations
 - `ddd-building/` shows how to build a DDD slice with Bricks roles, aliases, assembly rules, attribute-only configuration, and policy evaluation
 - `domain-language-kits/billing/` contains the reusable billing role/rule vocabulary plus the domain, application, and infrastructure walkthrough
@@ -53,3 +55,4 @@ Concept samples that document future Bricks contract patterns, but are not analy
 4. Build `Samples.Block04.Bricks.Violations.csproj` and inspect the invalid rule configuration plus the forbidden domain-to-infrastructure dependency.
 5. Read `function-coverage/README.md` and compare each function family with the matching buildable example file.
 6. Read `ddd-building/README.md` and map the DDD building blocks to Bricks roles and rules.
+7. Read `ai-governance/README.md` and trace how AI moves from explanation to reviewed analyzer-extension proposal.

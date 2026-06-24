@@ -30,7 +30,8 @@ Coverage means every public Bricks function family has at least one buildable ex
 | Attribute-role bridge and DDD bridge | `ConfigurationExamples.cs` | Existing nMolecules DDD attributes can be translated to Bricks roles. |
 | Diagnostic ID governance | `PolicyAndResolutionExamples.cs` | Rule IDs remain stable and discoverable by range. |
 | Benchmark cases, runner, reports and comparison reports | `BenchmarkAndAiExamples.cs` | CI can detect feedback-loop regressions for central Bricks operations. |
-| AI-assisted violation comments, remediation options, rule proposals and trust boundaries | `BenchmarkAndAiExamples.cs` | AI can explain deterministic findings without silently changing policy or enforcement. |
+| AI-assisted violation comments, remediation options, rule proposals and trust boundaries | `BenchmarkAndAiExamples.cs`, `ai-governance/` | AI can explain deterministic findings and propose analyzer extensions without silently changing policy or enforcement. |
+| AI governance for analyzer extension workflows | `ai-governance/` | Architects can require human review, analyzer fixtures, benchmark guardrails and explicit exception handling before AI-suggested rules become diagnostics. |
 
 ## Verification
 
