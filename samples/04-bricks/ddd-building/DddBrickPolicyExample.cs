@@ -1,57 +1,23 @@
-using System.Collections.Generic;
 using System.Linq;
 using NMolecules.Bricks;
 
 namespace Samples.Block04.Bricks.DddBuilding;
 
+/// <summary>
+/// Evaluates the DDD sample policy that is configured only through attributes.
+/// </summary>
+/// <remarks>
+/// The policy source is limited to bracketed attributes such as
+/// <c>[DddAggregateRoot]</c>, <c>[DddRepository]</c> and
+/// <c>[assembly: Rule(...)]</c>. This class does not define additional rules in
+/// code; it delegates policy construction to
+/// <see cref="DddAttributeOnlyConfigurationExample"/>.
+/// </remarks>
 internal static class DddBrickPolicyExample
 {
     public static BrickPolicy BuildPolicy()
     {
-        return new BrickPolicy(
-            BrickPolicyId.From("sample-ddd-policy"),
-            "Sample DDD policy",
-            imports: null,
-            rules: new[]
-            {
-                new BrickRule(
-                    RuleId.From(DddBrickRules.DomainMustNotDependOnInfrastructure),
-                    "Aggregate root must not depend on infrastructure",
-                    RoleId.From(DddBrickRoles.AggregateRoot),
-                    RoleId.From(DddBrickRoles.Infrastructure),
-                    BrickDecision.Deny,
-                    BrickScope.Type,
-                    BrickSeverity.Error),
-                new BrickRule(
-                    RuleId.From(DddBrickRules.ValueObjectMustNotDependOnRepository),
-                    "Value object must not depend on repository",
-                    RoleId.From(DddBrickRoles.ValueObject),
-                    RoleId.From(DddBrickRoles.Repository),
-                    BrickDecision.Deny,
-                    BrickScope.Type,
-                    BrickSeverity.Error),
-                new BrickRule(
-                    RuleId.From(DddBrickRules.ApplicationServiceRequiresRepositoryContract),
-                    "Application service requires repository contract",
-                    RoleId.From(DddBrickRoles.ApplicationService),
-                    RoleId.From(DddBrickRoles.Repository),
-                    BrickDecision.Require,
-                    BrickScope.Type,
-                    BrickSeverity.Warning)
-            },
-            combinationRules: new[]
-            {
-                new BrickRoleCombinationRule(
-                    "Domain model cannot be infrastructure",
-                    BrickRoleSelector.From("DDD.*"),
-                    BrickRoleSelector.From(DddBrickRoles.Infrastructure),
-                    BrickCombinationKind.Incompatible,
-                    "A DDD building block should not also own infrastructure responsibilities.")
-            },
-            externalAssignments: null,
-            aliases: null,
-            defaultDecision: BrickPermissionDefault.Allow,
-            enforcement: BrickEnforcementMode.Analyze);
+        return DddAttributeOnlyConfigurationExample.BuildPolicyFromAssemblyAttributes();
     }
 
     public static IReadOnlyList<BrickViolation> EvaluateExampleDependency()
