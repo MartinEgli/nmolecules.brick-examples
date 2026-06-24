@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Compile Remove="violations\**\*.cs" />
+    <Compile Remove="source-target-cases\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

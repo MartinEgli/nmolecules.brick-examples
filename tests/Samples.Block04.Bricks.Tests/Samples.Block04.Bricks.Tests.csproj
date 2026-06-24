@@ -22,6 +22,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\samples\04-bricks\Samples.Block04.Bricks.csproj" />
+    <ProjectReference Include="..\..\samples\04-bricks\source-target-cases\type-cases\Samples.Block04.Bricks.SourceTarget.TypeCases.csproj" />
+    <ProjectReference Include="..\..\samples\04-bricks\source-target-cases\member-registration-cases\Samples.Block04.Bricks.SourceTarget.MemberRegistrationCases.csproj" />
+    <ProjectReference Include="..\..\samples\04-bricks\source-target-cases\namespace-assembly-external-cases\Samples.Block04.Bricks.SourceTarget.NamespaceAssemblyExternalCases.csproj" />
   </ItemGroup>
 
 </Project>

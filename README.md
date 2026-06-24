@@ -30,6 +30,7 @@ The later `function-coverage` examples are new material in this repository. They
 | `samples/04-bricks/function-coverage` | Full Bricks function coverage examples with motivation, user benefit and API mapping |
 | `samples/04-bricks/member-contracts` | Member contract modeling examples |
 | `samples/04-bricks/rule-filters` | Rule filter and custom diagnostic message examples |
+| `samples/04-bricks/source-target-cases` | Small projects for Type, Member, Namespace, Assembly, DependencyRegistration and ExternalReference source/target cases |
 | `samples/04-bricks/docs` | Consumer sample roadmap copied with the source block |
 
 ## Bricks Function Coverage
@@ -52,6 +53,7 @@ That section maps Bricks function families to concrete, buildable examples:
 - benchmark and benchmark comparison reports
 - AI-assisted explanations and rule proposals with explicit trust boundaries
 - AI governance workflow for attribute-policy driven analyzer-extension proposals, fixtures and benchmark guardrails
+- source/target case projects for type, member, namespace, assembly, dependency-registration and external-reference checks
 - configuration precedence and DDD attribute-to-role bridge examples
 
 ## Build
