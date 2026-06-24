@@ -142,7 +142,7 @@ internal static class AiGovernanceCollaborationSample
             "AI can inspect attribute-declared policies and propose missing analyzer coverage, but fixtures and deterministic diagnostics must be reviewed by maintainers.",
             BrickRoleSelector.From(DddBrickRoles.AggregateRoot),
             BrickRoleSelector.From(DddBrickRoles.Infrastructure),
-            BrickDependencyKindId.From(DddBrickRules.TypeReferenceDependencyKind),
+            BrickDependencyKindId.From(BrickDependencyKinds.TypeReference),
             BrickDecision.Deny,
             BrickSeverity.Warning,
             evidence,

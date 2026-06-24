@@ -43,7 +43,7 @@ using Samples.Block04.Bricks.DddBuilding;
     id: DddBrickRules.ContractDependsOnInfrastructureDependency,
     source: nameof(Contract),
     target: nameof(InMemoryContractRepository),
-    kind: DddBrickRules.TypeReferenceDependencyKind,
+    kind: BrickDependencyKinds.TypeReference,
     scope: BrickScope.Type,
     layer: BrickDependencyLayer.Static,
     strength: BrickDependencyStrength.Direct,
@@ -53,7 +53,7 @@ using Samples.Block04.Bricks.DddBuilding;
     id: DddBrickRules.ApplicationServiceDependsOnRepositoryDependency,
     source: nameof(ContractApplicationService),
     target: nameof(IContractRepository),
-    kind: DddBrickRules.TypeReferenceDependencyKind,
+    kind: BrickDependencyKinds.TypeReference,
     scope: BrickScope.Type,
     layer: BrickDependencyLayer.Static,
     strength: BrickDependencyStrength.Direct,
@@ -73,7 +73,6 @@ internal static class DddBrickRules
     public const string ApplicationServiceRequiresRepositoryContract = "DDD-BRICKS-003";
     public const string ContractDependsOnInfrastructureDependency = "DDD-BRICKS-DEP-001";
     public const string ApplicationServiceDependsOnRepositoryDependency = "DDD-BRICKS-DEP-002";
-    public const string TypeReferenceDependencyKind = BrickDependencyKinds.TypeReference;
     public const string DomainModelCannotBeInfrastructureReason = "A DDD building block should not also own infrastructure responsibilities.";
     public const string DomainMustNotDependOnInfrastructureMessage = "Rule {rule}: aggregate {source} must not depend on infrastructure {target} through {member}.";
     public const string ValueObjectMustNotDependOnRepositoryMessage = "Rule {rule}: value object {source} must stay persistence-free and must not depend on {target}.";
