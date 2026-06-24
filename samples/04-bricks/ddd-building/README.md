@@ -28,16 +28,16 @@ The benefit is practical:
 | `DddBrickRoles.cs` | Defines DDD role constants and custom role-marker attributes. |
 | `DddBrickRules.Assembly.cs` | Defines assembly-level Bricks rules for the DDD slice. |
 | `DddBuildingSample.cs` | Builds a small billing DDD model with aggregate, entity, value object, repository, factory and services. |
-| `DddBrickPolicyExample.cs` | Builds the same DDD slice as Bricks policy/model objects and evaluates a dependency. |
-| `DddAttributeOnlyConfigurationExample.cs` | Shows the same DDD slice configured only through attributes: role markers on types and rules on the assembly. |
+| `DddBrickPolicyExample.cs` | Builds the same DDD slice as explicit Bricks policy/model objects and evaluates a dependency. |
+| `DddAttributeOnlyConfigurationExample.cs` | Builds and evaluates the DDD policy from attributes only: role markers on types and `[assembly: Rule(...)]` declarations on the assembly. |
 
 ## Suggested Learning Path
 
 1. Start with `DddBrickRoles.cs` and inspect the custom role markers.
 2. Read `DddBuildingSample.cs` and map each DDD building block to a role.
 3. Inspect `DddBrickRules.Assembly.cs` to see which dependencies the sample wants to forbid or require.
-4. Read `DddAttributeOnlyConfigurationExample.cs` to see the attribute-only configuration path.
-5. Read `DddBrickPolicyExample.cs` to see how the same idea can also become a policy object for tools.
+4. Read `DddAttributeOnlyConfigurationExample.cs` to see how the policy is derived from `[assembly: Rule(...)]` attributes only.
+5. Read `DddBrickPolicyExample.cs` to compare that with an explicit policy-object setup.
 
 ## Attribute-Only Configuration
 
@@ -45,9 +45,9 @@ The attribute-only path is the lightest way to start:
 
 - put role-marker attributes such as `[DddAggregateRoot]`, `[DddValueObject]` and `[DddRepository]` on the relevant types
 - put `[assembly: Rule(...)]` declarations in one assembly-level file
-- let analyzers or supporting tools read the attributes from compiled metadata
+- let analyzers or supporting tools derive a policy from the compiled attribute metadata
 
-This is useful when a team wants the DDD model to stay close to the code and does not yet need external policy files.
+This is useful when a team wants the DDD model and policy to stay close to the code and does not yet need external policy files. The sample still creates a `BrickPolicy` object internally because `BrickRuleEvaluator` consumes policy objects, but every rule in that policy comes from `[assembly: Rule(...)]`.
 
 ## Design Rule
 

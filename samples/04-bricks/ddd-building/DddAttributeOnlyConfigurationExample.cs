@@ -13,7 +13,9 @@ namespace Samples.Block04.Bricks.DddBuilding;
 /// The roles come from custom role marker attributes such as
 /// <see cref="DddAggregateRootAttribute"/> and <see cref="DddRepositoryAttribute"/>.
 /// The rules come from assembly-level <see cref="RuleAttribute"/> declarations in
-/// <c>DddBrickRules.Assembly.cs</c>. No <see cref="BrickPolicy"/> object is built here.
+/// <c>DddBrickRules.Assembly.cs</c>. The example creates a <see cref="BrickPolicy"/>
+/// from those attributes so the evaluator can run, but it does not configure any
+/// rule manually in code.
 /// </remarks>
 internal static class DddAttributeOnlyConfigurationExample
 {
@@ -53,6 +55,45 @@ internal static class DddAttributeOnlyConfigurationExample
         return new DddAttributeOnlyConfiguration(assemblyRules, roleAssignments);
     }
 
+    public static BrickPolicy BuildPolicyFromAssemblyAttributes()
+    {
+        var rules = ReadConfigurationFromAttributes()
+            .Rules
+            .Select(ToBrickRule)
+            .ToArray();
+
+        return new BrickPolicy(
+            BrickPolicyId.From("sample-ddd-attribute-policy"),
+            "Sample DDD policy from assembly attributes",
+            imports: null,
+            rules: rules,
+            defaultDecision: BrickPermissionDefault.Allow,
+            enforcement: BrickEnforcementMode.Analyze);
+    }
+
+    public static IReadOnlyList<BrickViolation> EvaluateExampleDependency()
+    {
+        var aggregate = Type("Contract");
+        var repository = Type("IContractRepository");
+        var sqlRepository = Type("SqlContractRepository");
+        var applicationService = Type("ContractApplicationService");
+
+        var roles = new[]
+        {
+            Resolved(aggregate, DddBrickRoles.AggregateRoot),
+            Resolved(repository, DddBrickRoles.Repository),
+            Resolved(sqlRepository, DddBrickRoles.Infrastructure),
+            Resolved(applicationService, DddBrickRoles.ApplicationService)
+        };
+        var dependencies = new[]
+        {
+            Dependency(aggregate, sqlRepository),
+            Dependency(applicationService, repository)
+        };
+
+        return BrickRuleEvaluator.Evaluate(BuildPolicyFromAssemblyAttributes(), dependencies, roles);
+    }
+
     public static IReadOnlyList<string> ExplainConfiguration()
     {
         var configuration = ReadConfigurationFromAttributes();
@@ -78,6 +119,48 @@ internal static class DddAttributeOnlyConfigurationExample
 
         return lines;
     }
+
+    private static BrickRule ToBrickRule(RuleAttribute attribute) =>
+        new(
+            attribute.RuleId,
+            string.IsNullOrWhiteSpace(attribute.Message) ? attribute.Id : attribute.Message,
+            attribute.SourceRoleId,
+            attribute.TargetRoleId,
+            attribute.Mode == RuleMode.RequireDependency ? BrickDecision.Require : BrickDecision.Deny,
+            BrickScope.Type,
+            attribute.Mode == RuleMode.RequireDependency ? BrickSeverity.Warning : BrickSeverity.Error);
+
+    private static BrickElement Type(string name) =>
+        new(
+            BrickElementId.From("type:" + name),
+            BrickElementKind.Type,
+            name,
+            "Samples.Block04.Bricks",
+            "Samples.Block04.Bricks.DddBuilding",
+            "Samples.Block04.Bricks.DddBuilding." + name);
+
+    private static BrickResolvedRoles Resolved(BrickElement element, string roleId)
+    {
+        var assignment = new BrickRoleAssignment(
+            new BrickElementSelector(BrickElementKind.Type, element.Id.Value, element.AssemblyName),
+            RoleId.From(roleId),
+            BrickAssignmentMode.DirectAttribute,
+            BrickAssignmentSource.SourceAttribute,
+            new BrickAssignmentPrecedence(BrickAssignmentSpecificity.Element, BrickAssignmentAuthority.Direct),
+            BrickAssignmentBehavior.Apply);
+
+        return new BrickResolvedRoles(element, new[] { assignment }, new[] { assignment }, null, null);
+    }
+
+    private static BrickDependency Dependency(BrickElement source, BrickElement target) =>
+        new(
+            source,
+            target,
+            BrickDependencyKindId.From("TypeReference"),
+            BrickScope.Type,
+            BrickDependencyLayer.Static,
+            BrickDependencyStrength.Direct,
+            BrickEvidenceLevel.CompilerConfirmed);
 }
 
 internal sealed class DddAttributeOnlyConfiguration
