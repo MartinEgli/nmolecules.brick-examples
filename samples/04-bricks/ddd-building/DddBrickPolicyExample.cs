@@ -86,7 +86,7 @@ internal static class DddBrickPolicyExample
         new(
             source,
             target,
-            BrickDependencyKindId.From("TypeReference"),
+            BrickDependencyKindId.From(BrickDependencyKinds.TypeReference),
             BrickScope.Type,
             BrickDependencyLayer.Static,
             BrickDependencyStrength.Direct,

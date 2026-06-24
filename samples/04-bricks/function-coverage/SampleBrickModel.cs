@@ -50,7 +50,7 @@ internal static class SampleBrickModel
         return new BrickResolvedRoles(element, assignments, assignments, null, null);
     }
 
-    public static BrickDependency Dependency(BrickElement source, BrickElement target, string kind = "TypeReference") =>
+    public static BrickDependency Dependency(BrickElement source, BrickElement target, string kind = BrickDependencyKinds.TypeReference) =>
         new(
             source,
             target,
@@ -74,7 +74,7 @@ internal static class SampleBrickModel
             target,
             new[] { RoleId.From("Billing.Application") },
             new[] { RoleId.From("Billing.Infrastructure") },
-            BrickDependencyKindId.From("TypeReference"),
+            BrickDependencyKindId.From(BrickDependencyKinds.TypeReference),
             BrickScope.Type,
             BrickDependencyLayer.Static,
             BrickEvidenceLevel.CompilerConfirmed);
