@@ -24,7 +24,7 @@ The later `function-coverage` examples are new material in this repository. They
 |---|---|
 | `samples/04-bricks/Samples.Block04.Bricks.csproj` | Green Bricks sample project |
 | `samples/04-bricks/Samples.Block04.Bricks.Violations.csproj` | Intentional violation project for analyzer diagnostics |
-| `samples/04-bricks/ai-governance` | AI collaboration sample for deterministic governance and analyzer-extension proposals |
+| `samples/04-bricks/ai-governance` | AI collaboration sample for deterministic governance, attribute policies and analyzer-extension proposals |
 | `samples/04-bricks/ddd-building` | Focused example for building a DDD slice with Bricks roles and rules |
 | `samples/04-bricks/domain-language-kits/billing` | Billing role/rule vocabulary plus domain walkthrough |
 | `samples/04-bricks/function-coverage` | Full Bricks function coverage examples with motivation, user benefit and API mapping |
@@ -51,7 +51,7 @@ That section maps Bricks function families to concrete, buildable examples:
 - governance, conformance, roadmap and dependency coverage reports
 - benchmark and benchmark comparison reports
 - AI-assisted explanations and rule proposals with explicit trust boundaries
-- AI governance workflow for analyzer-extension proposals, fixtures and benchmark guardrails
+- AI governance workflow for attribute-policy driven analyzer-extension proposals, fixtures and benchmark guardrails
 - configuration precedence and DDD attribute-to-role bridge examples
 
 ## Build

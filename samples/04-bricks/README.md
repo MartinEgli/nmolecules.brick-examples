@@ -27,7 +27,7 @@ Bricks lets you define those roles and constraints without creating a custom ana
 ## Code Walkthrough
 
 - `BricksSample.cs` is now only the small entry/index file for the sample block
-- `ai-governance/` shows how AI can explain deterministic findings, propose analyzer extensions and stay inside governance guardrails
+- `ai-governance/` shows how AI can explain deterministic findings, derive review packets from attribute policies, propose analyzer extensions and stay inside governance guardrails
 - `Samples.Block04.Bricks.Violations.csproj` contains the intentionally broken custom-role rule declarations
 - `ddd-building/` shows how to build a DDD slice with Bricks roles, aliases and assembly-level attribute policy
 - `domain-language-kits/billing/` contains the reusable billing role/rule vocabulary plus the domain, application, and infrastructure walkthrough

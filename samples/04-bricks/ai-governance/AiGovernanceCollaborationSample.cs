@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NMolecules.Bricks;
+using Samples.Block04.Bricks.DddBuilding;
 using Samples.Block04.Bricks.FunctionCoverage;
 
 namespace Samples.Block04.Bricks.AiGovernance;
@@ -25,6 +27,22 @@ internal static class AiGovernanceCollaborationSample
             trustBoundary,
             CreateDeterministicFindingComment(),
             SuggestAnalyzerExtension(),
+            AssessAiGovernance());
+    }
+
+    public static AiAttributePolicyReviewPacket CreateAttributePolicyReviewPacket()
+    {
+        var attributeConfiguration = DddAttributeOnlyConfigurationExample.ReadConfigurationFromAttributes();
+        var attributePolicy = DddAttributeOnlyConfigurationExample.BuildPolicyFromAssemblyAttributes();
+        var attributeViolations = DddAttributeOnlyConfigurationExample.EvaluateExampleDependency();
+        var comments = CreateCommentsFromAttributePolicyViolations(attributeViolations);
+
+        return new AiAttributePolicyReviewPacket(
+            attributePolicy.Id.Value,
+            attributeConfiguration.Rules.Select(rule => rule.Id).ToArray(),
+            attributeConfiguration.Dependencies.Select(dependency => dependency.Id).ToArray(),
+            comments,
+            SuggestAttributePolicyAnalyzerExtension(attributeConfiguration),
             AssessAiGovernance());
     }
 
@@ -99,6 +117,38 @@ internal static class AiGovernanceCollaborationSample
             BrickRuleLifecycleState.Candidate);
     }
 
+    public static BrickRuleProposal SuggestAttributePolicyAnalyzerExtension(
+        DddAttributeOnlyConfiguration attributeConfiguration)
+    {
+        var evidence = new BrickRuleProposalEvidence(
+            "The DDD sample declares policy, imports, role combinations, rules and dependency evidence through attributes only.",
+            attributeConfiguration.Rules.Select(rule => $"{rule.Id}: {rule.SourceRole} -> {rule.TargetRole} ({rule.Mode})"),
+            new[]
+            {
+                "CompositionRoot -> InMemoryContractRepository",
+                $"{DddBrickRoles.ApplicationService} -> {DddBrickRoles.Repository}"
+            },
+            new[]
+            {
+                "Assembly-level dependency evidence may be incomplete while a team migrates from generated analyzer facts.",
+                "Attribute aliases can intentionally map several domain-specific markers to one Bricks role."
+            },
+            new[] { DddBrickRules.DddPolicy, "samples/04-bricks/ddd-building" },
+            "Keep the attribute policy as source material, add analyzer fixtures for each RuleAttribute, and promote diagnostics only after fixture review.");
+
+        return new BrickRuleProposal(
+            "ai-attribute-policy-fixtures",
+            "Attribute-declared policies should have analyzer fixtures",
+            "AI can inspect attribute-declared policies and propose missing analyzer coverage, but fixtures and deterministic diagnostics must be reviewed by maintainers.",
+            BrickRoleSelector.From(DddBrickRoles.AggregateRoot),
+            BrickRoleSelector.From(DddBrickRoles.Infrastructure),
+            BrickDependencyKindId.From(DddBrickRules.TypeReferenceDependencyKind),
+            BrickDecision.Deny,
+            BrickSeverity.Warning,
+            evidence,
+            BrickRuleLifecycleState.Candidate);
+    }
+
     public static BrickGovernanceReport AssessAiGovernance()
     {
         var areas = new[]
@@ -162,7 +212,9 @@ internal static class AiGovernanceCollaborationSample
     public static string SerializeForArchitectureReview()
     {
         var packet = CreateReviewPacket();
+        var attributePacket = CreateAttributePolicyReviewPacket();
         var aiComments = BrickAiCommentJsonSerializer.Serialize(packet.Comments);
+        var attributeComments = BrickAiCommentJsonSerializer.Serialize(attributePacket.Comments);
         var governance = BrickGovernanceReportJsonSerializer.Serialize(packet.Governance);
         var benchmark = BrickBenchmarkReportJsonSerializer.Serialize(BenchmarkAndAiExamples.BenchmarkCentralOperations());
 
@@ -171,9 +223,50 @@ internal static class AiGovernanceCollaborationSample
             $"mode={packet.TrustBoundary.Mode}",
             $"canActivateWithoutReview={packet.TrustBoundary.CanActivateRuleWithoutReview}",
             $"proposal={packet.Proposal.ProposalId}:{packet.Proposal.LifecycleState}:{packet.Proposal.HasRequiredEvidence}",
+            $"attributePolicy={attributePacket.PolicyId}",
+            $"attributePolicyProposal={attributePacket.Proposal.ProposalId}:{attributePacket.Proposal.LifecycleState}:{attributePacket.Proposal.HasRequiredEvidence}",
             aiComments,
+            attributeComments,
             governance,
             benchmark);
+    }
+
+    private static BrickAiCommentDocument CreateCommentsFromAttributePolicyViolations(
+        IReadOnlyList<BrickViolation> violations)
+    {
+        var comments = violations.Select(violation =>
+        {
+            var introducePort = new BrickRemediationOption(
+                "attribute-policy-introduce-port",
+                BrickRemediationKind.AddPortAndAdapter,
+                "Use the attribute-declared rule as the source of truth and move the dependency behind a DDD port.",
+                "Use when the violation comes from an assembly-level RuleAttribute and the code should follow that policy.",
+                BrickRemediationRisk.Low,
+                isPreferred: true);
+            var reviewRule = new BrickRemediationOption(
+                "attribute-policy-review-rule",
+                BrickRemediationKind.AdjustPolicy,
+                "Review the RuleAttribute only if positive and negative fixtures show that the policy is wrong.",
+                "Use when the attribute policy blocks a valid architecture case and analyzer fixtures prove it.",
+                BrickRemediationRisk.High,
+                isPreferred: false);
+
+            return new BrickAiViolationComment(
+                violation,
+                "Attribute-declared policy produced a deterministic Bricks violation.",
+                "The assembly-level RuleAttribute is reviewable code and remains the policy source for AI guidance.",
+                new[] { introducePort, reviewRule },
+                introducePort,
+                new[]
+                {
+                    "Read the matching [assembly: Rule(...)] declaration before editing code.",
+                    "Add or update analyzer fixtures for the attribute policy before promoting a diagnostic.",
+                    "Keep AI output as a proposal until the architecture owner reviews the rule and examples."
+                },
+                "Do not suppress an attribute-policy violation without owner, rationale, expiry and fixture evidence.");
+        });
+
+        return new BrickAiCommentDocument(SampleBrickModel.GeneratedAt, comments);
     }
 
     private static BrickGovernanceAreaDefinition Area(
@@ -210,6 +303,36 @@ internal sealed class AiGovernanceReviewPacket
     }
 
     public BrickAiTrustBoundary TrustBoundary { get; }
+    public BrickAiCommentDocument Comments { get; }
+    public BrickRuleProposal Proposal { get; }
+    public BrickGovernanceReport Governance { get; }
+}
+
+/// <summary>
+/// Review packet for AI guidance that is derived from assembly-level policy,
+/// rule and dependency attributes.
+/// </summary>
+internal sealed class AiAttributePolicyReviewPacket
+{
+    public AiAttributePolicyReviewPacket(
+        string policyId,
+        IEnumerable<string> ruleIds,
+        IEnumerable<string> dependencyIds,
+        BrickAiCommentDocument comments,
+        BrickRuleProposal proposal,
+        BrickGovernanceReport governance)
+    {
+        PolicyId = policyId ?? string.Empty;
+        RuleIds = (ruleIds ?? Enumerable.Empty<string>()).ToArray();
+        DependencyIds = (dependencyIds ?? Enumerable.Empty<string>()).ToArray();
+        Comments = comments;
+        Proposal = proposal;
+        Governance = governance;
+    }
+
+    public string PolicyId { get; }
+    public IReadOnlyList<string> RuleIds { get; }
+    public IReadOnlyList<string> DependencyIds { get; }
     public BrickAiCommentDocument Comments { get; }
     public BrickRuleProposal Proposal { get; }
     public BrickGovernanceReport Governance { get; }

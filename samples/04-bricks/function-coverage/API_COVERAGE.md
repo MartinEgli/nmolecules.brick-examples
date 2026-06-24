@@ -32,6 +32,7 @@ Coverage means every public Bricks function family has at least one buildable ex
 | Benchmark cases, runner, reports and comparison reports | `BenchmarkAndAiExamples.cs` | CI can detect feedback-loop regressions for central Bricks operations. |
 | AI-assisted violation comments, remediation options, rule proposals and trust boundaries | `BenchmarkAndAiExamples.cs`, `ai-governance/` | AI can explain deterministic findings and propose analyzer extensions without silently changing policy or enforcement. |
 | AI governance for analyzer extension workflows | `ai-governance/` | Architects can require human review, analyzer fixtures, benchmark guardrails and explicit exception handling before AI-suggested rules become diagnostics. |
+| AI governance from attribute policies | `ai-governance/`, `ddd-building/` | AI can derive review packets from `[assembly: Policy]`, `[assembly: Rule]` and `[assembly: Dependency]` declarations while the attributes stay the source of truth. |
 
 ## Verification
 

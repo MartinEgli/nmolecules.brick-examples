@@ -27,6 +27,23 @@ benchmarks and reviewed governance records decide what is valid.
 6. Benchmark reports guard the feedback loop before the rule becomes a warning or enforced diagnostic.
 7. A `BrickGovernanceReport` records that deterministic enforcement, human review, exception handling and compatibility checks are satisfied.
 
+## Attribute Policy Flow
+
+`AiGovernanceCollaborationSample.CreateAttributePolicyReviewPacket()` shows the
+same governance flow when the policy is declared through attributes:
+
+- `[assembly: Policy(...)]` defines the policy header.
+- `[assembly: PolicyImport(...)]` imports platform defaults.
+- `[assembly: RoleCombination(...)]` declares incompatible role combinations.
+- `[assembly: Rule(...)]` declares dependency rules.
+- `[assembly: Dependency(...)]` provides deterministic example evidence.
+- Role marker attributes such as `[DddAggregateRoot]` and `[DddInfrastructure]`
+  assign roles to code elements.
+
+AI can use that attribute policy as source material for comments and analyzer
+coverage proposals, but the attributes, analyzer fixtures and build output stay
+the authoritative sources.
+
 ## Important Boundary
 
 AI is advisory in this sample. It can explain, cluster and propose. It cannot:
@@ -40,6 +57,7 @@ AI is advisory in this sample. It can explain, cluster and propose. It cannot:
 ## Code
 
 - `AiGovernanceCollaborationSample.cs` creates the review packet, AI comments, analyzer-extension proposal, governance report and serialized architecture-review artifact.
+- `CreateAttributePolicyReviewPacket()` derives the same AI review shape from the DDD attribute policy in `../ddd-building/DddBrickRules.Assembly.cs`.
 - `../function-coverage/BenchmarkAndAiExamples.cs` supplies the benchmark artifact used as a performance guardrail.
 
 ## Recommended AgentSkills Usage
