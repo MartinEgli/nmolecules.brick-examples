@@ -60,6 +60,58 @@ public static class AttributeMultiPolicyCases
             AttributeMultiPolicyCorrelationAssessment.From(inventory));
     }
 
+    /// <summary>
+    /// Reads the assembly-scoped multiple policy attributes. This exists to show
+    /// the trade-off of several policies in one assembly file: rules and
+    /// dependencies need a convention because their attributes do not carry a
+    /// native owning policy identifier.
+    /// </summary>
+    public static AttributeMultiAssemblyPolicyInventory ReadAssemblyInventory()
+    {
+        var assembly = typeof(AttributeMultiPolicyCases).Assembly;
+        var policies = assembly.GetCustomAttributes<PolicyAttribute>()
+            .Where(policy => policy.Id.StartsWith(AttributeMultiPolicyIds.AssemblyPrefix, StringComparison.Ordinal))
+            .OrderBy(policy => policy.Id, StringComparer.Ordinal)
+            .ToArray();
+        var rules = assembly.GetCustomAttributes<RuleAttribute>()
+            .Where(rule => rule.Id.StartsWith(AttributeMultiRuleIds.AssemblyPrefix, StringComparison.Ordinal))
+            .OrderBy(rule => rule.Id, StringComparer.Ordinal)
+            .ToArray();
+        var dependencies = assembly.GetCustomAttributes<DependencyAttribute>()
+            .Where(dependency => dependency.Id.StartsWith(AttributeMultiDependencyIds.AssemblyPrefix, StringComparison.Ordinal))
+            .OrderBy(dependency => dependency.Id, StringComparer.Ordinal)
+            .ToArray();
+
+        return new AttributeMultiAssemblyPolicyInventory(policies, rules, dependencies);
+    }
+
+    /// <summary>
+    /// Evaluates the assembly-scoped multiple policy sample by applying the
+    /// documented ID-prefix convention.
+    /// </summary>
+    public static AttributeMultiAssemblyPolicyResult EvaluateAssemblyTeamPolicy()
+    {
+        var inventory = ReadAssemblyInventory();
+        var header = inventory.Policies.Single(policy => policy.Id == AttributeMultiPolicyIds.AssemblyTeamPolicy);
+        var policy = new BrickPolicy(
+            header.PolicyId,
+            header.Name,
+            imports: null,
+            inventory.Rules.Select(ToRule).ToArray(),
+            header.DefaultDecision,
+            header.Enforcement);
+        var dependencies = inventory.Dependencies.Select(ToDependency).ToArray();
+        var roles = BuildResolvedRoles();
+
+        return new AttributeMultiAssemblyPolicyResult(
+            inventory,
+            policy,
+            dependencies,
+            roles,
+            BrickRuleEvaluator.Evaluate(policy, dependencies, roles),
+            AttributeMultiAssemblyPolicyCorrelationAssessment.From(inventory));
+    }
+
     private static AttributeMultiPolicyDefinition ReadDefinition(Type type)
     {
         var policy = type.GetCustomAttributes<PolicyAttribute>(inherit: false).Single();
@@ -99,7 +151,8 @@ public static class AttributeMultiPolicyCases
             attribute.Id == AttributeMultiRuleIds.ApplicationMustNotUseInfrastructure ? BrickSeverity.Error : BrickSeverity.Warning);
 
     private static BrickScope ScopeFor(string ruleId) =>
-        ruleId == AttributeMultiRuleIds.ApplicationNamespaceMustNotUseInfrastructureNamespace
+        ruleId == AttributeMultiRuleIds.ApplicationNamespaceMustNotUseInfrastructureNamespace ||
+        ruleId == AttributeMultiRuleIds.AssemblyProductApplicationNamespaceMustNotUseInfrastructureNamespace
             ? BrickScope.Namespace
             : BrickScope.Type;
 

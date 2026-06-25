@@ -57,6 +57,28 @@ public sealed class PolicyVariantCaseTests
     }
 
     [Fact]
+    public void AttributeMultiPolicyAlsoShowsAssemblyScopedPolicyFileTradeoff()
+    {
+        var result = AttributeMultiPolicyCases.EvaluateAssemblyTeamPolicy();
+        var ruleIds = result.Policy.Rules.Select(rule => rule.RuleId).ToArray();
+
+        Assert.Equal(3, result.Inventory.Policies.Count);
+        Assert.Equal(3, result.Inventory.Rules.Count);
+        Assert.Equal(3, result.Inventory.Dependencies.Count);
+        Assert.True(result.Correlation.HasSeveralPoliciesInAssembly);
+        Assert.True(result.Correlation.UsesIdPrefixConvention);
+        Assert.True(result.Correlation.NeedsPolicyIdOnRuleAttributes);
+        Assert.True(result.Correlation.NeedsPolicyIdOnDependencyAttributes);
+        Assert.Equal(BrickPolicyId.From(AttributeMultiPolicyIds.AssemblyTeamPolicy), result.Policy.Id);
+        Assert.Contains(RuleId.From(AttributeMultiRuleIds.AssemblyPlatformApplicationMustNotUseInfrastructure), ruleIds);
+        Assert.Contains(RuleId.From(AttributeMultiRuleIds.AssemblyProductApplicationNamespaceMustNotUseInfrastructureNamespace), ruleIds);
+        Assert.Contains(RuleId.From(AttributeMultiRuleIds.AssemblyTeamApplicationRequiresDomain), ruleIds);
+        Assert.Equal(2, result.Violations.Count);
+        Assert.Contains(result.Violations, violation => violation.RuleId == RuleId.From(AttributeMultiRuleIds.AssemblyPlatformApplicationMustNotUseInfrastructure));
+        Assert.Contains(result.Violations, violation => violation.RuleId == RuleId.From(AttributeMultiRuleIds.AssemblyProductApplicationNamespaceMustNotUseInfrastructureNamespace));
+    }
+
+    [Fact]
     public void CodePolicyShowsClosedDefaultDenyAndRegistrationRequirement()
     {
         var result = CodePolicyCases.Evaluate();
