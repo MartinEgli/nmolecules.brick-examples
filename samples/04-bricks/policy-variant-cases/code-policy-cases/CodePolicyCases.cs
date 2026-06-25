@@ -4,6 +4,7 @@ using NMolecules.Bricks;
 
 namespace Samples.Block04.Bricks.PolicyVariants.CodePolicy;
 
+
 /// <summary>
 /// Demonstrates explicit C# policy objects for cases where tests need full
 /// control over rules, default decisions and source/target facts.
@@ -111,42 +112,4 @@ public static class CodePolicyCases
         var lastDot = fullName.LastIndexOf('.');
         return lastDot < 0 ? string.Empty : fullName.Substring(0, lastDot);
     }
-}
-
-public sealed class CodePolicyCaseResult
-{
-    public CodePolicyCaseResult(
-        BrickPolicy policy,
-        IEnumerable<BrickDependency> dependencies,
-        IEnumerable<BrickResolvedRoles> roles,
-        IEnumerable<BrickViolation> violations)
-    {
-        Policy = policy;
-        Dependencies = dependencies.ToArray();
-        Roles = roles.ToArray();
-        Violations = violations.ToArray();
-    }
-
-    public BrickPolicy Policy { get; }
-    public IReadOnlyList<BrickDependency> Dependencies { get; }
-    public IReadOnlyList<BrickResolvedRoles> Roles { get; }
-    public IReadOnlyList<BrickViolation> Violations { get; }
-}
-
-public static class CodePolicyIds
-{
-    public const string Policy = "CODE-POLICY-CLOSED";
-    public const string CommandMemberMustNotUseInfrastructure = "CODE-POLICY-001";
-    public const string CompositionRootRequiresExternalQueue = "CODE-POLICY-002";
-    public const string CompositionRootMayRegisterExternalQueue = "CODE-POLICY-003";
-}
-
-public static class CodePolicyRoles
-{
-    public const string CommandMember = "Code.Member.Command";
-    public const string InfrastructureType = "Code.Type.Infrastructure";
-    public const string CompositionRoot = "Code.Registration.CompositionRoot";
-    public const string ExternalQueue = "Code.External.Queue";
-    public const string UnclassifiedSource = "Code.Type.UnclassifiedSource";
-    public const string DomainType = "Code.Type.Domain";
 }

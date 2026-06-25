@@ -7,6 +7,7 @@ using Samples.Block04.Bricks.FunctionCoverage;
 
 namespace Samples.Block04.Bricks.AiGovernance;
 
+
 /// <summary>
 /// Shows a safe collaboration pattern where AI can explain deterministic Bricks
 /// findings and propose analyzer improvements without becoming the source of
@@ -282,58 +283,4 @@ internal static class AiGovernanceCollaborationSample
         string displayName,
         string rationale) =>
         new BrickGovernanceRequirement(id, area, displayName, required: true, rationale);
-}
-
-/// <summary>
-/// Review artifact passed from deterministic Bricks output to an architecture
-/// owner, AI coding agent or analyzer maintainer.
-/// </summary>
-internal sealed class AiGovernanceReviewPacket
-{
-    public AiGovernanceReviewPacket(
-        BrickAiTrustBoundary trustBoundary,
-        BrickAiCommentDocument comments,
-        BrickRuleProposal proposal,
-        BrickGovernanceReport governance)
-    {
-        TrustBoundary = trustBoundary;
-        Comments = comments;
-        Proposal = proposal;
-        Governance = governance;
-    }
-
-    public BrickAiTrustBoundary TrustBoundary { get; }
-    public BrickAiCommentDocument Comments { get; }
-    public BrickRuleProposal Proposal { get; }
-    public BrickGovernanceReport Governance { get; }
-}
-
-/// <summary>
-/// Review packet for AI guidance that is derived from assembly-level policy,
-/// rule and dependency attributes.
-/// </summary>
-internal sealed class AiAttributePolicyReviewPacket
-{
-    public AiAttributePolicyReviewPacket(
-        string policyId,
-        IEnumerable<string> ruleIds,
-        IEnumerable<string> dependencyIds,
-        BrickAiCommentDocument comments,
-        BrickRuleProposal proposal,
-        BrickGovernanceReport governance)
-    {
-        PolicyId = policyId ?? string.Empty;
-        RuleIds = (ruleIds ?? Enumerable.Empty<string>()).ToArray();
-        DependencyIds = (dependencyIds ?? Enumerable.Empty<string>()).ToArray();
-        Comments = comments;
-        Proposal = proposal;
-        Governance = governance;
-    }
-
-    public string PolicyId { get; }
-    public IReadOnlyList<string> RuleIds { get; }
-    public IReadOnlyList<string> DependencyIds { get; }
-    public BrickAiCommentDocument Comments { get; }
-    public BrickRuleProposal Proposal { get; }
-    public BrickGovernanceReport Governance { get; }
 }

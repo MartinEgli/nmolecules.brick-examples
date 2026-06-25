@@ -4,6 +4,7 @@ using NMolecules.Bricks;
 
 namespace Samples.Block04.Bricks.PolicyVariants.ComposedMultiPolicy;
 
+
 /// <summary>
 /// Demonstrates several policies in one project and shows how import modes
 /// influence the final policy.
@@ -180,45 +181,4 @@ public static class ComposedMultiPolicyCases
         var lastDot = fullName.LastIndexOf('.');
         return lastDot < 0 ? fullName : fullName.Substring(0, lastDot);
     }
-}
-
-public sealed class ComposedPolicyCaseResult
-{
-    public ComposedPolicyCaseResult(
-        BrickPolicyCompositionResult composition,
-        IEnumerable<BrickDependency> dependencies,
-        IEnumerable<BrickResolvedRoles> roles,
-        IEnumerable<BrickViolation> violations)
-    {
-        Composition = composition;
-        Dependencies = dependencies.ToArray();
-        Roles = roles.ToArray();
-        Violations = violations.ToArray();
-    }
-
-    public BrickPolicyCompositionResult Composition { get; }
-    public IReadOnlyList<BrickDependency> Dependencies { get; }
-    public IReadOnlyList<BrickResolvedRoles> Roles { get; }
-    public IReadOnlyList<BrickViolation> Violations { get; }
-}
-
-public static class ComposedPolicyIds
-{
-    public const string PlatformPolicy = "COMPOSED-PLATFORM";
-    public const string ProductPolicy = "COMPOSED-PRODUCT";
-    public const string TeamPolicy = "COMPOSED-TEAM";
-    public const string ExperimentalPolicy = "COMPOSED-EXPERIMENTAL";
-    public const string ApplicationMustNotUseInfrastructure = "COMPOSED-001";
-    public const string ApplicationNamespaceMustNotUseInfrastructureNamespace = "COMPOSED-002";
-    public const string ApplicationRequiresDomain = "COMPOSED-003";
-    public const string ExperimentalRule = "COMPOSED-999";
-}
-
-public static class ComposedPolicyRoles
-{
-    public const string ApplicationType = "Composed.Type.Application";
-    public const string DomainType = "Composed.Type.Domain";
-    public const string InfrastructureType = "Composed.Type.Infrastructure";
-    public const string ApplicationNamespace = "Composed.Namespace.Application";
-    public const string InfrastructureNamespace = "Composed.Namespace.Infrastructure";
 }

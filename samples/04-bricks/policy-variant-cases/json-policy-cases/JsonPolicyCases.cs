@@ -4,6 +4,7 @@ using NMolecules.Bricks;
 
 namespace Samples.Block04.Bricks.PolicyVariants.JsonPolicy;
 
+
 /// <summary>
 /// Demonstrates a policy loaded from JSON with imports, aliases and external
 /// assignments.
@@ -132,32 +133,4 @@ public static class JsonPolicyCases
 
     private static BrickElement Element(string id, BrickElementKind kind, string displayName, string fullName) =>
         new(BrickElementId.From(id), kind, displayName, displayName, fullName, fullName);
-}
-
-public sealed class JsonPolicyCaseResult
-{
-    public JsonPolicyCaseResult(
-        BrickPolicyDocument document,
-        IEnumerable<BrickDependency> dependencies,
-        IEnumerable<BrickResolvedRoles> roles,
-        IEnumerable<BrickViolation> violations)
-    {
-        Document = document;
-        Dependencies = dependencies.ToArray();
-        Roles = roles.ToArray();
-        Violations = violations.ToArray();
-    }
-
-    public BrickPolicyDocument Document { get; }
-    public IReadOnlyList<BrickDependency> Dependencies { get; }
-    public IReadOnlyList<BrickResolvedRoles> Roles { get; }
-    public IReadOnlyList<BrickViolation> Violations { get; }
-}
-
-public static class JsonPolicyRoles
-{
-    public const string WebNamespace = "Json.Namespace.Web";
-    public const string DomainAssembly = "Json.Assembly.Domain";
-    public const string WebAssembly = "Json.Assembly.Web";
-    public const string ExternalPackage = "Json.External.Package";
 }

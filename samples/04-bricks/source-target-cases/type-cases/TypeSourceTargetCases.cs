@@ -6,6 +6,7 @@ using NMolecules.Bricks;
 
 namespace Samples.Block04.Bricks.SourceTarget.TypeCases;
 
+
 /// <summary>
 /// Demonstrates class, interface and struct role markers as type-level sources
 /// and targets.
@@ -126,116 +127,4 @@ public static class TypeSourceTargetCases
             BrickAssignmentSource.SourceAttribute,
             new BrickAssignmentPrecedence(BrickAssignmentSpecificity.Element, BrickAssignmentAuthority.Direct),
             BrickAssignmentBehavior.Apply);
-}
-
-/// <summary>
-/// Evaluation output for the type source and target sample.
-/// </summary>
-public sealed class TypeCaseResult
-{
-    public TypeCaseResult(
-        IEnumerable<BrickElement> elements,
-        IEnumerable<BrickDependency> dependencies,
-        IEnumerable<BrickResolvedRoles> roles,
-        IEnumerable<BrickViolation> violations)
-    {
-        Elements = elements.ToArray();
-        Dependencies = dependencies.ToArray();
-        Roles = roles.ToArray();
-        Violations = violations.ToArray();
-    }
-
-    public IReadOnlyList<BrickElement> Elements { get; }
-    public IReadOnlyList<BrickDependency> Dependencies { get; }
-    public IReadOnlyList<BrickResolvedRoles> Roles { get; }
-    public IReadOnlyList<BrickViolation> Violations { get; }
-}
-
-/// <summary>Role identifiers used by the type-level sample.</summary>
-public static class TypeCaseRoles
-{
-    public const string Endpoint = "Sample.Type.Endpoint";
-    public const string ApplicationService = "Sample.Type.ApplicationService";
-    public const string RepositoryContract = "Sample.Type.RepositoryContract";
-    public const string ValueObject = "Sample.Type.ValueObject";
-    public const string InfrastructureAdapter = "Sample.Type.InfrastructureAdapter";
-}
-
-/// <summary>Rule identifiers used by the type-level sample.</summary>
-public static class TypeCaseRules
-{
-    public const string PolicyId = "SOURCE-TARGET-TYPE-POLICY";
-    public const string EndpointRequiresApplication = "SOURCE-TARGET-TYPE-001";
-    public const string ApplicationRequiresRepositoryContract = "SOURCE-TARGET-TYPE-002";
-    public const string ValueObjectMustNotUseInfrastructure = "SOURCE-TARGET-TYPE-003";
-}
-
-[AttributeUsage(AttributeTargets.Class)]
-[RoleAlias(TypeCaseRoles.Endpoint)]
-public sealed class SampleEndpointAttribute : RoleAttribute
-{
-    public SampleEndpointAttribute() : base(TypeCaseRoles.Endpoint)
-    {
-    }
-}
-
-[AttributeUsage(AttributeTargets.Class)]
-[RoleAlias(TypeCaseRoles.ApplicationService)]
-public sealed class SampleApplicationServiceAttribute : RoleAttribute
-{
-    public SampleApplicationServiceAttribute() : base(TypeCaseRoles.ApplicationService)
-    {
-    }
-}
-
-[AttributeUsage(AttributeTargets.Interface)]
-[RoleAlias(TypeCaseRoles.RepositoryContract)]
-public sealed class SampleRepositoryContractAttribute : RoleAttribute
-{
-    public SampleRepositoryContractAttribute() : base(TypeCaseRoles.RepositoryContract)
-    {
-    }
-}
-
-[AttributeUsage(AttributeTargets.Struct)]
-[RoleAlias(TypeCaseRoles.ValueObject)]
-public sealed class SampleValueObjectAttribute : RoleAttribute
-{
-    public SampleValueObjectAttribute() : base(TypeCaseRoles.ValueObject)
-    {
-    }
-}
-
-[AttributeUsage(AttributeTargets.Class)]
-[RoleAlias(TypeCaseRoles.InfrastructureAdapter)]
-public sealed class SampleInfrastructureAdapterAttribute : RoleAttribute
-{
-    public SampleInfrastructureAdapterAttribute() : base(TypeCaseRoles.InfrastructureAdapter)
-    {
-    }
-}
-
-[SampleEndpoint]
-public sealed class OrderEndpoint
-{
-}
-
-[SampleApplicationService]
-public sealed class SubmitOrderWorkflow
-{
-}
-
-[SampleRepositoryContract]
-public interface IOrderRepository
-{
-}
-
-[SampleValueObject]
-public readonly struct Money
-{
-}
-
-[SampleInfrastructureAdapter]
-public sealed class SqlOrderRepository
-{
 }

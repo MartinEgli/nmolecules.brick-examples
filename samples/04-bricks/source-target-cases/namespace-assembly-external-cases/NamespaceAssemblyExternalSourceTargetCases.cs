@@ -4,6 +4,7 @@ using NMolecules.Bricks;
 
 namespace Samples.Block04.Bricks.SourceTarget.NamespaceAssemblyExternalCases;
 
+
 /// <summary>
 /// Demonstrates namespace, assembly and external-reference source/target pairs.
 /// </summary>
@@ -168,45 +169,4 @@ public static class NamespaceAssemblyExternalSourceTargetCases
 
         return new BrickResolvedRoles(element, new[] { assignment }, new[] { assignment }, null, null);
     }
-}
-
-/// <summary>Evaluation output for namespace, assembly and external examples.</summary>
-public sealed class NamespaceAssemblyExternalCaseResult
-{
-    public NamespaceAssemblyExternalCaseResult(
-        IEnumerable<BrickElement> elements,
-        IEnumerable<BrickDependency> dependencies,
-        IEnumerable<BrickResolvedRoles> roles,
-        IEnumerable<BrickViolation> violations)
-    {
-        Elements = elements.ToArray();
-        Dependencies = dependencies.ToArray();
-        Roles = roles.ToArray();
-        Violations = violations.ToArray();
-    }
-
-    public IReadOnlyList<BrickElement> Elements { get; }
-    public IReadOnlyList<BrickDependency> Dependencies { get; }
-    public IReadOnlyList<BrickResolvedRoles> Roles { get; }
-    public IReadOnlyList<BrickViolation> Violations { get; }
-}
-
-/// <summary>Role identifiers used by the namespace, assembly and external sample.</summary>
-public static class NamespaceAssemblyExternalRoles
-{
-    public const string DomainNamespace = "Sample.Namespace.Domain";
-    public const string InfrastructureNamespace = "Sample.Namespace.Infrastructure";
-    public const string DomainAssembly = "Sample.Assembly.Domain";
-    public const string ApplicationAssembly = "Sample.Assembly.Application";
-    public const string ContractsAssembly = "Sample.Assembly.Contracts";
-    public const string ExternalPackage = "Sample.External.Package";
-}
-
-/// <summary>Rule identifiers used by the namespace, assembly and external sample.</summary>
-public static class NamespaceAssemblyExternalRules
-{
-    public const string PolicyId = "SOURCE-TARGET-NAMESPACE-ASSEMBLY-POLICY";
-    public const string DomainNamespaceMustNotUseInfrastructureNamespace = "SOURCE-TARGET-NAMESPACE-001";
-    public const string DomainAssemblyMustNotUseExternalPackage = "SOURCE-TARGET-ASSEMBLY-001";
-    public const string ApplicationAssemblyRequiresContractsAssembly = "SOURCE-TARGET-ASSEMBLY-002";
 }

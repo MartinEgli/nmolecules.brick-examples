@@ -4,6 +4,7 @@ using NMolecules.Bricks;
 
 namespace Samples.Block04.Bricks.SourceTarget.MemberRegistrationCases;
 
+
 /// <summary>
 /// Demonstrates member sources and dependency-registration sources.
 /// </summary>
@@ -138,42 +139,4 @@ public static class MemberRegistrationSourceTargetCases
 
         return new BrickResolvedRoles(element, new[] { assignment }, new[] { assignment }, null, null);
     }
-}
-
-/// <summary>Evaluation output for member and dependency-registration examples.</summary>
-public sealed class MemberRegistrationCaseResult
-{
-    public MemberRegistrationCaseResult(
-        IEnumerable<BrickElement> elements,
-        IEnumerable<BrickDependency> dependencies,
-        IEnumerable<BrickResolvedRoles> roles,
-        IEnumerable<BrickViolation> violations)
-    {
-        Elements = elements.ToArray();
-        Dependencies = dependencies.ToArray();
-        Roles = roles.ToArray();
-        Violations = violations.ToArray();
-    }
-
-    public IReadOnlyList<BrickElement> Elements { get; }
-    public IReadOnlyList<BrickDependency> Dependencies { get; }
-    public IReadOnlyList<BrickResolvedRoles> Roles { get; }
-    public IReadOnlyList<BrickViolation> Violations { get; }
-}
-
-/// <summary>Role identifiers used by the member and registration sample.</summary>
-public static class MemberRegistrationRoles
-{
-    public const string CommandHandlerMember = "Sample.Member.CommandHandler";
-    public const string InfrastructureType = "Sample.Type.Infrastructure";
-    public const string CompositionRootRegistration = "Sample.Registration.CompositionRoot";
-    public const string ExternalMessageBus = "Sample.External.MessageBus";
-}
-
-/// <summary>Rule identifiers used by the member and registration sample.</summary>
-public static class MemberRegistrationRules
-{
-    public const string PolicyId = "SOURCE-TARGET-MEMBER-REGISTRATION-POLICY";
-    public const string CommandHandlerMustNotCallInfrastructure = "SOURCE-TARGET-MEMBER-001";
-    public const string CompositionRootRequiresExternalMessageBus = "SOURCE-TARGET-REGISTRATION-001";
 }
