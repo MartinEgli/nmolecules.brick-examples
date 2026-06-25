@@ -17,6 +17,59 @@ public sealed class MemberContractUseCaseTests
     public static TheoryData<MemberContractUseCaseExpectation> AnalyzerBackedCases =>
         CreateTheoryData(MemberContractUseCaseCatalog.Cases.Where(useCase => useCase.IsAnalyzerBacked));
 
+    public static TheoryData<Type, string, string[]> AnalyzerBackedViolationCases => new()
+    {
+        {
+            typeof(OnlyOneMissingSample),
+            "RequireExactlyOneMember",
+            new[] { "OnlyOneMissingSample must declare exactly one member marked with OnlyOneMarkerAttribute." }
+        },
+        {
+            typeof(OnlyOneTooManySample),
+            "RequireExactlyOneMember",
+            new[] { "OnlyOneTooManySample must declare exactly one member marked with OnlyOneMarkerAttribute." }
+        },
+        {
+            typeof(ExactlyTwoTooFewSample),
+            "RequireMemberCount",
+            new[] { "ExactlyTwoTooFewSample must declare RepeatedMarkerAttribute count expected 2, actual 1." }
+        },
+        {
+            typeof(ExactlyTwoTooManySample),
+            "RequireMemberCount",
+            new[] { "ExactlyTwoTooManySample must declare RepeatedMarkerAttribute count expected 2, actual 3." }
+        },
+        {
+            typeof(AndAPlusBMissingAInvalidSample),
+            "RequireAllMembers",
+            new[] { "AndAPlusBMissingAInvalidSample must declare at least one member marked with MarkerAAttribute." }
+        },
+        {
+            typeof(AndAPlusBMissingBInvalidSample),
+            "RequireAllMembers",
+            new[] { "AndAPlusBMissingBInvalidSample must declare at least one member marked with MarkerBAttribute." }
+        },
+        {
+            typeof(AndAPlusBMissingBothInvalidSample),
+            "RequireAllMembers",
+            new[]
+            {
+                "AndAPlusBMissingBothInvalidSample must declare at least one member marked with MarkerAAttribute.",
+                "AndAPlusBMissingBothInvalidSample must declare at least one member marked with MarkerBAttribute.",
+            }
+        },
+        {
+            typeof(XorBothInvalidSample),
+            "RequireExclusiveChoice",
+            new[] { "XorBothInvalidSample must declare exactly one of XorLeftMarkerAttribute or XorRightMarkerAttribute." }
+        },
+        {
+            typeof(XorNoneInvalidSample),
+            "RequireExclusiveChoice",
+            new[] { "XorNoneInvalidSample must declare exactly one of XorLeftMarkerAttribute or XorRightMarkerAttribute." }
+        },
+    };
+
     [Theory]
     [MemberData(nameof(AnalyzerBackedCases))]
     public void AnalyzerBackedMemberContractUseCasesMatchEvaluator(MemberContractUseCaseExpectation useCase)
@@ -32,6 +85,28 @@ public sealed class MemberContractUseCaseTests
             Assert.Equal(BrickViolationState.Active, violation.State);
             Assert.Equal(useCase.ContractName, violation.RuleName);
         });
+    }
+
+    [Theory]
+    [MemberData(nameof(AnalyzerBackedViolationCases))]
+    public void AnalyzerBackedMemberContractViolationCasesProduceConcreteViolations(
+        Type sampleType,
+        string expectedRuleName,
+        string[] expectedMessages)
+    {
+        var violations = Evaluate(sampleType);
+
+        Assert.Equal(expectedMessages.Length, violations.Count);
+        Assert.All(violations, violation =>
+        {
+            Assert.Equal(BrickViolationKind.MemberCardinality, violation.Kind);
+            Assert.Equal(BrickSeverity.Error, violation.Severity);
+            Assert.Equal(BrickViolationState.Active, violation.State);
+            Assert.Equal(expectedRuleName, violation.RuleName);
+            Assert.Equal(sampleType.Name, violation.Source.DisplayName);
+            Assert.Equal(sampleType.Assembly.GetName().Name, violation.Source.AssemblyName);
+        });
+        Assert.Equal(expectedMessages.OrderBy(message => message), violations.Select(violation => violation.Message).OrderBy(message => message));
     }
 
     [Fact]
@@ -78,6 +153,24 @@ public sealed class MemberContractUseCaseTests
         Assert.Equal("Samples.Block04.Bricks.MemberContracts.Range", assemblyByContract["RequireMemberRange"]);
         Assert.Equal("Samples.Block04.Bricks.MemberContracts.Forbid", assemblyByContract["ForbidMember"]);
         Assert.Equal(6, assemblyByContract.Values.Distinct().Count());
+    }
+
+    [Fact]
+    public void EveryMemberContractProjectHasViolationCase()
+    {
+        var invalidCaseAssemblies = MemberContractUseCaseCatalog.Cases
+            .Where(useCase => !useCase.ShouldBeValid)
+            .Select(useCase => useCase.SampleType.Assembly.GetName().Name)
+            .Distinct()
+            .ToArray();
+
+        Assert.Contains("Samples.Block04.Bricks.MemberContracts.OnlyOne", invalidCaseAssemblies);
+        Assert.Contains("Samples.Block04.Bricks.MemberContracts.ExactlyTwo", invalidCaseAssemblies);
+        Assert.Contains("Samples.Block04.Bricks.MemberContracts.AllMembers", invalidCaseAssemblies);
+        Assert.Contains("Samples.Block04.Bricks.MemberContracts.ExclusiveChoice", invalidCaseAssemblies);
+        Assert.Contains("Samples.Block04.Bricks.MemberContracts.Range", invalidCaseAssemblies);
+        Assert.Contains("Samples.Block04.Bricks.MemberContracts.Forbid", invalidCaseAssemblies);
+        Assert.Equal(6, invalidCaseAssemblies.Length);
     }
 
     private static TheoryData<MemberContractUseCaseExpectation> CreateTheoryData(IEnumerable<MemberContractUseCaseExpectation> useCases)

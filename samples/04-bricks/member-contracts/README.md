@@ -25,3 +25,5 @@ The projects intentionally mix analyzer-backed contracts that produce Roslyn dia
 | Forbidden member marker | `ForbidMemberAttribute` | Concept only | `NotValidSample` | `NotInvalidSample` | Documents a useful future analyzer contract for negative member constraints. |
 
 `catalog/MemberContractUseCaseCatalog` is the executable index for these examples. The tests assert all analyzer-backed cases against `BrickMemberCardinalityEvaluator` and keep the concept-only cases visible without pretending that they are implemented today.
+
+Every member-contract project contains at least one invalid sample. Analyzer-backed projects also have concrete violation tests that assert `BrickViolationKind`, severity, state, rule name, source identity, and diagnostic message.
