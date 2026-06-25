@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\only-one-case\Samples.Block04.Bricks.MemberContracts.OnlyOne.csproj" />
+    <ProjectReference Include="..\exactly-two-case\Samples.Block04.Bricks.MemberContracts.ExactlyTwo.csproj" />
+    <ProjectReference Include="..\all-members-case\Samples.Block04.Bricks.MemberContracts.AllMembers.csproj" />
+    <ProjectReference Include="..\exclusive-choice-case\Samples.Block04.Bricks.MemberContracts.ExclusiveChoice.csproj" />
+    <ProjectReference Include="..\range-case\Samples.Block04.Bricks.MemberContracts.Range.csproj" />
+    <ProjectReference Include="..\forbid-case\Samples.Block04.Bricks.MemberContracts.Forbid.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -2,6 +2,13 @@
   <Folder Name="/samples/" />
   <Folder Name="/samples/04-bricks/">
     <Project Path="samples/04-bricks/Samples.Block04.Bricks.csproj" />
+    <Project Path="samples/04-bricks/member-contracts/only-one-case/Samples.Block04.Bricks.MemberContracts.OnlyOne.csproj" />
+    <Project Path="samples/04-bricks/member-contracts/exactly-two-case/Samples.Block04.Bricks.MemberContracts.ExactlyTwo.csproj" />
+    <Project Path="samples/04-bricks/member-contracts/all-members-case/Samples.Block04.Bricks.MemberContracts.AllMembers.csproj" />
+    <Project Path="samples/04-bricks/member-contracts/exclusive-choice-case/Samples.Block04.Bricks.MemberContracts.ExclusiveChoice.csproj" />
+    <Project Path="samples/04-bricks/member-contracts/range-case/Samples.Block04.Bricks.MemberContracts.Range.csproj" />
+    <Project Path="samples/04-bricks/member-contracts/forbid-case/Samples.Block04.Bricks.MemberContracts.Forbid.csproj" />
+    <Project Path="samples/04-bricks/member-contracts/catalog/Samples.Block04.Bricks.MemberContracts.Catalog.csproj" />
     <Project Path="samples/04-bricks/source-target-cases/type-cases/Samples.Block04.Bricks.SourceTarget.TypeCases.csproj" />
     <Project Path="samples/04-bricks/source-target-cases/member-registration-cases/Samples.Block04.Bricks.SourceTarget.MemberRegistrationCases.csproj" />
     <Project Path="samples/04-bricks/source-target-cases/namespace-assembly-external-cases/Samples.Block04.Bricks.SourceTarget.NamespaceAssemblyExternalCases.csproj" />

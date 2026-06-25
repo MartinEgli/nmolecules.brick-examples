@@ -2,10 +2,16 @@
 
 This area groups marker and member constraints by consumer use case instead of analyzer primitive.
 
-The `use-cases/` folder intentionally mixes:
+Each use case is its own small project:
 
-- analyzer-backed contracts that produce Roslyn diagnostics today
-- concept samples that document useful future patterns
+- `only-one-case`
+- `exactly-two-case`
+- `all-members-case`
+- `exclusive-choice-case`
+- `range-case`
+- `forbid-case`
+
+The projects intentionally mix analyzer-backed contracts that produce Roslyn diagnostics today and concept samples that document useful future patterns.
 
 ## Coverage Matrix
 
@@ -18,4 +24,4 @@ The `use-cases/` folder intentionally mixes:
 | Member count range | `RequireMemberRangeAttribute` | Concept only | `TwoToFourValidTwoSample`, `TwoToFourValidFourSample` | `TwoToFourTooFewSample`, `TwoToFourTooManySample` | Documents a useful future analyzer contract for lower/upper bounds. |
 | Forbidden member marker | `ForbidMemberAttribute` | Concept only | `NotValidSample` | `NotInvalidSample` | Documents a useful future analyzer contract for negative member constraints. |
 
-`MemberContractUseCaseCatalog` is the executable index for these examples. The tests assert all analyzer-backed cases against `BrickMemberCardinalityEvaluator` and keep the concept-only cases visible without pretending that they are implemented today.
+`catalog/MemberContractUseCaseCatalog` is the executable index for these examples. The tests assert all analyzer-backed cases against `BrickMemberCardinalityEvaluator` and keep the concept-only cases visible without pretending that they are implemented today.

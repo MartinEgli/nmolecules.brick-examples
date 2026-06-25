@@ -62,6 +62,24 @@ public sealed class MemberContractUseCaseTests
         Assert.Contains(MemberContractUseCaseCatalog.Cases, useCase => useCase.SampleType == typeof(XorNoneInvalidSample));
     }
 
+    [Fact]
+    public void MemberContractUseCasesStaySplitByProject()
+    {
+        var assemblyByContract = MemberContractUseCaseCatalog.Cases
+            .GroupBy(useCase => useCase.ContractName)
+            .ToDictionary(
+                group => group.Key,
+                group => Assert.Single(group.Select(useCase => useCase.SampleType.Assembly.GetName().Name).Distinct()));
+
+        Assert.Equal("Samples.Block04.Bricks.MemberContracts.OnlyOne", assemblyByContract["RequireExactlyOneMember"]);
+        Assert.Equal("Samples.Block04.Bricks.MemberContracts.ExactlyTwo", assemblyByContract["RequireMemberCount"]);
+        Assert.Equal("Samples.Block04.Bricks.MemberContracts.AllMembers", assemblyByContract["RequireAllMembers"]);
+        Assert.Equal("Samples.Block04.Bricks.MemberContracts.ExclusiveChoice", assemblyByContract["RequireExclusiveChoice"]);
+        Assert.Equal("Samples.Block04.Bricks.MemberContracts.Range", assemblyByContract["RequireMemberRange"]);
+        Assert.Equal("Samples.Block04.Bricks.MemberContracts.Forbid", assemblyByContract["ForbidMember"]);
+        Assert.Equal(6, assemblyByContract.Values.Distinct().Count());
+    }
+
     private static TheoryData<MemberContractUseCaseExpectation> CreateTheoryData(IEnumerable<MemberContractUseCaseExpectation> useCases)
     {
         var data = new TheoryData<MemberContractUseCaseExpectation>();
