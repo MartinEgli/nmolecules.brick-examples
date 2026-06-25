@@ -6,8 +6,8 @@ Standalone example repository for nMolecules Bricks.
 
 The initial content was split out from the existing superrepo sample block:
 
-- Source repository path: `nmolecules.examples/samples/04-bricks`
-- Target repository path: `samples/04-bricks`
+- Source repository path: `nmolecules.examples/samples/bricks`
+- Target repository path: `samples/bricks`
 - Reason: keep Bricks examples usable as a focused repository while preserving the original teaching material and file layout.
 
 The copied sample block demonstrates custom role and rule modeling with `NMolecules.Bricks`.
@@ -16,29 +16,32 @@ The later `function-coverage` examples are new material in this repository. They
 
 - the public API in `nmolecules/src/nMolecules.Bricks`
 - behavioral expectations from `nmolecules/tests/nMolecules.Bricks.Test`
-- the existing billing examples copied from `nmolecules.examples/samples/04-bricks`
+- the existing billing examples copied from `nmolecules.examples/samples/bricks`
 
 ## Repository Layout
 
 | Path | Purpose |
 |---|---|
-| `samples/04-bricks/Samples.Block04.Bricks.csproj` | Green Bricks sample project |
-| `samples/04-bricks/Samples.Block04.Bricks.Violations.csproj` | Intentional violation project for analyzer diagnostics |
-| `samples/04-bricks/ai-governance` | AI collaboration sample for deterministic governance, attribute policies and analyzer-extension proposals |
-| `samples/04-bricks/ddd-building` | Focused example for building a DDD slice with Bricks roles and rules |
-| `samples/04-bricks/domain-language-kits/billing` | Billing role/rule vocabulary plus domain walkthrough |
-| `samples/04-bricks/function-coverage` | Full Bricks function coverage examples with motivation, user benefit and API mapping |
-| `samples/04-bricks/member-contracts` | Member contract modeling examples |
-| `samples/04-bricks/policy-variant-cases` | Small projects for attribute-only, attribute multi-policy, code, JSON and composed multi-policy variants |
-| `samples/04-bricks/rule-filters` | Rule filter and custom diagnostic message examples |
-| `samples/04-bricks/source-target-cases` | Small projects for Type, Member, Namespace, Assembly, DependencyRegistration and ExternalReference source/target cases |
-| `samples/04-bricks/docs` | Consumer sample roadmap copied with the source block |
+| `samples/bricks/Samples.Block04.Bricks.csproj` | Green Bricks sample project |
+| `samples/bricks/Samples.Block04.Bricks.Violations.csproj` | Intentional violation project for analyzer diagnostics |
+| `samples/bricks/ai-governance` | AI collaboration sample for deterministic governance, attribute policies and analyzer-extension proposals |
+| `samples/bricks/ddd-building` | Focused example for building a DDD slice with Bricks roles and rules |
+| `samples/bricks/domain-language-kits/billing` | Billing role/rule vocabulary plus domain walkthrough |
+| `samples/bricks/function-coverage` | Full Bricks function coverage examples with motivation, user benefit and API mapping |
+| `samples/bricks/class-contracts` | Class-scoped contract examples with valid and violation paths |
+| `samples/bricks/interface-contracts` | Interface-targeted contract examples |
+| `samples/bricks/namespace-contracts` | Namespace-level contract examples with modeled namespace role assignments |
+| `samples/bricks/member-contracts` | Member contract modeling examples split into small projects |
+| `samples/bricks/policy-variant-cases` | Small projects for attribute-only, attribute multi-policy, code, JSON and composed multi-policy variants |
+| `samples/bricks/rule-filters` | Rule filter and custom diagnostic message examples |
+| `samples/bricks/source-target-cases` | Small projects for Type, Member, Namespace, Assembly, DependencyRegistration and ExternalReference source/target cases |
+| `samples/bricks/docs` | Consumer sample roadmap copied with the source block |
 
 ## Bricks Function Coverage
 
 The focused coverage entry point is:
 
-- `samples/04-bricks/function-coverage/README.md`
+- `samples/bricks/function-coverage/README.md`
 
 That section maps Bricks function families to concrete, buildable examples:
 

@@ -134,7 +134,7 @@ internal static class AiGovernanceCollaborationSample
                 "Assembly-level dependency evidence may be incomplete while a team migrates from generated analyzer facts.",
                 "Attribute aliases can intentionally map several domain-specific markers to one Bricks role."
             },
-            new[] { DddBrickRules.DddPolicy, "samples/04-bricks/ddd-building" },
+            new[] { DddBrickRules.DddPolicy, "samples/bricks/ddd-building" },
             "Keep the attribute policy as source material, add analyzer fixtures for each RuleAttribute, and promote diagnostics only after fixture review.");
 
         return new BrickRuleProposal(

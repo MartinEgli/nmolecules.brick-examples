@@ -2,7 +2,7 @@
 
 Status baseline: March 7, 2026
 
-This document defines a consumer-first target structure for the `04-bricks` block.
+This document defines a consumer-first target structure for the Bricks samples.
 It is not a raw API inventory. It is a teaching and adoption plan for teams that want
 to build their own architecture language on top of `NMolecules.Bricks`.
 
@@ -21,7 +21,7 @@ The Bricks block should answer these user questions in a direct order:
 The long-term structure should separate sample intent, not just technical artifact type.
 
 ```text
-samples/04-bricks/
+samples/bricks/
 |-- docs/
 |   `-- consumer-sample-roadmap.md
 |-- getting-started/
