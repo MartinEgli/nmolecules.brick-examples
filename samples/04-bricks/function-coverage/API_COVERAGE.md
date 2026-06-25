@@ -11,6 +11,7 @@ Coverage means every public Bricks function family has at least one buildable ex
 | Source and target element kinds: `Type`, `Member`, `Namespace`, `Assembly`, `DependencyRegistration`, `ExternalReference` | `source-target-cases/` | Teams can model rules at the same boundary where a dependency is observed, from a method call up to package and assembly dependencies. |
 | Policy documents and JSON policy loading | `PolicyAndResolutionExamples.cs` | A team can keep rules in versioned policy files and validate schema compatibility. |
 | Policy composition and imports | `PolicyAndResolutionExamples.cs` | Platform defaults can be imported, narrowed or overridden by consumer policies. |
+| Policy definition variants: attribute-only, code policy, JSON policy, composed multi-policy | `policy-variant-cases/` | Teams can choose a policy authoring style, combine platform/product/team policies, and see where attribute-only correlation needs conventions or future explicit IDs. |
 | Role assignment, role resolution, precedence, conflicts and role-combination rules | `PolicyAndResolutionExamples.cs`, `ConfigurationExamples.cs` | Teams can combine direct attributes, aliases, policy files and conventions while seeing conflicts. |
 | Rule evaluation | `PolicyAndResolutionExamples.cs` | Deterministic enforcement produces violations from observed dependencies and resolved roles. |
 | Member-cardinality evaluation | `member-contracts/use-cases/` | Custom role ecosystems can require exactly one, all, count-based or exclusive member markers. |

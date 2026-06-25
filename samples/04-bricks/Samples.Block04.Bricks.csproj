@@ -13,6 +13,7 @@
   <ItemGroup>
     <Compile Remove="violations\**\*.cs" />
     <Compile Remove="source-target-cases\**\*.cs" />
+    <Compile Remove="policy-variant-cases\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

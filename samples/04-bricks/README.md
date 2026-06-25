@@ -24,6 +24,7 @@ Bricks lets you define those roles and constraints without creating a custom ana
   exactly one marker, required X+Y markers, fixed-count markers, and XOR markers
 - AI-assisted governance for analyzer extension proposals with deterministic trust boundaries
 - focused source/target case projects for type, member, namespace, assembly, dependency-registration and external-reference dependencies
+- focused policy-variant projects for attribute-only, code, JSON and composed multi-policy definitions
 
 ## Code Walkthrough
 
@@ -35,6 +36,7 @@ Bricks lets you define those roles and constraints without creating a custom ana
 - `function-coverage/` contains buildable examples that cover the Bricks API surface with motivation, user benefit, and a function-to-file coverage matrix
 - `rule-filters/` contains concrete class and member names for `Message`, `Excluded*`, and `Required*` filter scenarios
 - `source-target-cases/` contains small projects that demonstrate the different Bricks source and target element kinds
+- `policy-variant-cases/` contains small projects that demonstrate policy definition styles and composition strategies
 - `member-contracts/use-cases/` groups the member-contract samples by use case: only one, exactly two, two to four, XOR, A + B, and not
 - `docs/consumer-sample-roadmap.md` defines the recommended future sample layout for Bricks consumers
 - `../../../nmolecules/src/nMolecules.Bricks/docs/foundational-concept.md` defines the package-level Bricks meta-model and current-vs-target boundary
@@ -59,3 +61,4 @@ Concept samples that document future Bricks contract patterns, but are not analy
 6. Read `ddd-building/README.md` and map the DDD building blocks to Bricks roles and rules.
 7. Read `ai-governance/README.md` and trace how AI moves from explanation to reviewed analyzer-extension proposal.
 8. Read `source-target-cases/README.md` and compare how the same evaluator handles type, member, namespace, assembly, registration and external-reference dependencies.
+9. Read `policy-variant-cases/README.md` and compare attribute-only, code, JSON and composed policies in one testable matrix.
