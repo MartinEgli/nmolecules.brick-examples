@@ -22,6 +22,7 @@ Bricks lets you define those roles and constraints without creating a custom ana
 - sample rule declarations for every optional `Rule` field
 - analyzer-enforced member-cardinality patterns for custom brick ecosystems:
   exactly one marker, required X+Y markers, fixed-count markers, and XOR markers
+- focused class, interface and namespace contract projects with valid and violation paths
 - AI-assisted governance for analyzer extension proposals with deterministic trust boundaries
 - focused source/target case projects for type, member, namespace, assembly, dependency-registration and external-reference dependencies
 - focused policy-variant projects for attribute-only, attribute multi-policy, code, JSON and composed multi-policy definitions
@@ -37,7 +38,10 @@ Bricks lets you define those roles and constraints without creating a custom ana
 - `rule-filters/` contains concrete class and member names for `Message`, `Excluded*`, and `Required*` filter scenarios
 - `source-target-cases/` contains small projects that demonstrate the different Bricks source and target element kinds
 - `policy-variant-cases/` contains small projects that demonstrate policy definition styles and composition strategies
-- `member-contracts/use-cases/` groups the member-contract samples by use case: only one, exactly two, two to four, XOR, A + B, and not
+- `class-contracts/` shows class-targeted role contracts with valid and violating dependencies
+- `interface-contracts/` shows interface-targeted role contracts as dependency targets
+- `namespace-contracts/` shows namespace contracts through modeled namespace role assignments
+- `member-contracts/` groups the member-contract samples by use case: only one, exactly two, two to four, XOR, A + B, and not
 - `docs/consumer-sample-roadmap.md` defines the recommended future sample layout for Bricks consumers
 - `../../../nmolecules/src/nMolecules.Bricks/docs/foundational-concept.md` defines the package-level Bricks meta-model and current-vs-target boundary
 
@@ -62,3 +66,4 @@ Concept samples that document future Bricks contract patterns, but are not analy
 7. Read `ai-governance/README.md` and trace how AI moves from explanation to reviewed analyzer-extension proposal.
 8. Read `source-target-cases/README.md` and compare how the same evaluator handles type, member, namespace, assembly, registration and external-reference dependencies.
 9. Read `policy-variant-cases/README.md` and compare attribute-only, code, JSON and composed policies in one testable matrix.
+10. Compare `class-contracts/`, `interface-contracts/`, `namespace-contracts/`, and `member-contracts/` to see how contract scope changes the role assignment strategy.

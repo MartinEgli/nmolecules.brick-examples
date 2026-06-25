@@ -2,6 +2,9 @@
   <Folder Name="/samples/" />
   <Folder Name="/samples/04-bricks/">
     <Project Path="samples/04-bricks/Samples.Block04.Bricks.csproj" />
+    <Project Path="samples/04-bricks/class-contracts/Samples.Block04.Bricks.ClassContracts.csproj" />
+    <Project Path="samples/04-bricks/interface-contracts/Samples.Block04.Bricks.InterfaceContracts.csproj" />
+    <Project Path="samples/04-bricks/namespace-contracts/Samples.Block04.Bricks.NamespaceContracts.csproj" />
     <Project Path="samples/04-bricks/member-contracts/only-one-case/Samples.Block04.Bricks.MemberContracts.OnlyOne.csproj" />
     <Project Path="samples/04-bricks/member-contracts/exactly-two-case/Samples.Block04.Bricks.MemberContracts.ExactlyTwo.csproj" />
     <Project Path="samples/04-bricks/member-contracts/all-members-case/Samples.Block04.Bricks.MemberContracts.AllMembers.csproj" />

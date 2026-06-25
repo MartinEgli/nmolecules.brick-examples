@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <Compile Remove="violations\**\*.cs" />
+    <Compile Remove="class-contracts\**\*.cs" />
+    <Compile Remove="interface-contracts\**\*.cs" />
+    <Compile Remove="namespace-contracts\**\*.cs" />
     <Compile Remove="member-contracts\**\*.cs" />
     <Compile Remove="source-target-cases\**\*.cs" />
     <Compile Remove="policy-variant-cases\**\*.cs" />
