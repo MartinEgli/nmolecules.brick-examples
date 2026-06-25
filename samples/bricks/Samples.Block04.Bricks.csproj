@@ -18,6 +18,7 @@
     <Compile Remove="member-contracts\**\*.cs" />
     <Compile Remove="source-target-cases\**\*.cs" />
     <Compile Remove="policy-variant-cases\**\*.cs" />
+    <Compile Remove="enum-coverage-cases\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

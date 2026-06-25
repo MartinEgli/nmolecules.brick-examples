@@ -20,6 +20,8 @@
     <Project Path="samples/bricks/policy-variant-cases/code-policy-cases/Samples.Block04.Bricks.PolicyVariants.CodePolicy.csproj" />
     <Project Path="samples/bricks/policy-variant-cases/json-policy-cases/Samples.Block04.Bricks.PolicyVariants.JsonPolicy.csproj" />
     <Project Path="samples/bricks/policy-variant-cases/composed-multi-policy-cases/Samples.Block04.Bricks.PolicyVariants.ComposedMultiPolicy.csproj" />
+    <Project Path="samples/bricks/enum-coverage-cases/attribute-only-enum-cases/Samples.Block04.Bricks.EnumCoverage.AttributeOnly.csproj" />
+    <Project Path="samples/bricks/enum-coverage-cases/code-enum-cases/Samples.Block04.Bricks.EnumCoverage.Code.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Samples.Block04.Bricks.Tests/Samples.Block04.Bricks.Tests.csproj" />

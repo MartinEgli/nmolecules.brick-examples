@@ -15,6 +15,7 @@ are organized by consumer use case, not by an old numbered block name.
 | `member-contracts/` | Member-cardinality contracts split into small case projects. | Shows exactly-one, exact-count, all-members, XOR, range and forbidden-marker patterns. |
 | `source-target-cases/` | Type, member, namespace, assembly, registration and external-reference dependency shapes. | Shows how the same evaluator behaves at different architecture boundaries. |
 | `policy-variant-cases/` | Attribute-only, attribute multi-policy, code, JSON and composed policy variants. | Helps teams choose an authoring style and understand policy-correlation trade-offs. |
+| `enum-coverage-cases/` | Every public Bricks enum value as attribute-only and code examples. | Makes enum additions visible to sample tests and keeps authoring styles complete. |
 | `ddd-building/` | DDD aggregate, entity, value object, repository, factory and service roles. | Demonstrates a realistic domain slice built with Bricks attributes and policies. |
 | `domain-language-kits/` | A reusable billing domain role/rule vocabulary. | Shows how teams can package their own architecture language. |
 | `rule-filters/` | Required/excluded source, target and member name filters. | Shows how rule filters narrow diagnostics and improve messages. |

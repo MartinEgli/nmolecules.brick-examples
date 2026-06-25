@@ -40,6 +40,8 @@
     <ProjectReference Include="..\..\samples\bricks\policy-variant-cases\code-policy-cases\Samples.Block04.Bricks.PolicyVariants.CodePolicy.csproj" />
     <ProjectReference Include="..\..\samples\bricks\policy-variant-cases\json-policy-cases\Samples.Block04.Bricks.PolicyVariants.JsonPolicy.csproj" />
     <ProjectReference Include="..\..\samples\bricks\policy-variant-cases\composed-multi-policy-cases\Samples.Block04.Bricks.PolicyVariants.ComposedMultiPolicy.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\enum-coverage-cases\attribute-only-enum-cases\Samples.Block04.Bricks.EnumCoverage.AttributeOnly.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\enum-coverage-cases\code-enum-cases\Samples.Block04.Bricks.EnumCoverage.Code.csproj" />
   </ItemGroup>
 
 </Project>
