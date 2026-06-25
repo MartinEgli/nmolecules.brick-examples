@@ -24,7 +24,7 @@ Bricks lets you define those roles and constraints without creating a custom ana
   exactly one marker, required X+Y markers, fixed-count markers, and XOR markers
 - AI-assisted governance for analyzer extension proposals with deterministic trust boundaries
 - focused source/target case projects for type, member, namespace, assembly, dependency-registration and external-reference dependencies
-- focused policy-variant projects for attribute-only, code, JSON and composed multi-policy definitions
+- focused policy-variant projects for attribute-only, attribute multi-policy, code, JSON and composed multi-policy definitions
 
 ## Code Walkthrough
 

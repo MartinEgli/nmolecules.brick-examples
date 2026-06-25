@@ -29,7 +29,7 @@ The later `function-coverage` examples are new material in this repository. They
 | `samples/04-bricks/domain-language-kits/billing` | Billing role/rule vocabulary plus domain walkthrough |
 | `samples/04-bricks/function-coverage` | Full Bricks function coverage examples with motivation, user benefit and API mapping |
 | `samples/04-bricks/member-contracts` | Member contract modeling examples |
-| `samples/04-bricks/policy-variant-cases` | Small projects for attribute-only, code, JSON and composed multi-policy variants |
+| `samples/04-bricks/policy-variant-cases` | Small projects for attribute-only, attribute multi-policy, code, JSON and composed multi-policy variants |
 | `samples/04-bricks/rule-filters` | Rule filter and custom diagnostic message examples |
 | `samples/04-bricks/source-target-cases` | Small projects for Type, Member, Namespace, Assembly, DependencyRegistration and ExternalReference source/target cases |
 | `samples/04-bricks/docs` | Consumer sample roadmap copied with the source block |

@@ -1,5 +1,6 @@
 using System.Linq;
 using NMolecules.Bricks;
+using Samples.Block04.Bricks.PolicyVariants.AttributeMultiPolicy;
 using Samples.Block04.Bricks.PolicyVariants.AttributeOnly;
 using Samples.Block04.Bricks.PolicyVariants.CodePolicy;
 using Samples.Block04.Bricks.PolicyVariants.ComposedMultiPolicy;
@@ -31,6 +32,28 @@ public sealed class PolicyVariantCaseTests
         Assert.Equal(BrickPolicyId.From(AttributePolicyIds.PaymentsPolicy), payments.Policy.Id);
         Assert.Contains(orders.Violations, violation => violation.RuleId == RuleId.From(AttributeRuleIds.OrdersDomainMustNotUseInfrastructure));
         Assert.Contains(payments.Violations, violation => violation.RuleId == RuleId.From(AttributeRuleIds.PaymentsNamespaceMustNotUseExternalGateway));
+    }
+
+    [Fact]
+    public void AttributeMultiPolicyComposesClassScopedPolicyDefinitions()
+    {
+        var result = AttributeMultiPolicyCases.EvaluateTeamPolicy();
+        var ruleIds = result.Composition.Policy.Rules.Select(rule => rule.RuleId).ToArray();
+
+        Assert.Equal(4, result.Inventory.Definitions.Count);
+        Assert.True(result.Correlation.UsesDefinitionTypeAsOwner);
+        Assert.False(result.Correlation.NeedsPolicyIdOnRuleAttributes);
+        Assert.False(result.Correlation.NeedsPolicyIdOnDependencyAttributes);
+        Assert.Empty(result.Composition.Issues);
+        Assert.Contains(result.Composition.Steps, step => step.PolicyId == BrickPolicyId.From(AttributeMultiPolicyIds.ExperimentalPolicy) && !step.Applied);
+        Assert.Contains(RuleId.From(AttributeMultiRuleIds.ApplicationMustNotUseInfrastructure), ruleIds);
+        Assert.Contains(RuleId.From(AttributeMultiRuleIds.ApplicationNamespaceMustNotUseInfrastructureNamespace), ruleIds);
+        Assert.Contains(RuleId.From(AttributeMultiRuleIds.ApplicationRequiresDomain), ruleIds);
+        Assert.DoesNotContain(RuleId.From(AttributeMultiRuleIds.ExperimentalRule), ruleIds);
+        Assert.Equal(3, result.Dependencies.Count);
+        Assert.Equal(2, result.Violations.Count);
+        Assert.Contains(result.Violations, violation => violation.RuleId == RuleId.From(AttributeMultiRuleIds.ApplicationMustNotUseInfrastructure));
+        Assert.Contains(result.Violations, violation => violation.RuleId == RuleId.From(AttributeMultiRuleIds.ApplicationNamespaceMustNotUseInfrastructureNamespace));
     }
 
     [Fact]

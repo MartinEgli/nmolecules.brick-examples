@@ -26,6 +26,7 @@
     <ProjectReference Include="..\..\samples\04-bricks\source-target-cases\member-registration-cases\Samples.Block04.Bricks.SourceTarget.MemberRegistrationCases.csproj" />
     <ProjectReference Include="..\..\samples\04-bricks\source-target-cases\namespace-assembly-external-cases\Samples.Block04.Bricks.SourceTarget.NamespaceAssemblyExternalCases.csproj" />
     <ProjectReference Include="..\..\samples\04-bricks\policy-variant-cases\attribute-only-policy-cases\Samples.Block04.Bricks.PolicyVariants.AttributeOnly.csproj" />
+    <ProjectReference Include="..\..\samples\04-bricks\policy-variant-cases\attribute-multi-policy-cases\Samples.Block04.Bricks.PolicyVariants.AttributeMultiPolicy.csproj" />
     <ProjectReference Include="..\..\samples\04-bricks\policy-variant-cases\code-policy-cases\Samples.Block04.Bricks.PolicyVariants.CodePolicy.csproj" />
     <ProjectReference Include="..\..\samples\04-bricks\policy-variant-cases\json-policy-cases\Samples.Block04.Bricks.PolicyVariants.JsonPolicy.csproj" />
     <ProjectReference Include="..\..\samples\04-bricks\policy-variant-cases\composed-multi-policy-cases\Samples.Block04.Bricks.PolicyVariants.ComposedMultiPolicy.csproj" />
