@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\nmolecules\src\nMolecules.Bricks\nMolecules.Bricks.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\nmolecules-integrations\nmolecules-roslyn\src\nMolecules.Analyzers\nMolecules.Analyzers\nMolecules.Analyzers.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+    <Analyzer Include="..\..\..\..\..\nmolecules-integrations\nmolecules-roslyn\src\nMolecules.Analyzers\nMolecules.Analyzers\bin\Debug\netstandard2.0\nMolecules.DDD.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\implementation-samples\domain-language-kits\billing\catalog\BillingRoles.cs" />
+    <Compile Include="..\..\implementation-samples\domain-language-kits\billing\roles\BillingApplicationRoleAttribute.cs" />
+    <Compile Include="..\..\implementation-samples\domain-language-kits\billing\roles\BillingDomainRoleAttribute.cs" />
+    <Compile Include="..\..\implementation-samples\domain-language-kits\billing\roles\BillingInfrastructureRoleAttribute.cs" />
+    <Compile Include="violations\BadBrickRules.Assembly.cs" />
+    <Compile Include="violations\BrickRuleSource.cs" />
+    <Compile Include="violations\BrickRuleTarget.cs" />
+  </ItemGroup>
+
+</Project>

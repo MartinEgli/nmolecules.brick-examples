@@ -22,26 +22,16 @@ The later `function-coverage` examples are new material in this repository. They
 
 | Path | Purpose |
 |---|---|
-| `samples/bricks/Samples.Block04.Bricks.csproj` | Green Bricks sample project |
-| `samples/bricks/Samples.Block04.Bricks.Violations.csproj` | Intentional violation project for analyzer diagnostics |
-| `samples/bricks/ai-governance` | AI collaboration sample for deterministic governance, attribute policies and analyzer-extension proposals |
-| `samples/bricks/ddd-building` | Focused example for building a DDD slice with Bricks roles and rules |
-| `samples/bricks/domain-language-kits/billing` | Billing role/rule vocabulary plus domain walkthrough |
-| `samples/bricks/function-coverage` | Full Bricks function coverage examples with motivation, user benefit and API mapping |
-| `samples/bricks/class-contracts` | Class-scoped contract examples with valid and violation paths |
-| `samples/bricks/interface-contracts` | Interface-targeted contract examples |
-| `samples/bricks/namespace-contracts` | Namespace-level contract examples with modeled namespace role assignments |
-| `samples/bricks/member-contracts` | Member contract modeling examples split into small projects |
-| `samples/bricks/policy-variant-cases` | Small projects for attribute-only, attribute multi-policy, code, JSON and composed multi-policy variants |
-| `samples/bricks/rule-filters` | Rule filter and custom diagnostic message examples |
-| `samples/bricks/source-target-cases` | Small projects for Type, Member, Namespace, Assembly, DependencyRegistration and ExternalReference source/target cases |
+| `samples/bricks/analyzer-samples` | Projects that exist to trigger and inspect analyzer diagnostics. |
+| `samples/bricks/implementation-samples` | Green Bricks implementation samples for roles, rules, policies, contracts and domain-language kits. |
+| `samples/bricks/implementation-samples/implementation-analyzer-samples` | Reserved area for analyzer diagnostics that validate custom Brick implementations and domain-language kits. |
 | `samples/bricks/docs` | Consumer sample roadmap copied with the source block |
 
 ## Bricks Function Coverage
 
 The focused coverage entry point is:
 
-- `samples/bricks/function-coverage/README.md`
+- `samples/bricks/implementation-samples/function-coverage/README.md`
 
 That section maps Bricks function families to concrete, buildable examples:
 
@@ -78,4 +68,4 @@ That keeps the examples aligned with the in-flight workspace sources. If this re
 
 ## Intentional Violations
 
-`Samples.Block04.Bricks.Violations.csproj` is expected to emit analyzer diagnostics. Use it to inspect invalid rule declarations and forbidden dependency examples; do not treat that project as part of the green build path.
+`samples/bricks/analyzer-samples/brick-policy-violations/Samples.Block04.Bricks.Violations.csproj` is expected to emit analyzer diagnostics. Use it to inspect invalid rule declarations and forbidden dependency examples; do not treat that project as part of the green build path.

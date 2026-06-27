@@ -21,27 +21,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\samples\bricks\Samples.Block04.Bricks.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\class-contracts\Samples.Block04.Bricks.ClassContracts.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\interface-contracts\Samples.Block04.Bricks.InterfaceContracts.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\namespace-contracts\Samples.Block04.Bricks.NamespaceContracts.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\member-contracts\only-one-case\Samples.Block04.Bricks.MemberContracts.OnlyOne.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\member-contracts\exactly-two-case\Samples.Block04.Bricks.MemberContracts.ExactlyTwo.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\member-contracts\all-members-case\Samples.Block04.Bricks.MemberContracts.AllMembers.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\member-contracts\exclusive-choice-case\Samples.Block04.Bricks.MemberContracts.ExclusiveChoice.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\member-contracts\range-case\Samples.Block04.Bricks.MemberContracts.Range.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\member-contracts\forbid-case\Samples.Block04.Bricks.MemberContracts.Forbid.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\member-contracts\catalog\Samples.Block04.Bricks.MemberContracts.Catalog.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\source-target-cases\type-cases\Samples.Block04.Bricks.SourceTarget.TypeCases.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\source-target-cases\member-registration-cases\Samples.Block04.Bricks.SourceTarget.MemberRegistrationCases.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\source-target-cases\namespace-assembly-external-cases\Samples.Block04.Bricks.SourceTarget.NamespaceAssemblyExternalCases.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\policy-variant-cases\attribute-only-policy-cases\Samples.Block04.Bricks.PolicyVariants.AttributeOnly.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\policy-variant-cases\attribute-multi-policy-cases\Samples.Block04.Bricks.PolicyVariants.AttributeMultiPolicy.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\policy-variant-cases\code-policy-cases\Samples.Block04.Bricks.PolicyVariants.CodePolicy.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\policy-variant-cases\json-policy-cases\Samples.Block04.Bricks.PolicyVariants.JsonPolicy.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\policy-variant-cases\composed-multi-policy-cases\Samples.Block04.Bricks.PolicyVariants.ComposedMultiPolicy.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\enum-coverage-cases\attribute-only-enum-cases\Samples.Block04.Bricks.EnumCoverage.AttributeOnly.csproj" />
-    <ProjectReference Include="..\..\samples\bricks\enum-coverage-cases\code-enum-cases\Samples.Block04.Bricks.EnumCoverage.Code.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\Samples.Block04.Bricks.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\class-contracts\Samples.Block04.Bricks.ClassContracts.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\interface-contracts\Samples.Block04.Bricks.InterfaceContracts.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\namespace-contracts\Samples.Block04.Bricks.NamespaceContracts.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\member-contracts\only-one-case\Samples.Block04.Bricks.MemberContracts.OnlyOne.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\member-contracts\exactly-two-case\Samples.Block04.Bricks.MemberContracts.ExactlyTwo.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\member-contracts\all-members-case\Samples.Block04.Bricks.MemberContracts.AllMembers.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\member-contracts\exclusive-choice-case\Samples.Block04.Bricks.MemberContracts.ExclusiveChoice.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\member-contracts\range-case\Samples.Block04.Bricks.MemberContracts.Range.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\member-contracts\forbid-case\Samples.Block04.Bricks.MemberContracts.Forbid.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\member-contracts\catalog\Samples.Block04.Bricks.MemberContracts.Catalog.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\source-target-cases\type-cases\Samples.Block04.Bricks.SourceTarget.TypeCases.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\source-target-cases\member-registration-cases\Samples.Block04.Bricks.SourceTarget.MemberRegistrationCases.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\source-target-cases\namespace-assembly-external-cases\Samples.Block04.Bricks.SourceTarget.NamespaceAssemblyExternalCases.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\policy-variant-cases\attribute-only-policy-cases\Samples.Block04.Bricks.PolicyVariants.AttributeOnly.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\policy-variant-cases\attribute-multi-policy-cases\Samples.Block04.Bricks.PolicyVariants.AttributeMultiPolicy.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\policy-variant-cases\code-policy-cases\Samples.Block04.Bricks.PolicyVariants.CodePolicy.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\policy-variant-cases\json-policy-cases\Samples.Block04.Bricks.PolicyVariants.JsonPolicy.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\policy-variant-cases\composed-multi-policy-cases\Samples.Block04.Bricks.PolicyVariants.ComposedMultiPolicy.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\enum-coverage-cases\attribute-only-enum-cases\Samples.Block04.Bricks.EnumCoverage.AttributeOnly.csproj" />
+    <ProjectReference Include="..\..\samples\bricks\implementation-samples\enum-coverage-cases\code-enum-cases\Samples.Block04.Bricks.EnumCoverage.Code.csproj" />
   </ItemGroup>
 
 </Project>
