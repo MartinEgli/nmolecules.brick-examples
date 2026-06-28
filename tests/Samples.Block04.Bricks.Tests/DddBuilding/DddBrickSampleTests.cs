@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NMolecules.Bricks;
@@ -22,6 +23,7 @@ public sealed class DddBrickSampleTests
     {
         { typeof(DddAggregateRootAttribute), AttributeTargets.Class | AttributeTargets.Struct },
         { typeof(DddEntityAttribute), AttributeTargets.Class },
+        { typeof(DddIdentifierAttribute), AttributeTargets.Field | AttributeTargets.Property },
         { typeof(DddValueObjectAttribute), AttributeTargets.Class | AttributeTargets.Struct },
         { typeof(DddRepositoryAttribute), AttributeTargets.Class | AttributeTargets.Interface },
         { typeof(DddFactoryAttribute), AttributeTargets.Class },
@@ -59,6 +61,68 @@ public sealed class DddBrickSampleTests
         AssertRoleAlias<DddDomainServiceAttribute>(DddBrickRoles.DomainService);
         AssertRoleAlias<DddApplicationServiceAttribute>(DddBrickRoles.ApplicationService);
         AssertRoleAlias<DddInfrastructureAttribute>(DddBrickRoles.Infrastructure);
+    }
+
+    /// <summary>
+    /// Verifies that aggregate and entity role markers also carry a type
+    /// contract: exactly one explicit identifier member is required.
+    /// </summary>
+    [Fact]
+    public void DddAggregateAndEntityMarkersRequireExactlyOneIdentifier()
+    {
+        AssertExactlyOneIdentifierContract<DddAggregateRootAttribute>();
+        AssertExactlyOneIdentifierContract<DddEntityAttribute>();
+    }
+
+    /// <summary>
+    /// Verifies that the concrete aggregate and entity samples satisfy the
+    /// identifier contract without relying on the member name.
+    /// </summary>
+    [Fact]
+    public void DddAggregateAndEntitySamplesDeclareExactlyOneIdentifier()
+    {
+        AssertSingleIdentifier<Contract>();
+        AssertSingleIdentifier<ContractLine>();
+        Assert.Empty(EvaluateMemberContracts(typeof(Contract)));
+        Assert.Empty(EvaluateMemberContracts(typeof(ContractLine)));
+    }
+
+    /// <summary>
+    /// Verifies that missing or duplicated identifiers are reported as
+    /// cardinality violations by the Bricks member-contract runtime.
+    /// </summary>
+    [Fact]
+    public void DddIdentifierContractReportsMissingAndDuplicateIdentifiers()
+    {
+        var missing = EvaluateMemberContracts(typeof(MissingIdentifierAggregate));
+        var duplicate = EvaluateMemberContracts(typeof(DuplicateIdentifierAggregate));
+
+        Assert.Collection(
+            missing,
+            violation =>
+            {
+                Assert.Equal(BrickViolationKind.MemberCardinality, violation.Kind);
+                Assert.Equal("RequireExactlyOneMember", violation.RuleName);
+                Assert.Equal("MissingIdentifierAggregate must declare exactly one member marked with DddIdentifierAttribute.", violation.Message);
+            });
+        Assert.Collection(
+            duplicate,
+            violation =>
+            {
+                Assert.Equal(BrickViolationKind.MemberCardinality, violation.Kind);
+                Assert.Equal("RequireExactlyOneMember", violation.RuleName);
+                Assert.Equal("DuplicateIdentifierAggregate must declare exactly one member marked with DddIdentifierAttribute.", violation.Message);
+            });
+    }
+
+    /// <summary>
+    /// Verifies that the contract is marker-based: the identifier member does
+    /// not need to be named Id.
+    /// </summary>
+    [Fact]
+    public void DddIdentifierContractAcceptsSingleIdentifierWithDomainName()
+    {
+        Assert.Empty(EvaluateMemberContracts(typeof(EntityWithNaturalNumberIdentifier)));
     }
 
     /// <summary>
@@ -274,6 +338,48 @@ public sealed class DddBrickSampleTests
         Assert.Equal(RoleId.From(expectedRole), alias.RoleId);
     }
 
+    private static void AssertExactlyOneIdentifierContract<TAttribute>()
+        where TAttribute : Attribute
+    {
+        var contract = typeof(TAttribute).GetCustomAttributes<RequireExactlyOneMemberAttribute>(inherit: false).Single();
+
+        Assert.Equal(typeof(DddIdentifierAttribute), contract.MemberAttributeType);
+    }
+
+    private static void AssertSingleIdentifier<TType>() =>
+        Assert.Equal(1, CountIdentifierMembers(typeof(TType)));
+
+    private static IReadOnlyList<BrickViolation> EvaluateMemberContracts(Type sampleType)
+    {
+        var element = new BrickElement(
+            BrickElementId.From(sampleType.FullName ?? sampleType.Name),
+            BrickElementKind.Type,
+            sampleType.Name,
+            sampleType.Assembly.GetName().Name,
+            sampleType.Namespace,
+            sampleType.FullName);
+
+        return BrickMemberCardinalityEvaluator.Evaluate(
+            element,
+            GetMemberContracts(sampleType),
+            new Dictionary<Type, int>
+            {
+                [typeof(DddIdentifierAttribute)] = CountIdentifierMembers(sampleType)
+            });
+    }
+
+    private static IReadOnlyList<Attribute> GetMemberContracts(Type sampleType) =>
+        sampleType.GetCustomAttributes(inherit: false)
+            .SelectMany(attribute => attribute.GetType().GetCustomAttributes(inherit: false))
+            .OfType<Attribute>()
+            .Where(attribute => attribute is RequireExactlyOneMemberAttribute)
+            .ToArray();
+
+    private static int CountIdentifierMembers(Type sampleType) =>
+        sampleType.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            .Where(member => member.DeclaringType == sampleType)
+            .Count(member => member.GetCustomAttributes<DddIdentifierAttribute>(inherit: false).Any());
+
     private static void AssertRole<TType, TAttribute>(string expectedRole)
         where TAttribute : RoleAttribute
     {
@@ -282,5 +388,27 @@ public sealed class DddBrickSampleTests
         Assert.NotNull(role);
         Assert.Equal(expectedRole, role!.Name);
         Assert.Equal(RoleId.From(expectedRole), role.Id);
+    }
+
+    [DddAggregateRoot]
+    private sealed class MissingIdentifierAggregate
+    {
+    }
+
+    [DddAggregateRoot]
+    private sealed class DuplicateIdentifierAggregate
+    {
+        [DddIdentifier]
+        public string BusinessKey { get; } = string.Empty;
+
+        [DddIdentifier]
+        public string LegacyKey { get; } = string.Empty;
+    }
+
+    [DddEntity]
+    private sealed class EntityWithNaturalNumberIdentifier
+    {
+        [DddIdentifier]
+        public string ContractLineNumber { get; } = string.Empty;
     }
 }

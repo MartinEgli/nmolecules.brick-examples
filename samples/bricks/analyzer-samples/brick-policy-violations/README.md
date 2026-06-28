@@ -18,3 +18,5 @@ dotnet build .\samples\bricks\analyzer-samples\brick-policy-violations\Samples.B
 ```
 
 Do not add this project to the green solution path.
+
+Expected result: the build fails with one `XMoleculesBricks0001` error and one `XMoleculesBricks0002` warning from the integration analyzer.

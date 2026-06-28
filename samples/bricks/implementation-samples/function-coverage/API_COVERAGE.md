@@ -2,6 +2,13 @@
 
 Coverage means every public Bricks function family has at least one buildable example or one intentional diagnostic example in this repository. The examples are grouped by user-facing purpose rather than by internal source file.
 
+The executable family contract is `coverage/bricks-api-family-coverage.json`.
+It lists every public Bricks source area and public type, including
+`Dependencies`, `Rules`, `Profiles`, `Policies`, `Runtime`, `Reports`,
+`Visibility`, `Reflection`, `AI`, and the supporting core model. The
+`Samples.Block04.Bricks.Tests` project compares that matrix with the current
+source tree and the sample evidence paths.
+
 | API family | Covered by | User-facing scenario |
 |---|---|---|
 | Attribute markers: `RoleAttribute`, `RoleAliasAttribute`, `PolicyAttribute`, `PolicyImportAttribute`, `RoleCombinationAttribute`, `RuleAttribute`, `DependencyAttribute`, `RuleFilterAttribute`, member-cardinality attributes | `domain-language-kits/`, `ddd-building/`, `class-contracts/`, `interface-contracts/`, `member-contracts/`, `rule-filters/`, `violations/` | Consumers mark roles, aliases, policies, imports, role combinations, rules, dependencies, filters and member contracts directly in code. |
@@ -15,7 +22,7 @@ Coverage means every public Bricks function family has at least one buildable ex
 | Role assignment, role resolution, precedence, conflicts and role-combination rules | `PolicyAndResolutionExamples.cs`, `ConfigurationExamples.cs` | Teams can combine direct attributes, aliases, policy files and conventions while seeing conflicts. |
 | Rule evaluation | `PolicyAndResolutionExamples.cs` | Deterministic enforcement produces violations from observed dependencies and resolved roles. |
 | Element contracts by scope | `class-contracts/`, `interface-contracts/`, `namespace-contracts/`, `member-contracts/` | Teams can express contracts at class, interface, namespace and member level while seeing which scopes use source attributes and which require modeled policy assignments. |
-| Member-cardinality evaluation | `member-contracts/` | Custom role ecosystems can require exactly one, all, count-based or exclusive member markers. |
+| Member-cardinality evaluation | `member-contracts/` | Custom role ecosystems can require exactly one, all, count-based, range-based, exclusive, forbidden, required named or unique named member markers. |
 | Adoption, suppressions, baselines and violation-state projection | `RuntimeAndExportExamples.cs` | Legacy violations can be accepted or suppressed with owner, justification and expiry. |
 | Reports, JSON and SARIF | `RuntimeAndExportExamples.cs` | CI, dashboards and security tooling can consume normalized Bricks output. |
 | Exports: role map, dependency graph and resolution trace | `RuntimeAndExportExamples.cs` | Architecture tooling can visualize roles, dependencies and resolution decisions. |
@@ -33,9 +40,10 @@ Coverage means every public Bricks function family has at least one buildable ex
 | Attribute-role bridge and DDD bridge | `ConfigurationExamples.cs` | Existing nMolecules DDD attributes can be translated to Bricks roles. |
 | Diagnostic ID governance | `PolicyAndResolutionExamples.cs` | Rule IDs remain stable and discoverable by range. |
 | Benchmark cases, runner, reports and comparison reports | `BenchmarkAndAiExamples.cs` | CI can detect feedback-loop regressions for central Bricks operations. |
-| AI-assisted violation comments, remediation options, rule proposals and trust boundaries | `BenchmarkAndAiExamples.cs`, `ai-governance/` | AI can explain deterministic findings and propose analyzer extensions without silently changing policy or enforcement. |
+| AI-assisted violation comments, remediation options, markdown/JSON comments, proposal queues, reviewed rule promotion, CI configuration and trust boundaries | `BenchmarkAndAiExamples.cs`, `ai-governance/` | AI can explain deterministic findings, persist proposal queues, render review comments and promote proposals only through explicit human review without silently changing policy or enforcement. |
 | AI governance for analyzer extension workflows | `ai-governance/` | Architects can require human review, analyzer fixtures, benchmark guardrails and explicit exception handling before AI-suggested rules become diagnostics. |
 | AI governance from attribute policies | `ai-governance/`, `ddd-building/` | AI can derive review packets from `[assembly: Policy]`, `[assembly: Rule]` and `[assembly: Dependency]` declarations while the attributes stay the source of truth. |
+| Clean violation catalog for every public API family and enum variation family | `ViolationExamples.cs` plus analyzer violation projects | Every Bricks family has a concrete violation story. Analyzer-backed entries point to intentional failing projects; runtime-backed entries model the violation state in buildable sample code. |
 
 ## Verification
 
@@ -46,3 +54,10 @@ dotnet build .\nMolecules.BrickExamples.slnx -v minimal
 ```
 
 Intentional analyzer failures remain isolated in `Samples.Block04.Bricks.Violations.csproj`.
+
+The test command verifies that the public API family coverage matrix, enum
+variation matrix and violation-example catalog stay complete:
+
+```powershell
+dotnet test .\tests\Samples.Block04.Bricks.Tests\Samples.Block04.Bricks.Tests.csproj -v minimal
+```

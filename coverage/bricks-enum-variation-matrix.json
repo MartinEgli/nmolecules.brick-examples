@@ -1,0 +1,522 @@
+{
+  "schemaVersion": 1,
+  "status": "active",
+  "description": "Meaningful Bricks enum variation families. Each public enum value must appear in at least one row, and every row must point to executable samples or tracked documentation.",
+  "families": [
+    {
+      "id": "element-classification",
+      "name": "Element classification and source modeling",
+      "support": "runtime-backed",
+      "enums": [
+        "BrickElementKind",
+        "BrickScope",
+        "BrickElementOrigin",
+        "BrickElementSource"
+      ],
+      "samples": [
+        {
+          "id": "sample-brick-model",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/SampleBrickModel.cs"
+        },
+        {
+          "id": "source-target-cases",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/source-target-cases"
+        }
+      ],
+      "rows": [
+        {
+          "id": "source-code-elements",
+          "name": "Source code elements observed at normal code boundaries",
+          "outcome": "pass",
+          "evidence": "source-target-cases",
+          "values": {
+            "BrickElementKind": [ "Assembly", "Namespace", "Type", "Member", "Attribute" ],
+            "BrickScope": [ "Assembly", "Namespace", "Type", "Member" ],
+            "BrickElementOrigin": [ "Source" ],
+            "BrickElementSource": [ "Code", "Convention" ]
+          }
+        },
+        {
+          "id": "configured-and-external-elements",
+          "name": "Configured dependency registrations and external references",
+          "outcome": "pass",
+          "evidence": "source-target-cases",
+          "values": {
+            "BrickElementKind": [ "DependencyRegistration", "ExternalReference" ],
+            "BrickScope": [ "Global" ],
+            "BrickElementOrigin": [ "Generated", "External", "Metadata" ],
+            "BrickElementSource": [ "Configuration", "Inference", "Import" ]
+          }
+        },
+        {
+          "id": "unknown-element-boundary",
+          "name": "Unknown element metadata is explicit instead of silently inferred",
+          "outcome": "documentation",
+          "evidence": "sample-brick-model",
+          "values": {
+            "BrickElementKind": [ "Unknown" ],
+            "BrickElementOrigin": [ "Unknown" ],
+            "BrickElementSource": [ "Unknown" ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "dependency-policy",
+      "name": "Dependency policy decisions and observation evidence",
+      "support": "analyzer-backed",
+      "enums": [
+        "RuleMode",
+        "BrickDecision",
+        "BrickDependencyLayer",
+        "BrickDependencyStrength",
+        "BrickEvidenceLevel",
+        "BrickDependencyCoverageStatus"
+      ],
+      "samples": [
+        {
+          "id": "policy-resolution-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/PolicyAndResolutionExamples.cs"
+        },
+        {
+          "id": "runtime-export-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/RuntimeAndExportExamples.cs"
+        },
+        {
+          "id": "dependency-rule-violations",
+          "kind": "violation",
+          "path": "samples/bricks/analyzer-samples/dependency-rule-evaluation/Samples.Bricks.Analyzers.DependencyRuleEvaluation.csproj",
+          "expectedDiagnostics": "3 XMoleculesBricks0001 errors"
+        }
+      ],
+      "rows": [
+        {
+          "id": "static-direct-forbid",
+          "name": "Static direct dependencies are denied by forbid rules",
+          "outcome": "violation",
+          "evidence": "dependency-rule-violations",
+          "values": {
+            "RuleMode": [ "ForbidDependency" ],
+            "BrickDecision": [ "Deny" ],
+            "BrickDependencyLayer": [ "Static" ],
+            "BrickDependencyStrength": [ "Direct" ],
+            "BrickEvidenceLevel": [ "CompilerConfirmed" ],
+            "BrickDependencyCoverageStatus": [ "Covered" ]
+          }
+        },
+        {
+          "id": "required-runtime-or-visibility",
+          "name": "Runtime and visibility dependencies can be required or allowed with partial evidence",
+          "outcome": "pass",
+          "evidence": "runtime-export-examples",
+          "values": {
+            "RuleMode": [ "RequireDependency" ],
+            "BrickDecision": [ "Allow", "Require" ],
+            "BrickDependencyLayer": [ "Visibility", "Runtime" ],
+            "BrickDependencyStrength": [ "Indirect", "Inferred" ],
+            "BrickEvidenceLevel": [ "AnalyzerInferred", "RuntimeInferred" ],
+            "BrickDependencyCoverageStatus": [ "PartiallyObservable", "InsufficientEvidence" ]
+          }
+        },
+        {
+          "id": "configuration-declared-dependencies",
+          "name": "Configuration dependencies are declared and may remain unobservable in code",
+          "outcome": "documentation",
+          "evidence": "policy-resolution-examples",
+          "values": {
+            "BrickDependencyLayer": [ "Configuration" ],
+            "BrickEvidenceLevel": [ "ConfigurationDeclared", "Unknown" ],
+            "BrickDependencyCoverageStatus": [ "NotObservable" ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "violation-enforcement",
+      "name": "Violation kind, state, severity and lifecycle enforcement",
+      "support": "analyzer-backed",
+      "enums": [
+        "BrickViolationKind",
+        "BrickViolationState",
+        "BrickSeverity",
+        "BrickEnforcementMode",
+        "BrickRuleLifecycleState"
+      ],
+      "samples": [
+        {
+          "id": "dependency-rule-violations",
+          "kind": "violation",
+          "path": "samples/bricks/analyzer-samples/dependency-rule-evaluation/Samples.Bricks.Analyzers.DependencyRuleEvaluation.csproj",
+          "expectedDiagnostics": "3 XMoleculesBricks0001 errors"
+        },
+        {
+          "id": "member-contract-violations",
+          "kind": "violation",
+          "path": "samples/bricks/analyzer-samples/member-contract-validation/Samples.Bricks.Analyzers.MemberContractValidation.csproj",
+          "expectedDiagnostics": "5 member contract errors"
+        },
+        {
+          "id": "runtime-export-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/RuntimeAndExportExamples.cs"
+        }
+      ],
+      "rows": [
+        {
+          "id": "active-enforced-errors",
+          "name": "Active enforced violations are analyzer errors",
+          "outcome": "violation",
+          "evidence": "dependency-rule-violations",
+          "values": {
+            "BrickViolationKind": [ "DependencyRule", "RequiredDependency", "MemberCardinality" ],
+            "BrickViolationState": [ "Active" ],
+            "BrickSeverity": [ "Error" ],
+            "BrickEnforcementMode": [ "Enforce" ],
+            "BrickRuleLifecycleState": [ "Enforced" ]
+          }
+        },
+        {
+          "id": "observed-policy-warnings",
+          "name": "Observed policy and role issues can be warnings before enforcement",
+          "outcome": "violation",
+          "evidence": "member-contract-violations",
+          "values": {
+            "BrickViolationKind": [ "RoleResolution", "RoleCombination", "PolicyConfiguration" ],
+            "BrickSeverity": [ "Warning" ],
+            "BrickEnforcementMode": [ "Analyze" ],
+            "BrickRuleLifecycleState": [ "Observing", "Warning" ]
+          }
+        },
+        {
+          "id": "documented-adoption-states",
+          "name": "Adoption states keep suppressions and baselines explicit",
+          "outcome": "pass",
+          "evidence": "runtime-export-examples",
+          "values": {
+            "BrickViolationKind": [ "Baseline", "Suppression" ],
+            "BrickViolationState": [ "Suppressed", "Baselined", "ExpiredSuppression", "ExpiredBaseline" ],
+            "BrickSeverity": [ "Info" ],
+            "BrickEnforcementMode": [ "Disabled", "Document" ],
+            "BrickRuleLifecycleState": [ "Candidate", "Draft", "Rejected", "Deprecated" ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "role-assignment",
+      "name": "Role assignment source, precedence and behavior",
+      "support": "runtime-backed",
+      "enums": [
+        "BrickAssignmentMode",
+        "BrickAssignmentSource",
+        "BrickAssignmentSpecificity",
+        "BrickAssignmentAuthority",
+        "BrickAssignmentBehavior"
+      ],
+      "samples": [
+        {
+          "id": "policy-resolution-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/PolicyAndResolutionExamples.cs"
+        },
+        {
+          "id": "configuration-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/ConfigurationExamples.cs"
+        },
+        {
+          "id": "generic-role-combination-violations",
+          "kind": "violation",
+          "path": "samples/bricks/analyzer-samples/generic-role-combinations/Samples.Bricks.Analyzers.GenericRoleCombinations.csproj",
+          "expectedDiagnostics": "6 XMoleculesBricks0001 errors"
+        }
+      ],
+      "rows": [
+        {
+          "id": "direct-source-role",
+          "name": "Direct source attributes apply element-specific roles",
+          "outcome": "pass",
+          "evidence": "policy-resolution-examples",
+          "values": {
+            "BrickAssignmentMode": [ "DirectAttribute" ],
+            "BrickAssignmentSource": [ "SourceAttribute" ],
+            "BrickAssignmentSpecificity": [ "Element" ],
+            "BrickAssignmentAuthority": [ "Direct" ],
+            "BrickAssignmentBehavior": [ "Apply" ]
+          }
+        },
+        {
+          "id": "external-policy-role",
+          "name": "External policy files assign or suppress namespace and assembly roles",
+          "outcome": "pass",
+          "evidence": "configuration-examples",
+          "values": {
+            "BrickAssignmentMode": [ "ExternalConfiguration" ],
+            "BrickAssignmentSource": [ "PolicyFile" ],
+            "BrickAssignmentSpecificity": [ "Namespace", "Assembly" ],
+            "BrickAssignmentAuthority": [ "External" ],
+            "BrickAssignmentBehavior": [ "Apply", "Suppress" ]
+          }
+        },
+        {
+          "id": "derived-convention-role",
+          "name": "Derived convention and inference assignments remain lower precedence",
+          "outcome": "documentation",
+          "evidence": "configuration-examples",
+          "values": {
+            "BrickAssignmentMode": [ "Convention", "Inference" ],
+            "BrickAssignmentSource": [ "Convention", "Inference" ],
+            "BrickAssignmentSpecificity": [ "Convention", "Inference" ],
+            "BrickAssignmentAuthority": [ "Derived" ],
+            "BrickAssignmentBehavior": [ "Apply" ]
+          }
+        },
+        {
+          "id": "alias-package-generated-role",
+          "name": "Alias, package and generated role assignments are explicit sources",
+          "outcome": "violation",
+          "evidence": "generic-role-combination-violations",
+          "values": {
+            "BrickAssignmentMode": [ "AliasMapping", "ImportedPack", "Generated" ],
+            "BrickAssignmentSource": [ "AliasMapping", "Package", "Generator" ],
+            "BrickAssignmentSpecificity": [ "Element" ],
+            "BrickAssignmentAuthority": [ "Alias" ],
+            "BrickAssignmentBehavior": [ "Apply" ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "policy-composition",
+      "name": "Policy imports, defaults, configuration sources and role combinations",
+      "support": "runtime-backed",
+      "enums": [
+        "BrickPolicyImportMode",
+        "BrickConfigurationSourceKind",
+        "BrickCombinationKind",
+        "BrickPermissionDefault"
+      ],
+      "samples": [
+        {
+          "id": "policy-variant-cases",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/policy-variant-cases"
+        },
+        {
+          "id": "configuration-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/ConfigurationExamples.cs"
+        }
+      ],
+      "rows": [
+        {
+          "id": "policy-import-resolution",
+          "name": "Policy imports can import, extend, override, disable or narrow defaults",
+          "outcome": "pass",
+          "evidence": "policy-variant-cases",
+          "values": {
+            "BrickPolicyImportMode": [ "Import", "Extend", "Override", "Disable", "Narrow" ],
+            "BrickPermissionDefault": [ "Allow", "Deny" ]
+          }
+        },
+        {
+          "id": "configuration-source-precedence",
+          "name": "Configuration sources participate in a deterministic precedence chain",
+          "outcome": "pass",
+          "evidence": "configuration-examples",
+          "values": {
+            "BrickConfigurationSourceKind": [ "Generated", "Package", "PolicyFile", "MSBuild", "AnalyzerConfig", "SourceAnnotation" ]
+          }
+        },
+        {
+          "id": "role-combination-kinds",
+          "name": "Role combinations distinguish additive, exclusive and incompatible meanings",
+          "outcome": "pass",
+          "evidence": "policy-variant-cases",
+          "values": {
+            "BrickCombinationKind": [ "Additive", "Exclusive", "Incompatible" ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "governance-status",
+      "name": "Governance areas and requirement status reporting",
+      "support": "runtime-backed",
+      "enums": [
+        "BrickGovernanceArea",
+        "BrickGovernanceAreaStatus",
+        "BrickGovernanceRequirementStatus"
+      ],
+      "samples": [
+        {
+          "id": "governance-readiness-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/GovernanceAndReadinessExamples.cs"
+        }
+      ],
+      "rows": [
+        {
+          "id": "governance-areas",
+          "name": "Governance tracks policy ownership, exceptions, evolution and compatibility",
+          "outcome": "report",
+          "evidence": "governance-readiness-examples",
+          "values": {
+            "BrickGovernanceArea": [ "PolicyOwnership", "ExceptionHandling", "RolePackEvolution", "CompatibilityExpectations" ],
+            "BrickGovernanceAreaStatus": [ "Compliant", "Partial", "NonCompliant" ],
+            "BrickGovernanceRequirementStatus": [ "Satisfied", "Missing", "NotApplicable" ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "conformance-status",
+      "name": "Conformance levels and capability status reporting",
+      "support": "runtime-backed",
+      "enums": [
+        "BrickConformanceLevel",
+        "BrickConformanceLevelStatus",
+        "BrickConformanceCapabilityStatus"
+      ],
+      "samples": [
+        {
+          "id": "governance-readiness-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/GovernanceAndReadinessExamples.cs"
+        }
+      ],
+      "rows": [
+        {
+          "id": "conformance-levels",
+          "name": "Conformance reports cover each maturity level and capability status",
+          "outcome": "report",
+          "evidence": "governance-readiness-examples",
+          "values": {
+            "BrickConformanceLevel": [ "Marking", "StaticValidation", "Explainability", "PolicyFiles", "RuntimeAwareAnalysis", "IntegrationAndAugmentation" ],
+            "BrickConformanceLevelStatus": [ "Achieved", "Partial", "NotStarted" ],
+            "BrickConformanceCapabilityStatus": [ "Satisfied", "Missing", "NotApplicable" ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "roadmap-status",
+      "name": "Roadmap stage and item status reporting",
+      "support": "runtime-backed",
+      "enums": [
+        "BrickRoadmapStage",
+        "BrickRoadmapStageStatus",
+        "BrickRoadmapItemStatus"
+      ],
+      "samples": [
+        {
+          "id": "governance-readiness-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/GovernanceAndReadinessExamples.cs"
+        }
+      ],
+      "rows": [
+        {
+          "id": "roadmap-stages",
+          "name": "Roadmap reports distinguish staged delivery and item status",
+          "outcome": "report",
+          "evidence": "governance-readiness-examples",
+          "values": {
+            "BrickRoadmapStage": [ "V1", "V1_1", "V1_2", "V2" ],
+            "BrickRoadmapStageStatus": [ "Complete", "Partial", "NotStarted" ],
+            "BrickRoadmapItemStatus": [ "Completed", "Missing", "NotRequired" ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "benchmark-status",
+      "name": "Benchmark subject, budget status and comparison status",
+      "support": "runtime-backed",
+      "enums": [
+        "BrickBenchmarkSubject",
+        "BrickBenchmarkStatus",
+        "BrickBenchmarkComparisonStatus"
+      ],
+      "samples": [
+        {
+          "id": "benchmark-ai-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/BenchmarkAndAiExamples.cs"
+        }
+      ],
+      "rows": [
+        {
+          "id": "benchmark-reporting",
+          "name": "Benchmark reports cover subjects, budgets and baseline comparisons",
+          "outcome": "report",
+          "evidence": "benchmark-ai-examples",
+          "values": {
+            "BrickBenchmarkSubject": [ "RuleEvaluation", "RoleResolution", "PolicyComposition", "ViolationProjection", "RuntimeDependencyEvaluation", "ReportSerialization" ],
+            "BrickBenchmarkStatus": [ "WithinBudget", "OverBudget", "NotBudgeted" ],
+            "BrickBenchmarkComparisonStatus": [ "Stable", "Improved", "Regressed", "NoBaseline" ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "ai-remediation",
+      "name": "AI assistance, remediation options and reflection confidence",
+      "support": "runtime-backed",
+      "enums": [
+        "BrickAiMode",
+        "BrickAiCommentFormat",
+        "BrickRemediationKind",
+        "BrickRemediationRisk",
+        "BrickReflectionConfidence"
+      ],
+      "samples": [
+        {
+          "id": "benchmark-ai-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/function-coverage/BenchmarkAndAiExamples.cs"
+        },
+        {
+          "id": "ai-governance-examples",
+          "kind": "pass",
+          "path": "samples/bricks/implementation-samples/ai-governance"
+        }
+      ],
+      "rows": [
+        {
+          "id": "ai-comment-modes",
+          "name": "AI comments can be disabled, explanatory or rule-suggesting with explicit output format",
+          "outcome": "pass",
+          "evidence": "benchmark-ai-examples",
+          "values": {
+            "BrickAiMode": [ "Off", "Explain", "SuggestRules" ],
+            "BrickAiCommentFormat": [ "Markdown", "Json", "Both" ]
+          }
+        },
+        {
+          "id": "remediation-options",
+          "name": "Remediation options describe architecture fixes and their implementation risk",
+          "outcome": "pass",
+          "evidence": "ai-governance-examples",
+          "values": {
+            "BrickRemediationKind": [ "IntroduceContract", "MoveElement", "SplitRole", "AddPortAndAdapter", "ChangeDependencyDirection", "MoveToCompositionRoot", "AdjustPolicy", "AddSuppression", "AddBaselineEntry", "RenameOrReclassifyElement" ],
+            "BrickRemediationRisk": [ "Low", "Medium", "High" ]
+          }
+        },
+        {
+          "id": "reflection-confidence",
+          "name": "Reflection confidence is tracked separately from deterministic static evidence",
+          "outcome": "pass",
+          "evidence": "benchmark-ai-examples",
+          "values": {
+            "BrickReflectionConfidence": [ "Low", "Medium", "High" ]
+          }
+        }
+      ]
+    }
+  ]
+}

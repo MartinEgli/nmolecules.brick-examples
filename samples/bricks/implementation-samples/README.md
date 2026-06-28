@@ -3,6 +3,8 @@
 These samples show how to implement architecture rules with `NMolecules.Bricks`.
 They are green examples and belong to the normal build and test path.
 
+For the simple-to-complex learning order, see `SAMPLE_PATH.md`.
+
 ## Project Map
 
 | Project or folder | What it demonstrates |

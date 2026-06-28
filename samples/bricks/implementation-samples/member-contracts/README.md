@@ -10,8 +10,12 @@ Each use case is its own small project:
 - `exclusive-choice-case`
 - `range-case`
 - `forbid-case`
+- `required-named-case`
+- `unique-named-case`
 
-The projects intentionally mix analyzer-backed contracts that produce Roslyn diagnostics today and concept samples that document useful future patterns.
+The projects intentionally cover every shipped member-contract family with
+valid and invalid examples that are evaluated by the Bricks runtime and analyzer
+tests.
 
 ## Coverage Matrix
 
@@ -21,9 +25,13 @@ The projects intentionally mix analyzer-backed contracts that produce Roslyn dia
 | Exact member count | `RequireMemberCountAttribute` | Yes | `ExactlyTwoValidSample` | `ExactlyTwoTooFewSample`, `ExactlyTwoTooManySample` | Shows that the configured count is exact, not a minimum. |
 | All required marker kinds | `RequireAllMembersAttribute` | Yes | `AndAPlusBValidSample`, `AndAPlusBDuplicateMarkersValidSample` | `AndAPlusBMissingAInvalidSample`, `AndAPlusBMissingBInvalidSample`, `AndAPlusBMissingBothInvalidSample` | Shows at-least-one-per-kind semantics; duplicate markers are accepted. |
 | Exclusive choice | `RequireExclusiveChoiceAttribute` | Yes | `XorLeftValidSample`, `XorRightValidSample` | `XorBothInvalidSample`, `XorNoneInvalidSample` | Covers both legal branches and both XOR failure modes. |
-| Member count range | `RequireMemberRangeAttribute` | Concept only | `TwoToFourValidTwoSample`, `TwoToFourValidFourSample` | `TwoToFourTooFewSample`, `TwoToFourTooManySample` | Documents a useful future analyzer contract for lower/upper bounds. |
-| Forbidden member marker | `ForbidMemberAttribute` | Concept only | `NotValidSample` | `NotInvalidSample` | Documents a useful future analyzer contract for negative member constraints. |
+| Member count range | `RequireMemberRangeAttribute` | Yes | `TwoToFourValidTwoSample`, `TwoToFourValidFourSample` | `TwoToFourTooFewSample`, `TwoToFourTooManySample` | Covers inclusive lower and upper boundaries. |
+| Forbidden member marker | `ForbidMemberAttribute` | Yes | `NotValidSample` | `NotInvalidSample` | Covers negative member-marker constraints. |
+| Required named member marker | `RequireNamedMembersAttribute` | Yes | `RequiredNamedIdentifierValidSample` | `RequiredNamedIdentifierMissingYInvalidSample` | Requires configured logical names such as `X` and `Y` to be present. |
+| Unique named member marker | `RequireUniqueNamedMemberAttribute` | Yes | `UniqueNamedIdentifierValidSample` | `UniqueNamedIdentifierDuplicateNameInvalidSample`, `UniqueNamedIdentifierDuplicateUnnamedInvalidSample` | Allows several logical names such as `X` and `Y`, but rejects duplicates per name. |
 
-`catalog/MemberContractUseCaseCatalog` is the executable index for these examples. The tests assert all analyzer-backed cases against `BrickMemberCardinalityEvaluator` and keep the concept-only cases visible without pretending that they are implemented today.
+`catalog/MemberContractUseCaseCatalog` is the executable index for these examples. The tests assert every case against `BrickMemberCardinalityEvaluator`.
 
-Every member-contract project contains at least one invalid sample. Analyzer-backed projects also have concrete violation tests that assert `BrickViolationKind`, severity, state, rule name, source identity, and diagnostic message.
+Every member-contract project contains at least one invalid sample. The tests
+assert `BrickViolationKind`, severity, state, rule name, source identity, and
+diagnostic message for analyzer-backed violations.

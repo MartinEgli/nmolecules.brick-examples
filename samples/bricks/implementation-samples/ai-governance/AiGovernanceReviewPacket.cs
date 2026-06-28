@@ -18,16 +18,25 @@ internal sealed class AiGovernanceReviewPacket
         BrickAiTrustBoundary trustBoundary,
         BrickAiCommentDocument comments,
         BrickRuleProposal proposal,
+        BrickRuleProposalQueue proposalQueue,
+        string markdownReview,
+        BrickRuleProposalReviewResult reviewedPromotion,
         BrickGovernanceReport governance)
     {
         TrustBoundary = trustBoundary;
         Comments = comments;
         Proposal = proposal;
+        ProposalQueue = proposalQueue;
+        MarkdownReview = markdownReview ?? string.Empty;
+        ReviewedPromotion = reviewedPromotion;
         Governance = governance;
     }
 
     public BrickAiTrustBoundary TrustBoundary { get; }
     public BrickAiCommentDocument Comments { get; }
     public BrickRuleProposal Proposal { get; }
+    public BrickRuleProposalQueue ProposalQueue { get; }
+    public string MarkdownReview { get; }
+    public BrickRuleProposalReviewResult ReviewedPromotion { get; }
     public BrickGovernanceReport Governance { get; }
 }

@@ -1,6 +1,7 @@
 # Range Member Contract
 
-This project documents the concept-only `RequireMemberRangeAttribute` pattern.
+This project demonstrates the analyzer-backed `RequireMemberRangeAttribute`
+pattern from `NMolecules.Bricks`.
 
 | Sample | Purpose |
 | --- | --- |
@@ -9,4 +10,6 @@ This project documents the concept-only `RequireMemberRangeAttribute` pattern.
 | `TwoToFourTooFewSample` | Below the intended range. |
 | `TwoToFourTooManySample` | Above the intended range. |
 
-The current core evaluator does not enforce this attribute yet. The project keeps the desired future analyzer behavior visible.
+The current core evaluator and analyzer enforce this inclusive range. Valid
+samples sit on the lower and upper boundary; invalid samples sit outside the
+range and are covered by the example test catalog.

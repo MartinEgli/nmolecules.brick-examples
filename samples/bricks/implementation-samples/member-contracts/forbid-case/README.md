@@ -1,10 +1,13 @@
 # Forbidden-Member Contract
 
-This project documents the concept-only `ForbidMemberAttribute` pattern.
+This project demonstrates the analyzer-backed `ForbidMemberAttribute` pattern
+from `NMolecules.Bricks`.
 
 | Sample | Purpose |
 | --- | --- |
 | `NotValidSample` | Does not contain the forbidden member marker. |
-| `NotInvalidSample` | Contains `ForbiddenMarkerAttribute`; a future analyzer should report it. |
+| `NotInvalidSample` | Contains `ForbiddenMarkerAttribute`; the analyzer reports it. |
 
-The current core evaluator does not enforce this attribute yet. The sample captures the intended negative member constraint.
+The current core evaluator and analyzer enforce this negative member contract.
+`NotInvalidSample` intentionally carries the forbidden marker so tests and
+violation samples can demonstrate the rejected shape.

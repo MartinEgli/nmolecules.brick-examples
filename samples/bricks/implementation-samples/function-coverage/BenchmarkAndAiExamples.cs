@@ -104,16 +104,60 @@ internal static class BenchmarkAndAiExamples
 
     public static string SerializeAiArtifacts()
     {
-        var boundary = new BrickAiTrustBoundary(
-            BrickAiMode.SuggestRules,
-            BrickAiCommentFormat.Both,
-            allowRuleProposal: true,
-            allowAutoEnforcement: false,
-            allowSilentPolicyMutation: false);
+        var configuration = CreateAiRunConfiguration();
         var comments = BrickAiCommentJsonSerializer.Serialize(CreateAiReviewComments());
-        var proposal = CreateRuleProposalForReview();
+        var markdown = RenderAiReviewMarkdown();
+        var queueJson = BrickRuleProposalQueueJsonSerializer.Serialize(CreateProposalQueue());
+        var review = PromoteReviewedProposal();
 
-        return $"{boundary.Mode}:{boundary.CommentFormat}:{proposal.LifecycleState}:{comments}";
+        return string.Join(
+            Environment.NewLine,
+            $"{configuration.TrustBoundary.Mode}:{configuration.TrustBoundary.CommentFormat}:{configuration.CanCreateRuleProposals}",
+            comments,
+            markdown,
+            queueJson,
+            $"{review.CanPromote}:{review.PromotedRule?.RuleId.Value}");
+    }
+
+    public static BrickAiRunConfiguration CreateAiRunConfiguration()
+    {
+        var properties = new System.Collections.Generic.Dictionary<string, string>
+        {
+            [BrickAiRunConfiguration.ModeProperty] = nameof(BrickAiMode.SuggestRules),
+            [BrickAiRunConfiguration.CommentFormatProperty] = nameof(BrickAiCommentFormat.Both),
+            [BrickAiRunConfiguration.AllowRuleProposalsProperty] = "true",
+            [BrickAiRunConfiguration.AllowAutoEnforcementProperty] = "false",
+            [BrickAiRunConfiguration.AllowSilentPolicyMutationProperty] = "false",
+            [BrickAiRunConfiguration.OutputDirectoryProperty] = "artifacts/bricks-ai",
+            [BrickAiRunConfiguration.ProposalQueuePathProperty] = "artifacts/bricks-ai/rule-proposals.json"
+        };
+
+        return BrickAiRunConfiguration.FromProperties(properties);
+    }
+
+    public static string RenderAiReviewMarkdown() =>
+        BrickAiCommentMarkdownRenderer.Render(CreateAiReviewComments());
+
+    public static BrickRuleProposalQueue CreateProposalQueue() =>
+        new BrickRuleProposalQueue(SampleBrickModel.GeneratedAt, new[] { CreateRuleProposalForReview() });
+
+    public static BrickRuleProposalReviewResult PromoteReviewedProposal()
+    {
+        var proposal = CreateRuleProposalForReview();
+        var review = new BrickRuleProposalReview(
+            proposal.ProposalId,
+            "architecture-owner",
+            approved: true,
+            BrickRuleLifecycleState.Enforced,
+            "Positive, negative and false-positive examples were reviewed before promotion.",
+            SampleBrickModel.GeneratedAt);
+
+        return BrickRuleProposalReviewWorkflow.Review(
+            proposal,
+            review,
+            RuleId.From("XMoleculesBricks0999"),
+            "Billing application must not create SQL repositories",
+            priority: 100);
     }
 
     private static BrickBenchmarkResult Result(string id, long elapsedPerOperationTicks)

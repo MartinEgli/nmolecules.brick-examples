@@ -11,6 +11,8 @@
     <Project Path="samples/bricks/implementation-samples/member-contracts/exclusive-choice-case/Samples.Block04.Bricks.MemberContracts.ExclusiveChoice.csproj" />
     <Project Path="samples/bricks/implementation-samples/member-contracts/range-case/Samples.Block04.Bricks.MemberContracts.Range.csproj" />
     <Project Path="samples/bricks/implementation-samples/member-contracts/forbid-case/Samples.Block04.Bricks.MemberContracts.Forbid.csproj" />
+    <Project Path="samples/bricks/implementation-samples/member-contracts/required-named-case/Samples.Block04.Bricks.MemberContracts.RequiredNamed.csproj" />
+    <Project Path="samples/bricks/implementation-samples/member-contracts/unique-named-case/Samples.Block04.Bricks.MemberContracts.UniqueNamed.csproj" />
     <Project Path="samples/bricks/implementation-samples/member-contracts/catalog/Samples.Block04.Bricks.MemberContracts.Catalog.csproj" />
     <Project Path="samples/bricks/implementation-samples/source-target-cases/type-cases/Samples.Block04.Bricks.SourceTarget.TypeCases.csproj" />
     <Project Path="samples/bricks/implementation-samples/source-target-cases/member-registration-cases/Samples.Block04.Bricks.SourceTarget.MemberRegistrationCases.csproj" />

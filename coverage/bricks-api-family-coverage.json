@@ -1,0 +1,490 @@
+{
+  "schemaVersion": 1,
+  "status": "active",
+  "description": "Public Bricks API family coverage. Each public source area must be represented by sample evidence and an exact public type list.",
+  "areas": [
+    {
+      "id": "adoption",
+      "sourceDirectory": "Adoption",
+      "coverageLabel": "Adoption, suppressions, baselines and violation-state projection",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "runtime-export-examples", "path": "samples/bricks/implementation-samples/function-coverage/RuntimeAndExportExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickAdoptionDocument",
+        "BrickAdoptionDocumentIssue",
+        "BrickAdoptionDocumentValidator",
+        "BrickAdoptionJsonSerializer",
+        "BrickBaselineEntry",
+        "BrickElementSelector",
+        "BrickSuppression",
+        "BrickViolationStateProjector"
+      ]
+    },
+    {
+      "id": "ai",
+      "sourceDirectory": "Ai",
+      "coverageLabel": "AI-assisted violation comments",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "benchmark-ai-examples", "path": "samples/bricks/implementation-samples/function-coverage/BenchmarkAndAiExamples.cs" },
+        { "id": "ai-governance-examples", "path": "samples/bricks/implementation-samples/ai-governance" }
+      ],
+      "publicTypes": [
+        "BrickAiCommentDocument",
+        "BrickAiCommentFactory",
+        "BrickAiCommentFormat",
+        "BrickAiCommentJsonSerializer",
+        "BrickAiCommentMarkdownRenderer",
+        "BrickAiMode",
+        "BrickAiRunConfiguration",
+        "BrickAiTrustBoundary",
+        "BrickAiViolationComment",
+        "BrickRemediationKind",
+        "BrickRemediationOption",
+        "BrickRemediationRisk",
+        "BrickRuleProposal",
+        "BrickRuleProposalEvidence",
+        "BrickRuleProposalQueue",
+        "BrickRuleProposalQueueJsonSerializer",
+        "BrickRuleProposalReview",
+        "BrickRuleProposalReviewResult",
+        "BrickRuleProposalReviewWorkflow"
+      ]
+    },
+    {
+      "id": "attributes",
+      "sourceDirectory": "Attributes",
+      "coverageLabel": "Attribute markers",
+      "support": "analyzer-backed",
+      "samples": [
+        { "id": "ddd-building", "path": "samples/bricks/implementation-samples/ddd-building" },
+        { "id": "member-contracts", "path": "samples/bricks/implementation-samples/member-contracts" },
+        { "id": "rule-filters", "path": "samples/bricks/implementation-samples/rule-filters" }
+      ],
+      "publicTypes": [
+        "DependencyAttribute",
+        "ExcludedMemberNameContainsAttribute",
+        "ExcludedSourceNameContainsAttribute",
+        "ExcludedTargetNameContainsAttribute",
+        "ForbidMemberAttribute",
+        "PolicyAttribute",
+        "PolicyImportAttribute",
+        "RequireAllMembersAttribute",
+        "RequiredSourceNameContainsAttribute",
+        "RequiredTargetNameContainsAttribute",
+        "RequireExactlyOneMemberAttribute",
+        "RequireExclusiveChoiceAttribute",
+        "RequireMemberCountAttribute",
+        "RequireMemberRangeAttribute",
+        "RequireNamedMembersAttribute",
+        "RequireUniqueNamedMemberAttribute",
+        "RoleAliasAttribute",
+        "RoleAttribute",
+        "RoleCombinationAttribute",
+        "RuleAttribute",
+        "RuleFilterAttribute",
+        "RuleMode"
+      ]
+    },
+    {
+      "id": "benchmarking",
+      "sourceDirectory": "Benchmarking",
+      "coverageLabel": "Benchmark cases, runner, reports and comparison reports",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "benchmark-ai-examples", "path": "samples/bricks/implementation-samples/function-coverage/BenchmarkAndAiExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickBenchmarkBudget",
+        "BrickBenchmarkCase",
+        "BrickBenchmarkComparison",
+        "BrickBenchmarkComparisonReport",
+        "BrickBenchmarkComparisonReportJsonSerializer",
+        "BrickBenchmarkComparisonStatus",
+        "BrickBenchmarkComparisonSummary",
+        "BrickBenchmarkComparisonThreshold",
+        "BrickBenchmarkReport",
+        "BrickBenchmarkReportJsonSerializer",
+        "BrickBenchmarkResult",
+        "BrickBenchmarkRunner",
+        "BrickBenchmarkStatus",
+        "BrickBenchmarkSubject",
+        "BrickBenchmarkSummary",
+        "BrickBuiltInBenchmarkCases",
+        "BrickStopwatchBenchmarkClock",
+        "IBrickBenchmarkClock"
+      ]
+    },
+    {
+      "id": "configuration",
+      "sourceDirectory": "Configuration",
+      "coverageLabel": "Configuration source precedence and resolver",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "configuration-examples", "path": "samples/bricks/implementation-samples/function-coverage/ConfigurationExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickConfigurationEntry",
+        "BrickConfigurationPrecedence",
+        "BrickConfigurationResolution",
+        "BrickConfigurationResolvedEntry",
+        "BrickConfigurationResolver",
+        "BrickConfigurationSource",
+        "BrickConfigurationSourceKind"
+      ]
+    },
+    {
+      "id": "conformance",
+      "sourceDirectory": "Conformance",
+      "coverageLabel": "Conformance reports",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "governance-readiness-examples", "path": "samples/bricks/implementation-samples/function-coverage/GovernanceAndReadinessExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickConformanceCapability",
+        "BrickConformanceCapabilityResult",
+        "BrickConformanceCapabilityStatus",
+        "BrickConformanceLevel",
+        "BrickConformanceLevelAssessment",
+        "BrickConformanceLevelDefinition",
+        "BrickConformanceLevelStatus",
+        "BrickConformanceReport",
+        "BrickConformanceReportJsonSerializer",
+        "BrickConformanceSummary"
+      ]
+    },
+    {
+      "id": "core",
+      "sourceDirectory": "Core",
+      "coverageLabel": "Core model",
+      "support": "sample-backed",
+      "samples": [
+        { "id": "sample-brick-model", "path": "samples/bricks/implementation-samples/function-coverage/SampleBrickModel.cs" },
+        { "id": "source-target-cases", "path": "samples/bricks/implementation-samples/source-target-cases" }
+      ],
+      "publicTypes": [
+        "BrickCombinationKind",
+        "BrickDecision",
+        "BrickDependencyLayer",
+        "BrickDependencyStrength",
+        "BrickElementKind",
+        "BrickElementOrigin",
+        "BrickElementSource",
+        "BrickEnforcementMode",
+        "BrickEvidenceLevel",
+        "BrickPermissionDefault",
+        "BrickRuleLifecycleState",
+        "BrickScope",
+        "BrickSeverity",
+        "BrickViolationKind",
+        "BrickViolationState"
+      ]
+    },
+    {
+      "id": "dependencies",
+      "sourceDirectory": "Dependencies",
+      "coverageLabel": "Dependency coverage reports",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "governance-readiness-examples", "path": "samples/bricks/implementation-samples/function-coverage/GovernanceAndReadinessExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickBuiltInDependencyCoverageTargets",
+        "BrickDependencyCoverageReport",
+        "BrickDependencyCoverageReportJsonSerializer",
+        "BrickDependencyCoverageResult",
+        "BrickDependencyCoverageStatus",
+        "BrickDependencyCoverageSummary",
+        "BrickDependencyCoverageTarget"
+      ]
+    },
+    {
+      "id": "export",
+      "sourceDirectory": "Export",
+      "coverageLabel": "Exports: role map, dependency graph and resolution trace",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "runtime-export-examples", "path": "samples/bricks/implementation-samples/function-coverage/RuntimeAndExportExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickDependencyGraphDocument",
+        "BrickDependencyGraphEdge",
+        "BrickDependencyGraphNode",
+        "BrickExportDocumentIssue",
+        "BrickExportDocumentValidator",
+        "BrickExportJsonSerializer",
+        "BrickResolutionTraceDocument",
+        "BrickResolutionTraceEntry",
+        "BrickRoleMapDocument",
+        "BrickRoleMapEntry"
+      ]
+    },
+    {
+      "id": "governance",
+      "sourceDirectory": "Governance",
+      "coverageLabel": "Governance reports",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "governance-readiness-examples", "path": "samples/bricks/implementation-samples/function-coverage/GovernanceAndReadinessExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickBuiltInGovernanceAreas",
+        "BrickGovernanceArea",
+        "BrickGovernanceAreaAssessment",
+        "BrickGovernanceAreaDefinition",
+        "BrickGovernanceAreaStatus",
+        "BrickGovernanceReport",
+        "BrickGovernanceReportJsonSerializer",
+        "BrickGovernanceRequirement",
+        "BrickGovernanceRequirementResult",
+        "BrickGovernanceRequirementStatus",
+        "BrickGovernanceSummary"
+      ]
+    },
+    {
+      "id": "identity",
+      "sourceDirectory": "Identity",
+      "coverageLabel": "Typed IDs and messages",
+      "support": "sample-backed",
+      "samples": [
+        { "id": "sample-brick-model", "path": "samples/bricks/implementation-samples/function-coverage/SampleBrickModel.cs" },
+        { "id": "policy-resolution-examples", "path": "samples/bricks/implementation-samples/function-coverage/PolicyAndResolutionExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickDependencyKindId",
+        "BrickDependencyKinds",
+        "BrickDimensionId",
+        "BrickElementId",
+        "BrickPolicyId",
+        "RoleId",
+        "RuleId"
+      ]
+    },
+    {
+      "id": "io",
+      "sourceDirectory": "IO",
+      "coverageLabel": "`BrickJsonFile` helpers",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "runtime-export-examples", "path": "samples/bricks/implementation-samples/function-coverage/RuntimeAndExportExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickJsonFile"
+      ]
+    },
+    {
+      "id": "members",
+      "sourceDirectory": "Members",
+      "coverageLabel": "Member-cardinality evaluation",
+      "support": "analyzer-backed",
+      "samples": [
+        { "id": "member-contracts", "path": "samples/bricks/implementation-samples/member-contracts" },
+        { "id": "member-contract-violations", "path": "samples/bricks/analyzer-samples/member-contract-validation" }
+      ],
+      "publicTypes": [
+        "BrickMemberCardinalityEvaluator"
+      ]
+    },
+    {
+      "id": "model",
+      "sourceDirectory": "Model",
+      "coverageLabel": "Core model",
+      "support": "sample-backed",
+      "samples": [
+        { "id": "sample-brick-model", "path": "samples/bricks/implementation-samples/function-coverage/SampleBrickModel.cs" }
+      ],
+      "publicTypes": [
+        "BrickBuiltInConformanceLevels",
+        "BrickDependency",
+        "BrickElement",
+        "BrickSourceLocation",
+        "BrickViolation"
+      ]
+    },
+    {
+      "id": "policies",
+      "sourceDirectory": "Policies",
+      "coverageLabel": "Policy documents and JSON policy loading",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "policy-resolution-examples", "path": "samples/bricks/implementation-samples/function-coverage/PolicyAndResolutionExamples.cs" },
+        { "id": "policy-variant-cases", "path": "samples/bricks/implementation-samples/policy-variant-cases" }
+      ],
+      "publicTypes": [
+        "BrickAlias",
+        "BrickPolicy",
+        "BrickPolicyComposer",
+        "BrickPolicyCompositionResult",
+        "BrickPolicyCompositionStep",
+        "BrickPolicyDocument",
+        "BrickPolicyDocumentIssue",
+        "BrickPolicyDocumentValidator",
+        "BrickPolicyImport",
+        "BrickPolicyImportMode",
+        "BrickPolicyJsonSerializer",
+        "BrickPolicyRoleAssignmentProvider"
+      ]
+    },
+    {
+      "id": "profiles",
+      "sourceDirectory": "Profiles",
+      "coverageLabel": "Built-in role packs and profiles",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "configuration-examples", "path": "samples/bricks/implementation-samples/function-coverage/ConfigurationExamples.cs" },
+        { "id": "governance-readiness-examples", "path": "samples/bricks/implementation-samples/function-coverage/GovernanceAndReadinessExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickBuiltInProfiles",
+        "BrickProfile"
+      ]
+    },
+    {
+      "id": "reflection",
+      "sourceDirectory": "Reflection",
+      "coverageLabel": "Reflection model and confidence policy",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "runtime-export-examples", "path": "samples/bricks/implementation-samples/function-coverage/RuntimeAndExportExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickReflectionAccess",
+        "BrickReflectionConfidence",
+        "BrickReflectionEvaluator",
+        "BrickReflectionPolicy"
+      ]
+    },
+    {
+      "id": "reports",
+      "sourceDirectory": "Reports",
+      "coverageLabel": "Reports, JSON and SARIF",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "runtime-export-examples", "path": "samples/bricks/implementation-samples/function-coverage/RuntimeAndExportExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickReportDocument",
+        "BrickReportJsonSerializer",
+        "BrickReportSarifSerializer",
+        "BrickReportSummary"
+      ]
+    },
+    {
+      "id": "roadmap",
+      "sourceDirectory": "Roadmap",
+      "coverageLabel": "Roadmap reports",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "governance-readiness-examples", "path": "samples/bricks/implementation-samples/function-coverage/GovernanceAndReadinessExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickBuiltInRoadmapStages",
+        "BrickRoadmapItem",
+        "BrickRoadmapItemResult",
+        "BrickRoadmapItemStatus",
+        "BrickRoadmapReport",
+        "BrickRoadmapReportJsonSerializer",
+        "BrickRoadmapStage",
+        "BrickRoadmapStageAssessment",
+        "BrickRoadmapStageDefinition",
+        "BrickRoadmapStageStatus",
+        "BrickRoadmapSummary"
+      ]
+    },
+    {
+      "id": "roles",
+      "sourceDirectory": "Roles",
+      "coverageLabel": "Role assignment, role resolution, precedence, conflicts and role-combination rules",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "policy-resolution-examples", "path": "samples/bricks/implementation-samples/function-coverage/PolicyAndResolutionExamples.cs" },
+        { "id": "configuration-examples", "path": "samples/bricks/implementation-samples/function-coverage/ConfigurationExamples.cs" },
+        { "id": "generic-role-combination-violations", "path": "samples/bricks/analyzer-samples/generic-role-combinations" }
+      ],
+      "publicTypes": [
+        "BrickAssignmentAuthority",
+        "BrickAssignmentBehavior",
+        "BrickAssignmentMode",
+        "BrickAssignmentPrecedence",
+        "BrickAssignmentSource",
+        "BrickAssignmentSpecificity",
+        "BrickAttributeRoleBridge",
+        "BrickAttributeRoleMapping",
+        "BrickBuiltInAttributeRoleBridges",
+        "BrickBuiltInRolePacks",
+        "BrickModelContext",
+        "BrickResolutionTrace",
+        "BrickResolvedRoles",
+        "BrickRole",
+        "BrickRoleAssignment",
+        "BrickRoleAssignmentCollector",
+        "BrickRoleCombinationRule",
+        "BrickRoleConflict",
+        "BrickRoleDimension",
+        "BrickRolePack",
+        "BrickRoleResolver",
+        "BrickRoleSelector",
+        "IBrickRoleAssignmentProvider"
+      ]
+    },
+    {
+      "id": "rules",
+      "sourceDirectory": "Rules",
+      "coverageLabel": "Rule evaluation",
+      "support": "analyzer-backed",
+      "samples": [
+        { "id": "policy-resolution-examples", "path": "samples/bricks/implementation-samples/function-coverage/PolicyAndResolutionExamples.cs" },
+        { "id": "rule-filters", "path": "samples/bricks/implementation-samples/rule-filters" },
+        { "id": "dependency-rule-violations", "path": "samples/bricks/analyzer-samples/dependency-rule-evaluation" }
+      ],
+      "publicTypes": [
+        "BrickDiagnosticIdGovernance",
+        "BrickDiagnosticIdRange",
+        "BrickRule",
+        "BrickRuleEvaluator",
+        "ExcludedMemberNameContainsRuleFilter",
+        "ExcludedSourceNameContainsRuleFilter",
+        "ExcludedTargetNameContainsRuleFilter",
+        "RequiredSourceNameContainsRuleFilter",
+        "RequiredTargetNameContainsRuleFilter",
+        "RuleFilter",
+        "RuleMessage",
+        "RuleMessageBuilder"
+      ]
+    },
+    {
+      "id": "runtime",
+      "sourceDirectory": "Runtime",
+      "coverageLabel": "Runtime wiring and DI registration model",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "runtime-export-examples", "path": "samples/bricks/implementation-samples/function-coverage/RuntimeAndExportExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickDependencyRegistration",
+        "BrickRuntimeActivation",
+        "BrickRuntimeActivationEvaluator",
+        "BrickRuntimeActivationPolicy",
+        "BrickRuntimeWiringEvaluator",
+        "BrickRuntimeWiringPolicy"
+      ]
+    },
+    {
+      "id": "visibility",
+      "sourceDirectory": "Visibility",
+      "coverageLabel": "Visibility model and friend assemblies",
+      "support": "runtime-backed",
+      "samples": [
+        { "id": "runtime-export-examples", "path": "samples/bricks/implementation-samples/function-coverage/RuntimeAndExportExamples.cs" }
+      ],
+      "publicTypes": [
+        "BrickFriendAssemblyGrant",
+        "BrickVisibilityEvaluator",
+        "BrickVisibilityPolicy"
+      ]
+    }
+  ]
+}

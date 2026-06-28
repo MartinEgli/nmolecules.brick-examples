@@ -139,6 +139,64 @@ internal static class PolicyAndResolutionExamples
         return resolved;
     }
 
+    public static RoleCombinationRoundtripResult ResolveRoleCombinationHierarchyAndException()
+    {
+        var element = SampleBrickModel.Type("Billing.Generated.CustomerProjectionPolicy");
+        var assignments = new[]
+        {
+            RoleAssignment(element, "Billing.Contract", BrickAssignmentSpecificity.Element, BrickAssignmentAuthority.Direct),
+            RoleAssignment(element, "Billing.Shared", BrickAssignmentSpecificity.Namespace, BrickAssignmentAuthority.External),
+            RoleAssignment(element, "Billing.Business.Policy", BrickAssignmentSpecificity.Element, BrickAssignmentAuthority.Direct),
+            RoleAssignment(element, "Billing.Business.Support", BrickAssignmentSpecificity.Namespace, BrickAssignmentAuthority.Alias),
+            RoleAssignment(element, "Billing.Business.Support", BrickAssignmentSpecificity.Element, BrickAssignmentAuthority.Direct, BrickAssignmentBehavior.Suppress),
+            RoleAssignment(element, "Billing.Generated.Client", BrickAssignmentSpecificity.Element, BrickAssignmentAuthority.Direct)
+        };
+        var rules = new[]
+        {
+            new BrickRoleCombinationRule(
+                "contract-shared-additive",
+                BrickRoleSelector.From("Billing.Contract"),
+                BrickRoleSelector.From("Billing.Shared"),
+                BrickCombinationKind.Additive,
+                "Contract markers may also be shared markers."),
+            new BrickRoleCombinationRule(
+                "business-role-exclusive",
+                BrickRoleSelector.From("Billing.Business.*"),
+                BrickRoleSelector.From("Billing.Business.*"),
+                BrickCombinationKind.Exclusive,
+                "Only one business role may remain after policy exceptions."),
+            new BrickRoleCombinationRule(
+                "generated-business-policy-incompatible",
+                BrickRoleSelector.From("Billing.Generated.*"),
+                BrickRoleSelector.From("Billing.Business.*"),
+                BrickCombinationKind.Incompatible,
+                "Generated clients must not own business policy.")
+        };
+        var resolved = BrickRoleResolver.Resolve(element, assignments, rules);
+        var activeViolations = BrickRoleResolver.FindCombinationViolations(resolved, rules).ToArray();
+        var suppression = new BrickSuppression(
+            RuleId.From("generated-business-policy-incompatible"),
+            new BrickElementSelector(BrickElementKind.Type, "Billing.Generated.*", "Billing"),
+            "Generated client is temporarily allowed while the policy is moved behind a contract.",
+            "Billing Team",
+            SampleBrickModel.GeneratedAt.AddDays(30));
+        var adoptionDocument = new BrickAdoptionDocument(
+            SampleBrickModel.GeneratedAt,
+            baselines: null,
+            suppressions: new[] { suppression });
+        var projectedViolations = BrickViolationStateProjector.Project(
+            activeViolations,
+            adoptionDocument.Suppressions,
+            adoptionDocument.Baselines,
+            SampleBrickModel.GeneratedAt);
+
+        return new RoleCombinationRoundtripResult(
+            resolved,
+            activeViolations,
+            projectedViolations,
+            adoptionDocument);
+    }
+
     public static BrickPolicyDocument LoadPolicyDocumentShape()
     {
         const string json = """
@@ -199,4 +257,45 @@ internal static class PolicyAndResolutionExamples
             BrickDiagnosticIdGovernance.FindRange(RuleId.From("XMoleculesBricks0001"))
         };
     }
+
+    private static BrickRoleAssignment RoleAssignment(
+        BrickElement element,
+        string roleId,
+        BrickAssignmentSpecificity specificity,
+        BrickAssignmentAuthority authority,
+        BrickAssignmentBehavior behavior = BrickAssignmentBehavior.Apply) =>
+        new(
+            new BrickElementSelector(element.Kind, element.Id.Value, element.AssemblyName),
+            RoleId.From(roleId),
+            behavior == BrickAssignmentBehavior.Suppress
+                ? BrickAssignmentMode.ExternalConfiguration
+                : BrickAssignmentMode.DirectAttribute,
+            behavior == BrickAssignmentBehavior.Suppress
+                ? BrickAssignmentSource.PolicyFile
+                : BrickAssignmentSource.SourceAttribute,
+            new BrickAssignmentPrecedence(specificity, authority),
+            behavior,
+            behavior == BrickAssignmentBehavior.Suppress
+                ? "Role is suppressed by a reviewed policy exception."
+                : "Role is applied by the example policy.");
+    }
+
+internal sealed class RoleCombinationRoundtripResult
+{
+    public RoleCombinationRoundtripResult(
+        BrickResolvedRoles resolvedRoles,
+        IEnumerable<BrickViolation> activeViolations,
+        IEnumerable<BrickViolation> projectedViolations,
+        BrickAdoptionDocument adoptionDocument)
+    {
+        ResolvedRoles = resolvedRoles;
+        ActiveViolations = activeViolations.ToArray();
+        ProjectedViolations = projectedViolations.ToArray();
+        AdoptionDocument = adoptionDocument;
+    }
+
+    public BrickResolvedRoles ResolvedRoles { get; }
+    public IReadOnlyList<BrickViolation> ActiveViolations { get; }
+    public IReadOnlyList<BrickViolation> ProjectedViolations { get; }
+    public BrickAdoptionDocument AdoptionDocument { get; }
 }

@@ -9,6 +9,7 @@ DDD code usually starts with useful words: aggregate root, entity, value object,
 Bricks lets a team turn those words into explicit architectural roles and rules:
 
 - role aliases make domain vocabulary readable in code
+- member contracts make type requirements explicit, for example one identifier on each aggregate or entity
 - assembly policy imports and rules describe reusable defaults plus allowed and forbidden dependencies
 - role-combination attributes describe which role families must not coexist on one element
 - tools can derive policy objects from the same attribute metadata for reports and CI
@@ -26,9 +27,11 @@ The benefit is practical:
 
 | File | Purpose |
 |---|---|
-| `DddBrickRoles.cs` | Defines DDD role constants and custom role-marker attributes. |
+| `DddBrickRoles.cs` | Defines DDD role constants. |
+| `DddIdentifierAttribute.cs` | Marks the one identifier member required by aggregate and entity role markers. |
 | `DddBrickRules.Assembly.cs` | Defines assembly-level `[assembly: Policy]`, `[assembly: PolicyImport]`, `[assembly: RoleCombination]`, `[assembly: Rule]` and `[assembly: Dependency]` declarations for the DDD slice. |
-| `DddBuildingSample.cs` | Builds a small billing DDD model with aggregate, entity, value object, repository, factory and services. |
+| `DddAggregateRootAttribute.cs`, `DddEntityAttribute.cs`, `DddValueObjectAttribute.cs` | Define custom role-marker attributes for DDD model types. |
+| `Contract.cs`, `ContractLine.cs`, `ContractId.cs`, `CustomerId.cs`, `Money.cs` | Build a small billing DDD model with aggregate, entity and value objects. |
 | `DddBrickPolicyExample.cs` | Keeps the historical policy entry point and evaluates the attribute-derived DDD policy. |
 | `DddAttributeOnlyConfigurationExample.cs` | Builds and evaluates the DDD policy from attributes only: role markers on types plus `[assembly: Policy(...)]`, `[assembly: PolicyImport(...)]`, `[assembly: RoleCombination(...)]`, `[assembly: Rule(...)]` and `[assembly: Dependency(...)]`. |
 | `DddCodePolicyExample.cs` | Keeps the former code-policy entry point but delegates to the assembly-attribute policy. |
@@ -36,7 +39,7 @@ The benefit is practical:
 ## Suggested Learning Path
 
 1. Start with `DddBrickRoles.cs` and inspect the custom role markers.
-2. Read `DddBuildingSample.cs` and map each DDD building block to a role.
+2. Read `Contract.cs`, `ContractLine.cs` and `DddIdentifierAttribute.cs` to see that aggregates and entities require exactly one explicit identifier member.
 3. Inspect `DddBrickRules.Assembly.cs` to see which dependencies the sample wants to forbid or require.
 4. Read `DddAttributeOnlyConfigurationExample.cs` to see how the policy is derived from `[assembly: Policy(...)]`, `[assembly: PolicyImport(...)]`, `[assembly: RoleCombination(...)]`, `[assembly: Rule(...)]` and `[assembly: Dependency(...)]` attributes only.
 5. Read `DddCodePolicyExample.cs` to see how the former code-policy entry point now reuses the attribute policy.
@@ -51,6 +54,7 @@ The DDD sample intentionally keeps the effective policy definition attribute-onl
 Use this when policy should live directly beside the source declarations:
 
 - type roles are declared with attributes such as `[DddAggregateRoot]`, `[DddValueObject]` and `[DddRepository]`
+- aggregate and entity identifiers are declared with `[DddIdentifier]`; the rule is marker-based and does not require the member to be named `Id`
 - the policy header is declared with `[assembly: Policy(...)]`
 - imported policy defaults are declared with `[assembly: PolicyImport(...)]`
 - role compatibility is declared with `[assembly: RoleCombination(...)]`
@@ -65,6 +69,7 @@ This is the best fit for small teams, source-first governance and samples where 
 The attribute-only path is the lightest way to start:
 
 - put role-marker attributes such as `[DddAggregateRoot]`, `[DddValueObject]` and `[DddRepository]` on the relevant types
+- put exactly one `[DddIdentifier]` on every `[DddAggregateRoot]` and `[DddEntity]`
 - put `[assembly: Policy(...)]`, `[assembly: PolicyImport(...)]`, `[assembly: RoleCombination(...)]`, `[assembly: Rule(...)]` and `[assembly: Dependency(...)]` declarations in one assembly-level file
 - let analyzers or supporting tools derive a policy from the compiled attribute metadata
 

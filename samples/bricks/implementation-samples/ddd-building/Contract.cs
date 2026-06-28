@@ -16,6 +16,7 @@ internal sealed class Contract
         CustomerId = customerId;
     }
 
+    [DddIdentifier]
     public ContractId Id { get; }
     public CustomerId CustomerId { get; }
     public IReadOnlyList<ContractLine> Lines => _lines;

@@ -25,13 +25,20 @@ public static class MemberContractUseCaseCatalog
             Backed<XorBothInvalidSample>("RequireExclusiveChoice", shouldBeValid: false, violations: 1, "both choices together are rejected"),
             Backed<XorNoneInvalidSample>("RequireExclusiveChoice", shouldBeValid: false, violations: 1, "no choice is rejected"),
 
-            Concept<TwoToFourValidTwoSample>("RequireMemberRange", shouldBeValid: true, "lower range bound is accepted by the concept"),
-            Concept<TwoToFourValidFourSample>("RequireMemberRange", shouldBeValid: true, "upper range bound is accepted by the concept"),
-            Concept<TwoToFourTooFewSample>("RequireMemberRange", shouldBeValid: false, "below range is rejected by the concept"),
-            Concept<TwoToFourTooManySample>("RequireMemberRange", shouldBeValid: false, "above range is rejected by the concept"),
+            Backed<TwoToFourValidTwoSample>("RequireMemberRange", shouldBeValid: true, violations: 0, "lower range bound is accepted"),
+            Backed<TwoToFourValidFourSample>("RequireMemberRange", shouldBeValid: true, violations: 0, "upper range bound is accepted"),
+            Backed<TwoToFourTooFewSample>("RequireMemberRange", shouldBeValid: false, violations: 1, "below range is rejected"),
+            Backed<TwoToFourTooManySample>("RequireMemberRange", shouldBeValid: false, violations: 1, "above range is rejected"),
 
-            Concept<NotValidSample>("ForbidMember", shouldBeValid: true, "absence of forbidden marker is accepted by the concept"),
-            Concept<NotInvalidSample>("ForbidMember", shouldBeValid: false, "presence of forbidden marker is rejected by the concept"),
+            Backed<NotValidSample>("ForbidMember", shouldBeValid: true, violations: 0, "absence of forbidden marker is accepted"),
+            Backed<NotInvalidSample>("ForbidMember", shouldBeValid: false, violations: 1, "presence of forbidden marker is rejected"),
+
+            Backed<RequiredNamedIdentifierValidSample>("RequireNamedMembers", shouldBeValid: true, violations: 0, "all configured marker names are present"),
+            Backed<RequiredNamedIdentifierMissingYInvalidSample>("RequireNamedMembers", shouldBeValid: false, violations: 1, "missing configured marker name is rejected"),
+
+            Backed<UniqueNamedIdentifierValidSample>("RequireUniqueNamedMember", shouldBeValid: true, violations: 0, "different marker names are accepted"),
+            Backed<UniqueNamedIdentifierDuplicateNameInvalidSample>("RequireUniqueNamedMember", shouldBeValid: false, violations: 1, "duplicate marker name is rejected"),
+            Backed<UniqueNamedIdentifierDuplicateUnnamedInvalidSample>("RequireUniqueNamedMember", shouldBeValid: false, violations: 1, "duplicate unnamed marker is rejected"),
         };
 
     private static MemberContractUseCaseExpectation Backed<TSample>(
@@ -41,9 +48,4 @@ public static class MemberContractUseCaseCatalog
         string purpose) =>
         new(typeof(TSample), contractName, isAnalyzerBacked: true, shouldBeValid, violations, purpose);
 
-    private static MemberContractUseCaseExpectation Concept<TSample>(
-        string contractName,
-        bool shouldBeValid,
-        string purpose) =>
-        new(typeof(TSample), contractName, isAnalyzerBacked: false, shouldBeValid, expectedAnalyzerViolationCount: -1, purpose);
 }

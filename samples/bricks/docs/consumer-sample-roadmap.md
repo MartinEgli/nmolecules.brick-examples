@@ -1,6 +1,6 @@
 # Bricks Consumer Sample Roadmap
 
-Status baseline: March 7, 2026
+Status baseline: June 27, 2026
 
 This document defines a consumer-first target structure for the Bricks samples.
 It is not a raw API inventory. It is a teaching and adoption plan for teams that want
@@ -171,16 +171,14 @@ Current use cases:
 Current analyzer-backed use cases:
 - `OnlyOneUseCase.cs`
 - `ExactlyTwoUseCase.cs`
+- `TwoToFourUseCase.cs`
 - `XorUseCase.cs`
 - `AndAPlusBUseCase.cs`
-
-Current concept-only use cases:
-- `TwoToFourUseCase.cs`
 - `NotUseCase.cs`
 
 Consumer value:
 - this is directly reusable when a team wants its own marker contracts
-- it documents both current capabilities and near-term design space
+- it documents all current analyzer-backed member-contract capabilities
 
 ### 7. Composition
 
@@ -201,45 +199,77 @@ Consumer value:
 
 ## Current Mapping
 
-These current files now anchor the first real structure slice.
+These current files now anchor the first real structure slice. Paths in this
+table refer to the current repository layout under
+`samples/bricks/implementation-samples/` unless noted otherwise.
 
 | Current file | Target area | Notes |
 |---|---|---|
 | `domain-language-kits/billing/catalog/BillingRoles.cs` | `domain-language-kits/billing/` | in place |
 | `domain-language-kits/billing/catalog/BillingRules.cs` | `domain-language-kits/billing/` | in place |
-| `domain-language-kits/billing/roles/BillingRoleMarkers.cs` | `domain-language-kits/billing/` | in place |
+| `domain-language-kits/billing/roles/BillingDomainRoleAttribute.cs`, `BillingApplicationRoleAttribute.cs`, `BillingInfrastructureRoleAttribute.cs` | `domain-language-kits/billing/` | in place |
 | `domain-language-kits/billing/rules/BillingBrickRules.Assembly.cs` | `dependency-rules/` plus `domain-language-kits/billing/` | split later if needed |
 | `rule-filters/BillingRuleFilterExamples.cs` | `rule-filters/` | in place |
 | `domain-language-kits/billing/domain/ContractPolicy.cs` | `domain-language-kits/billing/` | in place |
 | `domain-language-kits/billing/domain/IContractRepository.cs` | `domain-language-kits/billing/` | in place |
 | `domain-language-kits/billing/application/ContractApplicationService.cs` | `domain-language-kits/billing/` | in place |
 | `domain-language-kits/billing/infrastructure/SqlContractRepository.cs` | `domain-language-kits/billing/` | in place |
-| `member-contracts/use-cases/*.cs` | `member-contracts/use-cases/` | in place |
-| `violations/BadBrickRules.cs` | `violations/` | keep |
+| `member-contracts/only-one-case/`, `exactly-two-case/`, `all-members-case/`, `exclusive-choice-case`, `range-case/`, `forbid-case/`, `unique-named-case/` | `member-contracts/` | analyzer-backed |
+| `member-contracts/catalog/MemberContractUseCaseCatalog.cs` | `member-contracts/` | executable index for analyzer-backed cases |
+| `../analyzer-samples/metadata-validation/` | `violations/` | expected Bricks configuration warnings |
+| `../analyzer-samples/dependency-rule-evaluation/` | `violations/` | expected dependency-rule errors |
+| `../analyzer-samples/generic-role-combinations/` | `violations/` | expected generic role-combination errors |
+| `../analyzer-samples/member-contract-validation/` | `violations/` | expected member-contract errors |
+| `../analyzer-samples/brick-policy-violations/` | `violations/` | expected mixed policy violation sample |
+
+## Current Executable Sample Areas
+
+The current implementation already contains more than the first teaching
+structure. These are the executable sample areas that must stay visible in this
+roadmap:
+
+| Sample area | Current role |
+|---|---|
+| `ai-governance` | Advisory AI output, trust-boundary and proposal workflow examples. |
+| `class-contracts` | Class-level contract and role metadata examples. |
+| `ddd-building` | DDD-oriented role, identifier and member-contract examples. |
+| `domain-language-kits` | Consumer-owned role/rule DSL examples, currently anchored by billing. |
+| `enum-coverage-cases` | Attribute and code examples for public enum values. |
+| `function-coverage` | Public API family, enum variation and violation-example evidence. |
+| `implementation-analyzer-samples` | Implementation-side analyzer sample helpers. |
+| `interface-contracts` | Interface-based role and contract examples. |
+| `member-contracts` | Analyzer-backed member contracts including exact-one, exact-count, all-members, exclusive-choice, range, forbidden-member and unique-named-member samples. |
+| `namespace-contracts` | Namespace-level contract examples. |
+| `policy-variant-cases` | Attribute, code, JSON and composed policy variants. |
+| `rule-filters` | Source, target and member-name filter examples. |
+| `scenarios` | Scenario-oriented examples that combine lower-level Bricks features. |
+| `source-target-cases` | Source/target shape examples for type, member, namespace, assembly and external references. |
 
 ## Sample Matrix By Consumer Question
 
-| Consumer question | Must-have sample |
+| Consumer question | Current sample |
 |---|---|
-| How do I start with one tiny Bricks rule? | `getting-started/Minimal*` |
-| How do I define my own role language? | `role-modeling/*` |
-| How do I express allowed/forbidden/required dependencies? | `dependency-rules/*` |
-| How do I limit rules with filters? | `rule-filters/*` |
+| How do I start with one tiny Bricks rule? | `analyzer-samples/dependency-rule-evaluation/` for the smallest analyzer-backed dependency-rule loop |
+| How do I define my own role language? | `domain-language-kits/billing/roles/*`, `ddd-building/Ddd*Attribute.cs` |
+| How do I express allowed/forbidden/required dependencies? | `domain-language-kits/billing/rules/BillingBrickRules.Assembly.cs`, `policy-variant-cases/*` |
+| How do I limit rules with filters? | `rule-filters/*`, plus `tests/Samples.Block04.Bricks.Tests/RuleFilterCases/RuleFilterSampleTests.cs` |
 | How do I publish a complete domain language kit? | `domain-language-kits/billing/*` |
-| How do I model marker contracts? | `member-contracts/use-cases/*` |
-| How do I combine all of that? | `composition/*` |
+| How do I model marker contracts? | `member-contracts/*-case/`, `ddd-building/DddIdentifierAttribute.cs` |
+| How do I combine all of that? | `ddd-building/`, `domain-language-kits/billing/`, `function-coverage/` |
 
-## Valuable Samples That Do Not Exist Yet
+## Additional Future Sample Ideas
 
-The following samples would be high-value for consumers even if analyzer support is
-partial or still missing.
+The following ideas remain useful, but they are not required for the current
+100% Bricks roundtrip because each shipped public API family, enum variation
+family and public enum value already has checked sample evidence. The shipped
+member-contract families are analyzer-backed; only broader variants remain
+future ideas.
 
 ### Range Contracts
 
-- `AtLeastOneUseCase.cs`
-- `AtLeastTwoUseCase.cs`
-- `AtMostOneUseCase.cs`
-- `TwoToFourUseCase.cs`
+- additional `AtLeastOneUseCase.cs`
+- additional `AtLeastTwoUseCase.cs`
+- additional `AtMostOneUseCase.cs`
 
 ### Choice Sets
 
@@ -249,7 +279,6 @@ partial or still missing.
 
 ### Negative Contracts
 
-- `NotUseCase.cs`
 - `NotTogetherUseCase.cs`
 - `ForbiddenCombinationUseCase.cs`
 

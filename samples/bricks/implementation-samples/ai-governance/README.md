@@ -21,11 +21,13 @@ benchmarks and reviewed governance records decide what is valid.
 
 1. Bricks or an analyzer produces a deterministic violation.
 2. AI creates an explanatory `BrickAiCommentDocument` with remediation options.
-3. AI may create a `BrickRuleProposal` when repeated findings suggest a new analyzer rule.
-4. The proposal stays in `Candidate` or `Observing` until human review accepts the evidence.
-5. Analyzer tests cover positive fixtures, negative fixtures and false-positive risks.
-6. Benchmark reports guard the feedback loop before the rule becomes a warning or enforced diagnostic.
-7. A `BrickGovernanceReport` records that deterministic enforcement, human review, exception handling and compatibility checks are satisfied.
+3. The same document can be rendered as JSON or Markdown for CI, IDE or PR adapters.
+4. AI may create a `BrickRuleProposal` when repeated findings suggest a new analyzer rule.
+5. The proposal is persisted in a `BrickRuleProposalQueue`.
+6. A human review records a `BrickRuleProposalReview`; only the review workflow can promote the proposal into a deterministic `BrickRule`.
+7. Analyzer tests cover positive fixtures, negative fixtures and false-positive risks.
+8. Benchmark reports guard the feedback loop before the rule becomes a warning or enforced diagnostic.
+9. A `BrickGovernanceReport` records that deterministic enforcement, human review, exception handling and compatibility checks are satisfied.
 
 ## Attribute Policy Flow
 
@@ -56,9 +58,9 @@ AI is advisory in this sample. It can explain, cluster and propose. It cannot:
 
 ## Code
 
-- `AiGovernanceCollaborationSample.cs` creates the review packet, AI comments, analyzer-extension proposal, governance report and serialized architecture-review artifact.
+- `AiGovernanceCollaborationSample.cs` creates the review packet, AI comments, Markdown output, analyzer-extension proposal, proposal queue, reviewed promotion result, governance report and serialized architecture-review artifact.
 - `CreateAttributePolicyReviewPacket()` derives the same AI review shape from the DDD attribute policy in `../ddd-building/DddBrickRules.Assembly.cs`.
-- `../function-coverage/BenchmarkAndAiExamples.cs` supplies the benchmark artifact used as a performance guardrail.
+- `../function-coverage/BenchmarkAndAiExamples.cs` supplies the benchmark artifact, CI configuration, proposal queue and reviewed-promotion examples used as guardrails.
 
 ## Recommended AgentSkills Usage
 

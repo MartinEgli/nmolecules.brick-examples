@@ -28,6 +28,9 @@ internal static class AiGovernanceCollaborationSample
             trustBoundary,
             CreateDeterministicFindingComment(),
             SuggestAnalyzerExtension(),
+            new BrickRuleProposalQueue(SampleBrickModel.GeneratedAt, new[] { SuggestAnalyzerExtension() }),
+            BrickAiCommentMarkdownRenderer.Render(CreateDeterministicFindingComment()),
+            ReviewAnalyzerExtensionProposal(),
             AssessAiGovernance());
     }
 
@@ -116,6 +119,25 @@ internal static class AiGovernanceCollaborationSample
             BrickSeverity.Warning,
             evidence,
             BrickRuleLifecycleState.Candidate);
+    }
+
+    public static BrickRuleProposalReviewResult ReviewAnalyzerExtensionProposal()
+    {
+        var proposal = SuggestAnalyzerExtension();
+        var review = new BrickRuleProposalReview(
+            proposal.ProposalId,
+            "architecture-owner",
+            approved: true,
+            BrickRuleLifecycleState.Enforced,
+            "The proposal has reviewed examples, false-positive risks and migration impact.",
+            SampleBrickModel.GeneratedAt);
+
+        return BrickRuleProposalReviewWorkflow.Review(
+            proposal,
+            review,
+            RuleId.From("XMoleculesBricks0998"),
+            "Domain roles should not depend on infrastructure roles",
+            priority: 90);
     }
 
     public static BrickRuleProposal SuggestAttributePolicyAnalyzerExtension(
@@ -215,6 +237,8 @@ internal static class AiGovernanceCollaborationSample
         var packet = CreateReviewPacket();
         var attributePacket = CreateAttributePolicyReviewPacket();
         var aiComments = BrickAiCommentJsonSerializer.Serialize(packet.Comments);
+        var aiMarkdown = packet.MarkdownReview;
+        var proposalQueue = BrickRuleProposalQueueJsonSerializer.Serialize(packet.ProposalQueue);
         var attributeComments = BrickAiCommentJsonSerializer.Serialize(attributePacket.Comments);
         var governance = BrickGovernanceReportJsonSerializer.Serialize(packet.Governance);
         var benchmark = BrickBenchmarkReportJsonSerializer.Serialize(BenchmarkAndAiExamples.BenchmarkCentralOperations());
@@ -224,9 +248,12 @@ internal static class AiGovernanceCollaborationSample
             $"mode={packet.TrustBoundary.Mode}",
             $"canActivateWithoutReview={packet.TrustBoundary.CanActivateRuleWithoutReview}",
             $"proposal={packet.Proposal.ProposalId}:{packet.Proposal.LifecycleState}:{packet.Proposal.HasRequiredEvidence}",
+            $"reviewedPromotion={packet.ReviewedPromotion.CanPromote}:{packet.ReviewedPromotion.PromotedRule?.RuleId.Value}",
             $"attributePolicy={attributePacket.PolicyId}",
             $"attributePolicyProposal={attributePacket.Proposal.ProposalId}:{attributePacket.Proposal.LifecycleState}:{attributePacket.Proposal.HasRequiredEvidence}",
             aiComments,
+            aiMarkdown,
+            proposalQueue,
             attributeComments,
             governance,
             benchmark);

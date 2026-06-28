@@ -9,8 +9,8 @@ using Xunit;
 namespace BrickExamples.Tests.MemberContractCases;
 
 /// <summary>
-/// Verifies that the member-contract use cases are complete for the analyzer-backed
-/// contracts and clearly separated from concept-only future contracts.
+/// Verifies that the member-contract use cases are complete for the
+/// analyzer-backed contracts.
 /// </summary>
 public sealed class MemberContractUseCaseTests
 {
@@ -68,6 +68,36 @@ public sealed class MemberContractUseCaseTests
             "RequireExclusiveChoice",
             new[] { "XorNoneInvalidSample must declare exactly one of XorLeftMarkerAttribute or XorRightMarkerAttribute." }
         },
+        {
+            typeof(TwoToFourTooFewSample),
+            "RequireMemberRange",
+            new[] { "TwoToFourTooFewSample must declare RangeMarkerAttribute count between 2 and 4, actual 1." }
+        },
+        {
+            typeof(TwoToFourTooManySample),
+            "RequireMemberRange",
+            new[] { "TwoToFourTooManySample must declare RangeMarkerAttribute count between 2 and 4, actual 5." }
+        },
+        {
+            typeof(NotInvalidSample),
+            "ForbidMember",
+            new[] { "NotInvalidSample must not declare members marked with ForbiddenMarkerAttribute; actual 1." }
+        },
+        {
+            typeof(RequiredNamedIdentifierMissingYInvalidSample),
+            "RequireNamedMembers",
+            new[] { "RequiredNamedIdentifierMissingYInvalidSample must declare a RequiredNamedIdentifierAttribute member named 'Y'." }
+        },
+        {
+            typeof(UniqueNamedIdentifierDuplicateNameInvalidSample),
+            "RequireUniqueNamedMember",
+            new[] { "UniqueNamedIdentifierDuplicateNameInvalidSample must declare at most one NamedIdentifierAttribute member named 'X'; actual 2." }
+        },
+        {
+            typeof(UniqueNamedIdentifierDuplicateUnnamedInvalidSample),
+            "RequireUniqueNamedMember",
+            new[] { "UniqueNamedIdentifierDuplicateUnnamedInvalidSample must declare at most one NamedIdentifierAttribute member named <unnamed>; actual 2." }
+        },
     };
 
     [Theory]
@@ -110,16 +140,30 @@ public sealed class MemberContractUseCaseTests
     }
 
     [Fact]
-    public void CatalogDocumentsConceptOnlyMemberContractUseCasesSeparately()
+    public void CatalogDocumentsAllMemberContractUseCasesAsAnalyzerBacked()
     {
-        var conceptCases = MemberContractUseCaseCatalog.Cases
-            .Where(useCase => !useCase.IsAnalyzerBacked)
+        var conceptCases = MemberContractUseCaseCatalog.Cases.Where(useCase => !useCase.IsAnalyzerBacked).ToArray();
+        var analyzerBackedNames = MemberContractUseCaseCatalog.Cases
+            .Where(useCase => useCase.IsAnalyzerBacked)
+            .Select(useCase => useCase.ContractName)
+            .Distinct()
+            .OrderBy(name => name)
             .ToArray();
 
-        Assert.Equal(6, conceptCases.Length);
-        Assert.Contains(conceptCases, useCase => useCase.ContractName == "RequireMemberRange");
-        Assert.Contains(conceptCases, useCase => useCase.ContractName == "ForbidMember");
-        Assert.All(conceptCases, useCase => Assert.Equal(-1, useCase.ExpectedAnalyzerViolationCount));
+        Assert.Empty(conceptCases);
+        Assert.Equal(
+            new[]
+            {
+                "ForbidMember",
+                "RequireAllMembers",
+                "RequireExactlyOneMember",
+                "RequireExclusiveChoice",
+                "RequireMemberCount",
+                "RequireMemberRange",
+                "RequireNamedMembers",
+                "RequireUniqueNamedMember"
+            },
+            analyzerBackedNames);
     }
 
     [Fact]
@@ -135,6 +179,9 @@ public sealed class MemberContractUseCaseTests
         Assert.Contains(MemberContractUseCaseCatalog.Cases, useCase => useCase.SampleType == typeof(AndAPlusBDuplicateMarkersValidSample));
         Assert.Contains(MemberContractUseCaseCatalog.Cases, useCase => useCase.SampleType == typeof(XorBothInvalidSample));
         Assert.Contains(MemberContractUseCaseCatalog.Cases, useCase => useCase.SampleType == typeof(XorNoneInvalidSample));
+        Assert.Contains(MemberContractUseCaseCatalog.Cases, useCase => useCase.SampleType == typeof(RequiredNamedIdentifierMissingYInvalidSample));
+        Assert.Contains(MemberContractUseCaseCatalog.Cases, useCase => useCase.SampleType == typeof(UniqueNamedIdentifierDuplicateNameInvalidSample));
+        Assert.Contains(MemberContractUseCaseCatalog.Cases, useCase => useCase.SampleType == typeof(UniqueNamedIdentifierDuplicateUnnamedInvalidSample));
     }
 
     [Fact]
@@ -152,7 +199,9 @@ public sealed class MemberContractUseCaseTests
         Assert.Equal("Samples.Block04.Bricks.MemberContracts.ExclusiveChoice", assemblyByContract["RequireExclusiveChoice"]);
         Assert.Equal("Samples.Block04.Bricks.MemberContracts.Range", assemblyByContract["RequireMemberRange"]);
         Assert.Equal("Samples.Block04.Bricks.MemberContracts.Forbid", assemblyByContract["ForbidMember"]);
-        Assert.Equal(6, assemblyByContract.Values.Distinct().Count());
+        Assert.Equal("Samples.Block04.Bricks.MemberContracts.RequiredNamed", assemblyByContract["RequireNamedMembers"]);
+        Assert.Equal("Samples.Block04.Bricks.MemberContracts.UniqueNamed", assemblyByContract["RequireUniqueNamedMember"]);
+        Assert.Equal(8, assemblyByContract.Values.Distinct().Count());
     }
 
     [Fact]
@@ -170,7 +219,9 @@ public sealed class MemberContractUseCaseTests
         Assert.Contains("Samples.Block04.Bricks.MemberContracts.ExclusiveChoice", invalidCaseAssemblies);
         Assert.Contains("Samples.Block04.Bricks.MemberContracts.Range", invalidCaseAssemblies);
         Assert.Contains("Samples.Block04.Bricks.MemberContracts.Forbid", invalidCaseAssemblies);
-        Assert.Equal(6, invalidCaseAssemblies.Length);
+        Assert.Contains("Samples.Block04.Bricks.MemberContracts.RequiredNamed", invalidCaseAssemblies);
+        Assert.Contains("Samples.Block04.Bricks.MemberContracts.UniqueNamed", invalidCaseAssemblies);
+        Assert.Equal(8, invalidCaseAssemblies.Length);
     }
 
     private static TheoryData<MemberContractUseCaseExpectation> CreateTheoryData(IEnumerable<MemberContractUseCaseExpectation> useCases)
@@ -194,7 +245,11 @@ public sealed class MemberContractUseCaseTests
             sampleType.Namespace,
             sampleType.FullName);
 
-        return BrickMemberCardinalityEvaluator.Evaluate(element, GetMemberContracts(sampleType), CountMemberMarkers(sampleType));
+        return BrickMemberCardinalityEvaluator.Evaluate(
+            element,
+            GetMemberContracts(sampleType),
+            CountMemberMarkers(sampleType),
+            CountNamedMemberMarkers(sampleType));
     }
 
     private static IReadOnlyList<Attribute> GetMemberContracts(Type sampleType) =>
@@ -219,9 +274,44 @@ public sealed class MemberContractUseCaseTests
         return counts;
     }
 
+    private static IReadOnlyDictionary<Type, IReadOnlyDictionary<string, int>> CountNamedMemberMarkers(Type sampleType)
+    {
+        var counts = new Dictionary<Type, Dictionary<string, int>>();
+        var members = sampleType.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            .Where(member => member.DeclaringType == sampleType);
+
+        foreach (var attribute in members.SelectMany(member => member.GetCustomAttributes(inherit: false)).OfType<Attribute>())
+        {
+            var markerType = attribute.GetType();
+            var markerName = ReadMarkerName(attribute);
+            if (!counts.TryGetValue(markerType, out var markerCounts))
+            {
+                markerCounts = new Dictionary<string, int>(StringComparer.Ordinal);
+                counts[markerType] = markerCounts;
+            }
+
+            markerCounts.TryGetValue(markerName, out var count);
+            markerCounts[markerName] = count + 1;
+        }
+
+        return counts.ToDictionary(
+            pair => pair.Key,
+            pair => (IReadOnlyDictionary<string, int>)pair.Value);
+    }
+
+    private static string ReadMarkerName(Attribute attribute)
+    {
+        var property = attribute.GetType().GetProperty("Name", BindingFlags.Instance | BindingFlags.Public);
+        return property?.GetValue(attribute) as string ?? string.Empty;
+    }
+
     private static bool IsMemberContract(Attribute attribute) =>
         attribute is RequireExactlyOneMemberAttribute
             or RequireMemberCountAttribute
+            or RequireMemberRangeAttribute
             or RequireAllMembersAttribute
-            or RequireExclusiveChoiceAttribute;
+            or RequireExclusiveChoiceAttribute
+            or ForbidMemberAttribute
+            or RequireNamedMembersAttribute
+            or RequireUniqueNamedMemberAttribute;
 }
